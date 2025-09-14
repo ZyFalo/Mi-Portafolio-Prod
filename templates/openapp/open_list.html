@@ -42,34 +42,35 @@
 </section>
 {% endif %}
 
-<!-- Información adicional -->
-<div class="row mt-5">
-    <div class="col-12">
-        <div class="card-custom p-4 text-center">
-            <div class="row g-3">
-                <div class="col-md-4">
-                    <i class="bi bi-star text-primary fs-2 mb-2"></i>
-                    <h5 class="text-primary fw-bold mb-1">Calidad Premium</h5>
-                    <small class="text-muted">Solo productos probados y recomendados</small>
-                </div>
-                <div class="col-md-4">
-                    <i class="bi bi-speedometer2 text-primary fs-2 mb-2"></i>
-                    <h5 class="text-primary fw-bold mb-1">Productividad</h5>
-                    <small class="text-muted">Herramientas que optimizan el flujo de trabajo</small>
-                </div>
-                <div class="col-md-4">
-                    <i class="bi bi-heart text-primary fs-2 mb-2"></i>
-                    <h5 class="text-primary fw-bold mb-1">Uso Personal</h5>
-                    <small class="text-muted">Todo lo que ves, lo uso diariamente</small>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Grid de elementos -->
 <section class="py-5">
     <div class="container">
+
+        <!-- Información adicional -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card-custom p-4 text-center">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <i class="bi bi-star text-primary fs-2 mb-2"></i>
+                            <h5 class="text-primary fw-bold mb-1">Calidad Premium</h5>
+                            <small class="text-muted">Solo productos probados y recomendados</small>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="bi bi-speedometer2 text-primary fs-2 mb-2"></i>
+                            <h5 class="text-primary fw-bold mb-1">Productividad</h5>
+                            <small class="text-muted">Herramientas que optimizan el flujo de trabajo</small>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="bi bi-heart text-primary fs-2 mb-2"></i>
+                            <h5 class="text-primary fw-bold mb-1">Uso Personal</h5>
+                            <small class="text-muted">Todo lo que ves, lo uso diariamente</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         {% if items %}
         <div class="row g-4">
             {% for it in items %}
