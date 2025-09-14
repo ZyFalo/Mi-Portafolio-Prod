@@ -331,7 +331,7 @@
 </section>
 
 <!-- Red de Desarrolladores -->
-<section class="py-5">
+<section id="desarrolladores" class="py-5">
     <div class="container">
         <h2 class="text-primary text-center mb-3 fw-bold">Red de Desarrolladores</h2>
         <p class="text-center text-main mb-5">Conoce los increíbles portafolios de mis colegas desarrolladores</p>
@@ -548,9 +548,9 @@
     }, { threshold: 0.5 });
 
     // Observar la sección de desarrolladores
-    const devSection = document.querySelector('h2:contains("Red de Desarrolladores")');
+    const devSection = document.getElementById('desarrolladores');
     if (devSection) {
-        devSectionObserver.observe(devSection.parentElement);
+        devSectionObserver.observe(devSection);
     }
 </script>
 {% endblock %}
