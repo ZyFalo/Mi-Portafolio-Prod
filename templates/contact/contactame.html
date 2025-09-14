@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% block title %}Contáctame — Portafolio{% endblock %}
+{% block meta_description %}Formulario de contacto con validación avanzada y protección anti‑bot. ¡Hablemos de tu proyecto!{% endblock %}
+
+{% block content %}
+<!-- Header de la página -->
+<section class="py-5 bg-alt">
+    <div class="container">
+        <div class="row justify-content-center text-center">
+            <div class="col-lg-8">
+                <i class="bi bi-envelope text-primary fs-1 mb-3"></i>
+                <h1 class="text-primary fw-bold mb-3">¡Hablemos de tu proyecto!</h1>
+                <p class="text-main fs-5">Completa el formulario y me pondré en contacto contigo en menos de 24 horas.</p>
+                <p class="text-muted small">Formulario con validación avanzada, protección honeypot y timestamp anti-bot.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Formulario de contacto -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                {% if success %}
+                <div class="card-custom p-4 mb-4 border-success">
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-check-circle-fill text-success fs-2 me-3"></i>
+                        <div>
+                            <h5 class="text-success mb-1">¡Mensaje enviado correctamente!</h5>
+                            <p class="text-muted mb-0">Te responderé pronto. Revisa tu email incluyendo spam.</p>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="card-custom p-4">
+                    <form id="contact-form" method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label fw-medium">
+                                    <i class="bi bi-person text-primary me-2"></i>Nombre completo
+                                </label>
+                                <input 
+                                    name="name" 
+                                    id="name"
+                                    type="text" 
+                                    required 
+                                    minlength="3" 
+                                    maxlength="120" 
+                                    class="form-control"
+                                    placeholder="Tu nombre y apellido"
+                                />
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un nombre válido (mínimo 3 caracteres).
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <label for="email" class="form-label fw-medium">
+                                    <i class="bi bi-envelope text-primary me-2"></i>Email
+                                </label>
+                                <input 
+                                    name="email" 
+                                    id="email"
+                                    type="email" 
+                                    required 
+                                    maxlength="200" 
+                                    class="form-control"
+                                    placeholder="tu@email.com"
+                                />
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un email válido.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="subject" class="form-label fw-medium">
+                                <i class="bi bi-tag text-primary me-2"></i>Asunto
+                            </label>
+                            <input 
+                                name="subject" 
+                                id="subject"
+                                type="text" 
+                                required 
+                                minlength="5" 
+                                maxlength="150" 
+                                class="form-control"
+                                placeholder="¿En qué puedo ayudarte?"
+                            />
+                            <div class="invalid-feedback">
+                                Por favor ingresa un asunto (mínimo 5 caracteres).
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="message" class="form-label fw-medium">
+                                <i class="bi bi-chat-dots text-primary me-2"></i>Mensaje
+                            </label>
+                            <textarea 
+                                name="message" 
+                                id="message"
+                                required 
+                                minlength="20" 
+                                maxlength="5000" 
+                                rows="6" 
+                                class="form-control"
+                                placeholder="Cuéntame sobre tu proyecto, objetivos, tecnologías preferidas, presupuesto estimado y cualquier detalle relevante..."
+                            ></textarea>
+                            <div class="invalid-feedback">
+                                Por favor escribe un mensaje detallado (mínimo 20 caracteres).
+                            </div>
+                            <div class="form-text">
+                                <span id="char-count">0</span>/5000 caracteres
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input 
+                                    id="consent" 
+                                    name="consent" 
+                                    type="checkbox" 
+                                    required 
+                                    class="form-check-input"
+                                />
+                                <label for="consent" class="form-check-label">
+                                    Acepto ser contactado y que mis datos sean utilizados para responder a mi consulta.
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="invalid-feedback">
+                                    Debes aceptar para poder enviar el mensaje.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Anti-bot: honeypot + timestamp -->
+                        <input type="text" name="website" autocomplete="off" class="visually-hidden" tabindex="-1" aria-hidden="true" />
+                        <input type="hidden" name="ts" id="ts" />
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <button id="submit-btn" type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="bi bi-send me-2"></i>
+                                <span class="btn-text">Enviar mensaje</span>
+                            </button>
+                        </div>
+
+                        <div id="form-error" class="alert alert-danger mt-3 d-none">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            Por favor corrige los campos marcados en rojo.
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Información adicional -->
+<section class="py-5 bg-alt">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="card-custom p-4 text-center h-100">
+                    <i class="bi bi-clock text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Respuesta Rápida</h5>
+                    <p class="text-main small">Respondo todos los emails en menos de 24 horas, incluso fines de semana.</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card-custom p-4 text-center h-100">
+                    <i class="bi bi-shield-check text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Datos Seguros</h5>
+                    <p class="text-main small">Tu información está protegida y nunca será compartida con terceros.</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card-custom p-4 text-center h-100">
+                    <i class="bi bi-chat-heart text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Sin Compromiso</h5>
+                    <p class="text-main small">Conversación inicial gratuita para entender tu proyecto y necesidades.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Enlaces rápidos -->
+<section class="py-5">
+    <div class="container text-center">
+        <h3 class="text-primary mb-4">Otras formas de conocer mi trabajo</h3>
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <a href="/" class="btn btn-outline-primary">
+                <i class="bi bi-house me-2"></i>Ver portafolio
+            </a>
+            <a href="/open/" class="btn btn-outline-primary">
+                <i class="bi bi-gear me-2"></i>Gadgets & Setups
+            </a>
+            <a href="/fyq/" class="btn btn-outline-primary">
+                <i class="bi bi-question-circle me-2"></i>Preguntas frecuentes
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Timestamp anti-bot (ms desde que se carga la página)
+    document.getElementById('ts').value = Date.now();
+
+    // Referencias a elementos del formulario
+    const form = document.getElementById('contact-form');
+    const error = document.getElementById('form-error');
+    const submitBtn = document.getElementById('submit-btn');
+    const btnText = document.querySelector('.btn-text');
+    const messageTextarea = document.getElementById('message');
+    const charCount = document.getElementById('char-count');
+
+    // Contador de caracteres en tiempo real
+    messageTextarea.addEventListener('input', function() {
+        const count = this.value.length;
+        charCount.textContent = count;
+        
+        if (count > 4500) {
+            charCount.classList.add('text-warning');
+        } else {
+            charCount.classList.remove('text-warning');
+        }
+    });
+
+    // Validación en tiempo real
+    form.addEventListener('input', function(e) {
+        const field = e.target;
+        if (field.checkValidity()) {
+            field.classList.remove('is-invalid');
+            field.classList.add('is-valid');
+        } else {
+            field.classList.remove('is-valid');
+            field.classList.add('is-invalid');
+        }
+    });
+
+    // Validación al enviar formulario
+    form.addEventListener('submit', function(e) {
+        error.classList.add('d-none');
+        
+        // Validar todos los campos
+        const fields = form.querySelectorAll('input[required], textarea[required]');
+        let isValid = true;
+        
+        fields.forEach(field => {
+            if (!field.checkValidity()) {
+                field.classList.add('is-invalid');
+                isValid = false;
+            }
+        });
+        
+        if (!isValid) {
+            e.preventDefault();
+            error.classList.remove('d-none');
+            
+            // Scroll al primer campo inválido
+            const firstInvalid = form.querySelector('.is-invalid');
+            if (firstInvalid) {
+                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                firstInvalid.focus();
+            }
+            return false;
+        }
+        
+        // Mostrar estado de carga
+        submitBtn.disabled = true;
+        btnText.innerHTML = '<i class="spinner-border spinner-border-sm me-2"></i>Enviando...';
+        
+        // Enviar evento a GTM
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ 
+            event: 'contact_form_submit', 
+            form_name: 'contactame',
+            timestamp: new Date().toISOString()
+        });
+    });
+
+    // Si hay éxito, mostrar toast y enviar evento a GA4
+    {% if success %}
+    (function(){
+        // Crear toast de éxito
+        const toastHtml = `
+            <div class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle me-2"></i>
+                        ¡Gracias! Te responderé pronto.
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+        `;
+        
+        const toastContainer = document.getElementById('toast');
+        toastContainer.innerHTML = toastHtml;
+        const toast = new bootstrap.Toast(toastContainer.querySelector('.toast'));
+        toast.show();
+        
+        // Evento GTM de éxito
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ 
+            event: 'contact_submit_success', 
+            form: 'contactame', 
+            status: 'success',
+            timestamp: new Date().toISOString()
+        });
+    })();
+    {% endif %}
+</script>
+{% endblock %}
+

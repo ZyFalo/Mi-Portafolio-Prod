@@ -1,0 +1,710 @@
+{% extends 'base.html' %}
+{% block title %}Portafolio — Desarrollador Full-Stack{% endblock %}
+{% block meta_description %}CV, proyectos y contacto de desarrollador web full‑stack especializado en Django, Python y tecnologías modernas.{% endblock %}
+
+{% block content %}
+<!-- Sección de Foto y Información Principal -->
+<section id="inicio" class="py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 col-lg-4 text-center mb-4 mb-md-0">
+                <img src="https://ui-avatars.com/api/?name=William+Peña&size=200&background=8B4513&color=ffffff&bold=true" alt="Foto de perfil" class="rounded-circle img-fluid avatar-img shadow-lg mb-3">
+                <h1 class="text-primary fw-bold">
+                    William Andrés
+                    <br>
+                    Peña Vargas
+                </h1>
+                <p class="text-main fs-5">Software Developer</p>
+                <div class="mt-3 d-flex flex-wrap justify-content-center gap-2">
+                    <span class="tech-badge">Django</span>
+                    <span class="tech-badge">Python</span>
+                    <span class="tech-badge">JavaScript</span>
+                    <span class="tech-badge">Bootstrap</span>
+                    <span class="tech-badge">SQLite</span>
+                    <span class="tech-badge">GA4/GTM</span>
+                </div>
+            </div>
+            <div class="col-12 col-lg-8">
+                <div class="card-custom p-4">
+                    <h2 class="text-primary mb-3">Información de Contacto</h2>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-envelope text-primary fs-4 me-3"></i>
+                                <div>
+                                    <small class="text-muted">Email</small>
+                                    <p class="mb-0 fw-medium">williamandres1603@gmail.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-telephone text-primary fs-4 me-3"></i>
+                                <div>
+                                    <small class="text-muted">Teléfono</small>
+                                    <p class="mb-0 fw-medium">+57 319 6632134</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-geo-alt text-primary fs-4 me-3"></i>
+                                <div>
+                                    <small class="text-muted">Ubicación</small>
+                                    <p class="mb-0 fw-medium">Bogotá D.C., Colombia</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-github text-primary fs-4 me-3"></i>
+                                <div>
+                                    <small class="text-muted">GitHub</small>
+                                    <p class="mb-0 fw-medium">github.com/ZyFalo</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Descripción del Perfil -->
+<section id="perfil" class="py-5 bg-alt">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h2 class="text-primary text-center mb-4 fw-bold">Perfil Profesional</h2>
+                <div class="card-custom p-4">
+                    <p class="text-main fs-6 lh-lg text-center">
+                        Estudiante de 8vo semestre de Ingeniería de Software en la Universidad Manuela Beltrán, 
+                        con experiencia profesional como Desarrollador Full Stack y Consultor Junior de TI en Talent Advisor Consulting. 
+                        Me destaco por mis habilidades en programación con Python, Java, JavaScript y PHP, 
+                        así como en el manejo de bases de datos MySQL y Oracle. Tengo experiencia trabajando en entornos ágiles bajo metodología Scrum, 
+                        usando Git y plataformas de integración continua. Soy una persona activa, dinámica y responsable, 
+                        con gran disposición para el trabajo en equipo y facilidad para adaptarme a las necesidades cambiantes de los proyectos, 
+                        con especial interés en el desarrollo backend y gestión de bases de datos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% comment %} <!-- Portafolio Destacado -->
+<section id="portfolio" class="py-5">
+    <div class="container">
+        <h2 class="text-primary text-center mb-5 fw-bold">Portafolio Destacado</h2>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="card-custom p-4 h-100 d-flex flex-column">
+                    <i class="bi bi-gear text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Gadgets & Setups</h5>
+                    <p class="text-main small flex-grow-1">Galería interactiva de gadgets y configuraciones tecnológicas con sistema de gestión completo.</p>
+                    <a href="/open/" class="portfolio-link">Ver proyecto →</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card-custom p-4 h-100 d-flex flex-column">
+                    <i class="bi bi-question-circle text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">FAQ Dinámicas</h5>
+                    <p class="text-main small flex-grow-1">Sistema de preguntas frecuentes administrables con acordeón accesible y gestión desde panel admin.</p>
+                    <a href="/fyq/" class="portfolio-link">Ver FAQ →</a>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card-custom p-4 h-100 d-flex flex-column">
+                    <i class="bi bi-envelope text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Formulario de Contacto</h5>
+                    <p class="text-main small flex-grow-1">Formulario con validación avanzada, protección anti-bot honeypot y sistema de timestamps.</p>
+                    <a href="/contactame/" class="portfolio-link">Contactar →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> {% endcomment %}
+
+<!-- Competencias Técnicas -->
+<section id="competencias" class="py-5">
+    <div class="container">
+        <h2 class="text-primary text-center mb-5 fw-bold">Competencias Técnicas</h2>
+        <div class="row g-4">
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card-custom p-3 text-center h-100">
+                    <i class="bi bi-code-slash text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Python</h5>
+                    <p class="text-main small">Django, FastAPI, Flask, Pytest, POO</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card-custom p-3 text-center h-100">
+                    <i class="bi bi-filetype-js text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">JavaScript</h5>
+                    <p class="text-main small">ES6+, DOM, HTMX, APIs REST</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card-custom p-3 text-center h-100">
+                    <i class="bi bi-bootstrap text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Frontend</h5>
+                    <p class="text-main small">Bootstrap, Tailwind, HTML5, CSS3</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card-custom p-3 text-center h-100">
+                    <i class="bi bi-database text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Bases de Datos</h5>
+                    <p class="text-main small">SQLite, PostgreSQL, MySQL</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card-custom p-3 text-center h-100">
+                    <i class="bi bi-git text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Control de Versiones</h5>
+                    <p class="text-main small">Git, GitHub, Metodologías Ágiles</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card-custom p-3 text-center h-100">
+                    <i class="bi bi-cloud text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Deployment</h5>
+                    <p class="text-main small">Railway</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card-custom p-3 text-center h-100">
+                    <i class="bi bi-graph-up text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Analytics</h5>
+                    <p class="text-main small">Google Analytics 4, GTM, SEO</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card-custom p-3 text-center h-100">
+                    <i class="bi bi-shield-check text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Seguridad</h5>
+                    <p class="text-main small">Validación, Sanitización, CSRF</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Competencias Blandas -->
+<section class="py-5 bg-alt">
+    <div class="container">
+        <h2 class="text-primary text-center mb-5 fw-bold">Competencias Blandas</h2>
+        <div class="row g-4">
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card-custom p-3 text-center h-100">
+                    <i class="bi bi-lightbulb text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Resolución de Problemas</h5>
+                    <p class="text-main small">Análisis crítico y soluciones creativas</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card-custom p-3 text-center h-100">
+                    <i class="bi bi-people text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Trabajo en Equipo</h5>
+                    <p class="text-main small">Colaboración efectiva y comunicación</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card-custom p-3 text-center h-100">
+                    <i class="bi bi-clock text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Gestión del Tiempo</h5>
+                    <p class="text-main small">Organización y cumplimiento de plazos</p>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <div class="card-custom p-3 text-center h-100">
+                    <i class="bi bi-arrow-repeat text-primary fs-1 mb-3"></i>
+                    <h5 class="text-primary fw-bold">Adaptabilidad</h5>
+                    <p class="text-main small">Flexibilidad ante nuevas tecnologías</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Formación y Experiencia -->
+<section id="formacion" class="py-5">
+    <div class="container">
+        <h2 class="text-primary text-center mb-5 fw-bold">Formación Académica</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card-custom p-4 mb-4">
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-mortarboard text-primary fs-2 me-4 flex-shrink-0"></i>
+                        <div>
+                            <h4 class="text-primary fw-bold mb-2">Ingeniería de Software (8° Semestre)</h4>
+                            <p class="text-main fw-medium mb-1">Universidad Manuela Beltrán</p>
+                            <p class="text-accent small mb-2">2022 - Actualidad</p>
+                            <p class="text-main">Especialización en desarrollo de software, metodologías ágiles, bases de datos y arquitectura de sistemas. Experiencia académica con Scrum y control de versiones.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-custom p-4 mb-4">
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-book text-primary fs-2 me-4 flex-shrink-0"></i>
+                        <div>
+                            <h4 class="text-primary fw-bold mb-2">Bachiller Académico con énfasis en inglés</h4>
+                            <p class="text-main fw-medium mb-1">Institución Educativa Domingo Savio</p>
+                            <p class="text-accent small mb-2">2014 - 2019</p>
+                            <p class="text-main">Formación académica integral con énfasis en idioma inglés, desarrollando bases sólidas para estudios superiores.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-custom p-4 mb-4">
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-patch-check text-primary fs-2 me-4 flex-shrink-0"></i>
+                        <div>
+                            <h4 class="text-primary fw-bold mb-2">Google Cloud Computing Foundations Certificate</h4>
+                            <p class="text-main fw-medium mb-1">Google</p>
+                            <p class="text-accent small mb-2">2024</p>
+                            <p class="text-main">Certificación en fundamentos de computación en la nube y servicios de Google Cloud Platform.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-custom p-4">
+                    <div class="d-flex align-items-start">
+                        <i class="bi bi-award text-primary fs-2 me-4 flex-shrink-0"></i>
+                        <div>
+                            <h4 class="text-primary fw-bold mb-2">Certificaciones Cisco</h4>
+                            <p class="text-main fw-medium mb-1">Cisco Networking Academy</p>
+                            <p class="text-accent small mb-2">2023</p>
+                            <p class="text-main">Essentials Python 1, Networking Basics y Networking Devices and Initial Configuration. Conocimientos en redes y programación.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Experiencia Profesional -->
+<section id="experiencia" class="py-5 bg-alt">
+    <div class="container">
+        <h2 class="text-primary text-center mb-5 fw-bold">Experiencia Profesional</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card-custom p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-building text-primary fs-3 me-3"></i>
+                        <div>
+                            <h4 class="text-primary fw-bold mb-1">Desarrollador Full Stack & Consultor Junior TI</h4>
+                            <p class="text-main fw-medium mb-0">Talent Advisor Consulting</p>
+                            <p class="text-accent small">Febrero 2025 - Actualidad (6 meses)</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary fw-bold mb-2">Desarrollo & Tecnologías:</h6>
+                            <ul class="text-main">
+                                <li>Desarrollo con Symfony, PHP y Doctrine ORM</li>
+                                <li>Frontend responsive con Bootstrap</li>
+                                <li>Administración de servidores Linux Ubuntu</li>
+                                <li>Gestión de aplicaciones web montadas en AWS</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-primary fw-bold mb-2">Bases de Datos & DevOps:</h6>
+                            <ul class="text-main">
+                                <li>Consultas SQL complejas y optimización</li>
+                                <li>Reestructuraciones de BD con MariaDB</li>
+                                <li>Despliegue de cambios en producción</li>
+                                <li>Gestión de ramas en BitBucket</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <p class="text-main small"><strong>Práctica Profesional:</strong> Cumpliendo requisitos universitarios mientras desarrollo profesionalmente en el sector TI.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Red de Desarrolladores -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-primary text-center mb-3 fw-bold">Red de Desarrolladores</h2>
+        <p class="text-center text-main mb-5">Conoce los increíbles portafolios de mis colegas desarrolladores</p>
+        
+        <div class="row g-4">
+            <!-- Portfolio Cards -->
+            <div class="col-lg-4 col-md-6">
+                <div class="developer-card h-100">
+                    <a
+                        class="data-banner text-decoration-none d-block h-100"
+                        href="https://portfolio-dev-1.com/?utm_source=william_portfolio&utm_medium=banner&utm_campaign=dev_network&utm_content=dev_1"
+                        data-banner-name="developer_1"
+                        target="_blank" rel="noreferrer"
+                    >
+                        <div class="card-custom p-4 h-100 developer-card-inner">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="developer-avatar me-3">
+                                    <img src="https://ui-avatars.com/api/?name=Ana+Garcia&size=60&background=4A90E2&color=ffffff&bold=true" alt="Ana García" class="rounded-circle">
+                                </div>
+                                <div>
+                                    <h5 class="text-primary fw-bold mb-1">Ana García</h5>
+                                    <p class="text-main small mb-0">Frontend Developer</p>
+                                </div>
+                            </div>
+                            <p class="text-main small mb-3">Especialista en React, TypeScript y diseño UX/UI. Creando experiencias web excepcionales.</p>
+                            <div class="d-flex flex-wrap gap-1 mb-3">
+                                <span class="tech-badge-small">React</span>
+                                <span class="tech-badge-small">TypeScript</span>
+                                <span class="tech-badge-small">Figma</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between">
+                                <small class="text-accent">Ver portafolio</small>
+                                <i class="bi bi-arrow-up-right text-primary"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="developer-card h-100">
+                    <a
+                        class="data-banner text-decoration-none d-block h-100"
+                        href="https://portfolio-dev-2.com/?utm_source=william_portfolio&utm_medium=banner&utm_campaign=dev_network&utm_content=dev_2"
+                        data-banner-name="developer_2"
+                        target="_blank" rel="noreferrer"
+                    >
+                        <div class="card-custom p-4 h-100 developer-card-inner">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="developer-avatar me-3">
+                                    <img src="https://ui-avatars.com/api/?name=Carlos+Rodriguez&size=60&background=50C878&color=ffffff&bold=true" alt="Carlos Rodríguez" class="rounded-circle">
+                                </div>
+                                <div>
+                                    <h5 class="text-primary fw-bold mb-1">Carlos Rodríguez</h5>
+                                    <p class="text-main small mb-0">Backend Developer</p>
+                                </div>
+                            </div>
+                            <p class="text-main small mb-3">Experto en Node.js, MongoDB y arquitecturas microservicios. APIs robustas y escalables.</p>
+                            <div class="d-flex flex-wrap gap-1 mb-3">
+                                <span class="tech-badge-small">Node.js</span>
+                                <span class="tech-badge-small">MongoDB</span>
+                                <span class="tech-badge-small">Docker</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between">
+                                <small class="text-accent">Ver portafolio</small>
+                                <i class="bi bi-arrow-up-right text-primary"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="developer-card h-100">
+                    <a
+                        class="data-banner text-decoration-none d-block h-100"
+                        href="https://portfolio-dev-3.com/?utm_source=william_portfolio&utm_medium=banner&utm_campaign=dev_network&utm_content=dev_3"
+                        data-banner-name="developer_3"
+                        target="_blank" rel="noreferrer"
+                    >
+                        <div class="card-custom p-4 h-100 developer-card-inner">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="developer-avatar me-3">
+                                    <img src="https://ui-avatars.com/api/?name=Sofia+Martinez&size=60&background=9B59B6&color=ffffff&bold=true" alt="Sofía Martínez" class="rounded-circle">
+                                </div>
+                                <div>
+                                    <h5 class="text-primary fw-bold mb-1">Sofía Martínez</h5>
+                                    <p class="text-main small mb-0">Full-Stack Developer</p>
+                                </div>
+                            </div>
+                            <p class="text-main small mb-3">Desarrolladora versátil con Vue.js, Laravel y AWS. Soluciones completas de software.</p>
+                            <div class="d-flex flex-wrap gap-1 mb-3">
+                                <span class="tech-badge-small">Vue.js</span>
+                                <span class="tech-badge-small">Laravel</span>
+                                <span class="tech-badge-small">AWS</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between">
+                                <small class="text-accent">Ver portafolio</small>
+                                <i class="bi bi-arrow-up-right text-primary"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="developer-card h-100">
+                    <a
+                        class="data-banner text-decoration-none d-block h-100"
+                        href="https://portfolio-dev-4.com/?utm_source=william_portfolio&utm_medium=banner&utm_campaign=dev_network&utm_content=dev_4"
+                        data-banner-name="developer_4"
+                        target="_blank" rel="noreferrer"
+                    >
+                        <div class="card-custom p-4 h-100 developer-card-inner">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="developer-avatar me-3">
+                                    <img src="https://ui-avatars.com/api/?name=Miguel+Torres&size=60&background=E67E22&color=ffffff&bold=true" alt="Miguel Torres" class="rounded-circle">
+                                </div>
+                                <div>
+                                    <h5 class="text-primary fw-bold mb-1">Miguel Torres</h5>
+                                    <p class="text-main small mb-0">DevOps Engineer</p>
+                                </div>
+                            </div>
+                            <p class="text-main small mb-3">Especialista en CI/CD, Kubernetes y automatización. Infraestructura moderna y confiable.</p>
+                            <div class="d-flex flex-wrap gap-1 mb-3">
+                                <span class="tech-badge-small">Docker</span>
+                                <span class="tech-badge-small">Kubernetes</span>
+                                <span class="tech-badge-small">Jenkins</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between">
+                                <small class="text-accent">Ver portafolio</small>
+                                <i class="bi bi-arrow-up-right text-primary"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="developer-card h-100">
+                    <a
+                        class="data-banner text-decoration-none d-block h-100"
+                        href="https://portfolio-dev-5.com/?utm_source=william_portfolio&utm_medium=banner&utm_campaign=dev_network&utm_content=dev_5"
+                        data-banner-name="developer_5"
+                        target="_blank" rel="noreferrer"
+                    >
+                        <div class="card-custom p-4 h-100 developer-card-inner">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="developer-avatar me-3">
+                                    <img src="https://ui-avatars.com/api/?name=Laura+Diaz&size=60&background=E74C3C&color=ffffff&bold=true" alt="Laura Díaz" class="rounded-circle">
+                                </div>
+                                <div>
+                                    <h5 class="text-primary fw-bold mb-1">Laura Díaz</h5>
+                                    <p class="text-main small mb-0">Mobile Developer</p>
+                                </div>
+                            </div>
+                            <p class="text-main small mb-3">Desarrolladora móvil con Flutter y React Native. Apps nativas multiplataforma.</p>
+                            <div class="d-flex flex-wrap gap-1 mb-3">
+                                <span class="tech-badge-small">Flutter</span>
+                                <span class="tech-badge-small">React Native</span>
+                                <span class="tech-badge-small">Firebase</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between">
+                                <small class="text-accent">Ver portafolio</small>
+                                <i class="bi bi-arrow-up-right text-primary"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="developer-card h-100">
+                    <a
+                        class="data-banner text-decoration-none d-block h-100"
+                        href="https://portfolio-dev-6.com/?utm_source=william_portfolio&utm_medium=banner&utm_campaign=dev_network&utm_content=dev_6"
+                        data-banner-name="developer_6"
+                        target="_blank" rel="noreferrer"
+                    >
+                        <div class="card-custom p-4 h-100 developer-card-inner">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="developer-avatar me-3">
+                                    <img src="https://ui-avatars.com/api/?name=David+Lopez&size=60&background=3498DB&color=ffffff&bold=true" alt="David López" class="rounded-circle">
+                                </div>
+                                <div>
+                                    <h5 class="text-primary fw-bold mb-1">David López</h5>
+                                    <p class="text-main small mb-0">Data Scientist</p>
+                                </div>
+                            </div>
+                            <p class="text-main small mb-3">Científico de datos con Python, TensorFlow y análisis predictivo. IA y machine learning.</p>
+                            <div class="d-flex flex-wrap gap-1 mb-3">
+                                <span class="tech-badge-small">Python</span>
+                                <span class="tech-badge-small">TensorFlow</span>
+                                <span class="tech-badge-small">Pandas</span>
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between">
+                                <small class="text-accent">Ver portafolio</small>
+                                <i class="bi bi-arrow-up-right text-primary"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Info -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-8">
+                <div class="card-custom p-4 text-center">
+                    <div class="d-flex align-items-center justify-content-center mb-3">
+                        <i class="bi bi-graph-up text-primary fs-3 me-3"></i>
+                        <h4 class="text-primary fw-bold mb-0">Tracking Avanzado</h4>
+                    </div>
+                    <p class="text-main mb-3">
+                        Cada clic en estos portafolios se rastrea automáticamente con Google Analytics 4 y Tag Manager, 
+                        incluyendo parámetros UTM personalizados para análisis detallado del tráfico referido.
+                    </p>
+                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                        <span class="badge bg-primary">GTM Events</span>
+                        <span class="badge bg-primary">UTM Tracking</span>
+                        <span class="badge bg-primary">Referral Analytics</span>
+                        <span class="badge bg-primary">Click Tracking</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% comment %} <!-- Contacto Final -->
+<section id="contacto" class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="text-primary text-center mb-5 fw-bold">¡Trabajemos Juntos!</h2>
+                <div class="card-custom p-4 text-center">
+                    <p class="text-main fs-5 mb-4">¿Tienes un proyecto en mente? Me especializo en crear soluciones web robustas y escalables.</p>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="/contactame/" class="btn btn-primary">
+                            <i class="bi bi-envelope me-2"></i>Escríbeme
+                        </a>
+                        <a href="/open/" class="btn btn-outline-primary">
+                            <i class="bi bi-eye me-2"></i>Ver Proyectos
+                        </a>
+                    </div>
+                    <p class="text-muted small mt-3">Respuesta garantizada en 24 horas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> {% endcomment %}
+
+<section id="contacto" class="py-5 bg-alt">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="text-primary text-center mb-5 fw-bold">¡Trabajemos Juntos!</h2>
+                <div class="card-custom p-4 text-center">
+                    <p class="text-main fs-5 mb-4">
+                        ¿Tienes un proyecto interesante? ¿Necesitas ayuda con desarrollo backend o bases de datos? 
+                        ¡Me encantaría conocer más sobre tu próximo desafío tecnológico!
+                    </p>
+                    <div class="row g-3 justify-content-center">
+                        <div class="col-sm-6 col-md-4">
+                            <a href="/contactame/" class="btn btn-primary w-100">
+                                <i class="bi bi-envelope me-2"></i>Escríbeme
+                            </a>
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                            <a href="https://www.linkedin.com/in/william-andres-pe%C3%B1a-vargas-62aa2a282/" class="btn btn-outline-primary w-100" target="_blank">
+                                <i class="bi bi-linkedin me-2"></i>LinkedIn
+                            </a>
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                            <a href="https://github.com/ZyFalo" class="btn btn-outline-primary w-100" target="_blank">
+                                <i class="bi bi-github me-2"></i>GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Banner click → evento a dataLayer (GTM)
+    document.querySelectorAll('.data-banner').forEach(el => {
+        el.addEventListener('click', () => {
+            const name = el.getAttribute('data-banner-name') || 'unknown';
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({ 
+                event: 'developer_portfolio_click', 
+                developer_name: name,
+                source: 'william_portfolio',
+                timestamp: new Date().toISOString()
+            });
+            console.log('Developer portfolio clicked:', name);
+        });
+    });
+
+    // Smooth scroll para navegación interna
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Animación simple para tarjetas al hacer scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Aplicar animación a todas las tarjetas
+    document.querySelectorAll('.card-custom').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        observer.observe(card);
+    });
+
+    // Tracking básico de clicks en desarrolladores
+    document.querySelectorAll('.developer-card').forEach(card => {
+        const developerName = card.querySelector('.data-banner').getAttribute('data-banner-name');
+        
+        card.addEventListener('click', () => {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'developer_card_click',
+                developer_name: developerName,
+                timestamp: new Date().toISOString()
+            });
+        });
+    });
+
+    // Tracking de visualización de sección
+    const devSectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'developer_section_view',
+                    total_developers: document.querySelectorAll('.developer-card').length,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        });
+    }, { threshold: 0.5 });
+
+    // Observar la sección de desarrolladores
+    const devSection = document.querySelector('h2:contains("Red de Desarrolladores")');
+    if (devSection) {
+        devSectionObserver.observe(devSection.parentElement);
+    }
+</script>
+{% endblock %}
+

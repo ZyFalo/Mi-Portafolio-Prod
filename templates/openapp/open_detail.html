@@ -1,0 +1,311 @@
+{% extends 'base.html' %}
+{% block title %}{{ item.title }} — Gadgets & Setups{% endblock %}
+{% block meta_description %}{{ item.summary }}{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<section class="py-3 bg-light">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                <li class="breadcrumb-item">
+                    <a href="/" class="text-decoration-none">
+                        <i class="bi bi-house me-1"></i>Inicio
+                    </a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="/open/" class="text-decoration-none">Gadgets & Setups</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{{ item.title }}</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<!-- Header del elemento -->
+<section class="py-5 bg-alt">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h1 class="text-primary fw-bold mb-3">{{ item.title }}</h1>
+                <p class="text-main fs-5 mb-4">{{ item.summary }}</p>
+                
+                <!-- Keywords/Tags -->
+                {% if item.keywords.all %}
+                <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
+                    {% for tag in item.keywords.all %}
+                        <span class="badge bg-primary">#{{ tag.name }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <!-- Metadatos -->
+                <div class="d-flex flex-wrap justify-content-center gap-4 text-muted small">
+                    <span>
+                        <i class="bi bi-calendar me-1"></i>
+                        Agregado recientemente
+                    </span>
+                    <span>
+                        <i class="bi bi-eye me-1"></i>
+                        Uso personal verificado
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Imagen principal -->
+{% if item.image %}
+<section class="py-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card-custom p-3">
+                    <img 
+                        src="{{ item.image.url }}" 
+                        alt="{{ item.title }}" 
+                        class="w-100 rounded"
+                        style="max-height: 500px; object-fit: cover;"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Contenido principal -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <article class="card-custom p-4">
+                    <div class="text-main lh-lg">
+                        {{ item.description|safe }}
+                    </div>
+                </article>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Información adicional y acciones -->
+<section class="py-5 bg-alt">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Valoración personal -->
+                <div class="card-custom p-4 mb-4">
+                    <h4 class="text-primary mb-3">
+                        <i class="bi bi-star-fill me-2"></i>Mi experiencia personal
+                    </h4>
+                    <div class="row g-3">
+                        <div class="col-md-4 text-center">
+                            <i class="bi bi-hand-thumbs-up text-success fs-2 mb-2"></i>
+                            <h6 class="text-success fw-bold">Recomendado</h6>
+                            <small class="text-muted">Uso diario verificado</small>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <i class="bi bi-speedometer2 text-primary fs-2 mb-2"></i>
+                            <h6 class="text-primary fw-bold">Productividad</h6>
+                            <small class="text-muted">Mejora el flujo de trabajo</small>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <i class="bi bi-award text-warning fs-2 mb-2"></i>
+                            <h6 class="text-warning fw-bold">Calidad</h6>
+                            <small class="text-muted">Relación precio-calidad</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navegación y acciones -->
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                    <a href="/open/" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left me-2"></i>Volver a la lista
+                    </a>
+                    
+                    <div class="d-flex gap-2">
+                        <button 
+                            class="btn btn-outline-secondary btn-sm" 
+                            onclick="shareItem()"
+                            title="Compartir este elemento"
+                        >
+                            <i class="bi bi-share"></i>
+                        </button>
+                        <a 
+                            href="/contactame/" 
+                            class="btn btn-primary"
+                            onclick="trackInterest('{{ item.title }}')"
+                        >
+                            <i class="bi bi-chat-dots me-2"></i>Consultar sobre este gadget
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Elementos relacionados o sugerencias -->
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h3 class="text-primary mb-4">¿Te interesó este gadget?</h3>
+                <p class="text-main mb-4">Si tienes preguntas específicas sobre este elemento o quieres saber más sobre cómo lo uso en mi flujo de trabajo, no dudes en contactarme.</p>
+                
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="card-custom p-3 h-100">
+                            <i class="bi bi-question-circle text-primary fs-3 mb-2"></i>
+                            <h6 class="text-primary fw-bold">¿Dudas?</h6>
+                            <small class="text-muted">Pregúntame lo que quieras</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-custom p-3 h-100">
+                            <i class="bi bi-lightbulb text-primary fs-3 mb-2"></i>
+                            <h6 class="text-primary fw-bold">Recomendaciones</h6>
+                            <small class="text-muted">Alternativas personalizadas</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card-custom p-3 h-100">
+                            <i class="bi bi-gear text-primary fs-3 mb-2"></i>
+                            <h6 class="text-primary fw-bold">Setup completo</h6>
+                            <small class="text-muted">Consulta sobre mi configuración</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <a href="/contactame/" class="btn btn-primary me-2">
+                        <i class="bi bi-envelope me-2"></i>Contactar
+                    </a>
+                    <a href="/fyq/" class="btn btn-outline-primary">
+                        <i class="bi bi-question-circle me-2"></i>Ver FAQ
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Tracking de interés en elemento específico
+    function trackInterest(itemTitle) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: 'gadget_interest',
+            gadget_title: itemTitle,
+            action: 'contact_click',
+            page_location: window.location.href,
+            timestamp: new Date().toISOString()
+        });
+    }
+
+    // Función para compartir
+    function shareItem() {
+        const title = document.querySelector('h1').textContent;
+        const url = window.location.href;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: title,
+                text: 'Echa un vistazo a este gadget: ' + title,
+                url: url
+            }).then(() => {
+                // Tracking de compartir
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'gadget_share',
+                    gadget_title: title,
+                    share_method: 'native',
+                    timestamp: new Date().toISOString()
+                });
+            }).catch(err => {
+                console.log('Error sharing:', err);
+                fallbackShare();
+            });
+        } else {
+            fallbackShare();
+        }
+    }
+
+    // Compartir fallback (copiar al clipboard)
+    function fallbackShare() {
+        const url = window.location.href;
+        navigator.clipboard.writeText(url).then(() => {
+            // Mostrar feedback
+            showToast('Enlace copiado al portapapeles', 'success');
+            
+            // Tracking
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'gadget_share',
+                gadget_title: document.querySelector('h1').textContent,
+                share_method: 'clipboard',
+                timestamp: new Date().toISOString()
+            });
+        }).catch(err => {
+            console.error('Error copying to clipboard:', err);
+            showToast('No se pudo copiar el enlace', 'error');
+        });
+    }
+
+    // Lazy loading para imagen principal
+    document.addEventListener('DOMContentLoaded', function() {
+        const mainImage = document.querySelector('section img');
+        if (mainImage) {
+            mainImage.addEventListener('load', function() {
+                this.style.opacity = '1';
+            });
+        }
+    });
+
+    // Smooth scroll en navegación interna
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-highlight de navegación si viene de la lista
+        const referrer = document.referrer;
+        if (referrer.includes('/open/') && !referrer.includes(window.location.pathname)) {
+            // Came from list page
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'gadget_view',
+                gadget_title: document.querySelector('h1').textContent,
+                referrer: 'gadget_list',
+                timestamp: new Date().toISOString()
+            });
+        }
+    });
+</script>
+
+<style>
+    /* Mejoras específicas para la página de detalle */
+    .breadcrumb-item + .breadcrumb-item::before {
+        content: "›";
+        color: var(--primary);
+    }
+    
+    .card-custom img {
+        transition: transform 0.3s ease;
+    }
+    
+    .card-custom:hover img {
+        transform: scale(1.02);
+    }
+    
+    /* Animación sutil para badges */
+    .badge {
+        transition: all 0.3s ease;
+    }
+    
+    .badge:hover {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}
+

@@ -1,0 +1,20 @@
+[
+  {"model": "faq.question", "pk": 1, "fields": {"title": "¿De qué trata este sitio?", "slug": "de-que-trata", "answer": "Es mi portafolio, con CV, formulario de contacto y una sección de Gadgets & Setups administrada desde Django Admin.", "order": 1, "is_active": true}},
+  {"model": "faq.question", "pk": 2, "fields": {"title": "¿Puedo ver el código?", "slug": "puedo-ver-codigo", "answer": "Sí, el proyecto está preparado para publicarse en un repositorio con README y despliegue en plataformas como Render o Railway.", "order": 2, "is_active": true}},
+  {"model": "faq.question", "pk": 3, "fields": {"title": "¿Usaste GA4/GTM?", "slug": "ga4-gtm", "answer": "Se integra Google Tag Manager (GTM). Desde el sitio se envían eventos personalizados para clics en banners y envíos de formulario de contacto.", "order": 3, "is_active": true}},
+
+  {"model": "openapp.tag", "pk": 1, "fields": {"name": "teclado", "slug": "teclado"}},
+  {"model": "openapp.tag", "pk": 2, "fields": {"name": "monitor", "slug": "monitor"}},
+  {"model": "openapp.tag", "pk": 3, "fields": {"name": "microfono", "slug": "microfono"}},
+  {"model": "openapp.tag", "pk": 4, "fields": {"name": "silla", "slug": "silla"}},
+  {"model": "openapp.tag", "pk": 5, "fields": {"name": "hub", "slug": "hub"}},
+  {"model": "openapp.tag", "pk": 6, "fields": {"name": "iluminacion", "slug": "iluminacion"}},
+
+  {"model": "openapp.openentity", "pk": 1, "fields": {"title": "Teclado Mecánico Keychron K6", "slug": "keychron-k6", "summary": "60% hot‑swappable, switches brown, ideal para escribir.", "description": "<p>Compacto, con buena batería y conectividad Bluetooth/USB‑C. Recomiendo keycaps PBT.</p>", "image": null, "created_at": "2024-01-01T12:00:00Z", "is_published": true, "keywords": [1]}},
+  {"model": "openapp.openentity", "pk": 2, "fields": {"title": "Monitor 27'' 1440p 75Hz", "slug": "monitor-27-1440p", "summary": "Buen balance entre espacio de trabajo y nitidez.", "description": "<p>Ideal para código y diseño. Ajuste de color sRGB y modo lectura por la noche.</p>", "image": null, "created_at": "2024-01-02T12:00:00Z", "is_published": true, "keywords": [2]}},
+  {"model": "openapp.openentity", "pk": 3, "fields": {"title": "Micrófono USB condensador", "slug": "microfono-usb", "summary": "Claro para llamadas y screencasts.", "description": "<p>Con brazo articulado y filtro antipop. Sensibilidad ajustada a -12 dB.</p>", "image": null, "created_at": "2024-01-03T12:00:00Z", "is_published": true, "keywords": [3]}},
+  {"model": "openapp.openentity", "pk": 4, "fields": {"title": "Silla ergonómica", "slug": "silla-ergonomica", "summary": "Soporte lumbar y ajuste de altura/brazos.", "description": "<p>La mejor inversión para jornadas largas. Alterno con pausas activas cada hora.</p>", "image": null, "created_at": "2024-01-04T12:00:00Z", "is_published": true, "keywords": [4]}},
+  {"model": "openapp.openentity", "pk": 5, "fields": {"title": "Hub USB‑C 8‑en‑1", "slug": "hub-usbc", "summary": "HDMI, SD, USB‑A 3.0, PD 100W.", "description": "<p>Evita enredos y me permite usar un solo cable para todo.</p>", "image": null, "created_at": "2024-01-05T12:00:00Z", "is_published": true, "keywords": [5]}},
+  {"model": "openapp.openentity", "pk": 6, "fields": {"title": "Lámpara de escritorio con temperatura ajustable", "slug": "lampara-escritorio", "summary": "Luz cálida para lectura, fría para enfoque.", "description": "<p>Reduce fatiga visual. Uso 4000K por la tarde y 3000K por la noche.</p>", "image": null, "created_at": "2024-01-06T12:00:00Z", "is_published": true, "keywords": [6]}}
+]
+
