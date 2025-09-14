@@ -26,8 +26,13 @@ COPY . .
 # Dar permisos de ejecución al script de inicio
 RUN chmod +x start.sh
 
-# Recopilar archivos estáticos
+# Recopilar archivos estáticos y preparar migraciones
 RUN python manage.py collectstatic --noinput
+RUN python manage.py makemigrations
+
+# Crear script que se ejecute automáticamente en runtime
+RUN echo '#!/bin/bash\npython manage.py migrate\npython manage.py shell -c "from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser(\"admin\", \"admin@example.com\", \"admin123\") if not User.objects.filter(username=\"admin\").exists() else print(\"Admin exists\")"' > /app/init-db.sh
+RUN chmod +x /app/init-db.sh
 
 # Crear un usuario no-root para ejecutar la aplicación
 RUN useradd --create-home --shell /bin/bash app
@@ -38,4 +43,4 @@ USER app
 EXPOSE $PORT
 
 # Comando para ejecutar la aplicación
-CMD ["sh", "-c", "echo '🚀 Iniciando Django...' && python manage.py makemigrations && python manage.py migrate && echo '✅ Migraciones completadas' && python manage.py shell -c 'from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser(\"admin\", \"admin@example.com\", \"admin123\") if not User.objects.filter(username=\"admin\").exists() else print(\"Admin exists\")' && echo '🚀 Iniciando servidor...' && gunicorn --bind 0.0.0.0:$PORT --workers 2 portfolio.wsgi:application"]
+ENTRYPOINT ["./start.sh"]
