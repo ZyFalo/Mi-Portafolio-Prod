@@ -9,7 +9,7 @@ if [ -n "${DJANGO_SUPERUSER_USERNAME:-}" ] && [ -n "${DJANGO_SUPERUSER_EMAIL:-}"
   echo "[start] Ensuring superuser exists (${DJANGO_SUPERUSER_USERNAME})..."
   python - <<'PY'
 import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portfolio.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portfolio.settings.production')
 import django
 django.setup()
 from django.contrib.auth import get_user_model

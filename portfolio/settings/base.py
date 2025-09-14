@@ -1,16 +1,15 @@
 """
-Django settings for portfolio project.
+Base settings for the portfolio project.
 
-Simplified for:
-- Local development via `python manage.py runserver` (SQLite by default)
-- Railway deployment with Docker (DATABASE_URL or MySQL envs)
+Common configuration shared by local and production.
 """
 
 from pathlib import Path
 import os
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Repo root (three levels up from this file)
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
 def _env_bool(name: str, default: str = "0") -> bool:
@@ -42,11 +41,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Local apps
-    "core",
-    "contact",
-    "faq",
-    "openapp",
-    "analytics",
+    "portfolio.apps.core",
+    "portfolio.apps.contact",
+    "portfolio.apps.faq",
+    "portfolio.apps.openapp",
+    "portfolio.apps.analytics",
 ]
 
 
@@ -75,7 +74,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "analytics.context_processors.analytics",
+                "portfolio.apps.analytics.context_processors.analytics",
             ],
         },
     },

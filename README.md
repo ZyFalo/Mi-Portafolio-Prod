@@ -41,11 +41,13 @@ Abrir: http://127.0.0.1:8000 y http://127.0.0.1:8000/admin/
 
 ## Estructura de apps
 
-- `core`: Home (CV + red de desarrolladores con UTM)
-- `contact`: Formulario de contacto (`ContactMessage`)
-- `faq`: Preguntas frecuentes (`Question`)
-- `openapp`: Gadgets & Setups (`OpenEntity`, `Tag`)
-- `analytics`: context processor para inyectar IDs de GTM/GA
+Las apps internas ahora viven bajo el paquete `portfolio/apps/` y se importan como `portfolio.apps.<nombre>`:
+
+- `portfolio.apps.core`: Home (CV + red de desarrolladores con UTM)
+- `portfolio.apps.contact`: Formulario de contacto (`ContactMessage`)
+- `portfolio.apps.faq`: Preguntas frecuentes (`Question`)
+- `portfolio.apps.openapp`: Gadgets & Setups (`OpenEntity`, `Tag`)
+- `portfolio.apps.analytics`: context processor para inyectar IDs de GTM/GA
 
 ## Modelos (CMS)
 
@@ -98,6 +100,11 @@ DJANGO_SUPERUSER_EMAIL=admin@example.com
 DJANGO_SUPERUSER_PASSWORD=admin123
 ```
 
+## Settings por entorno
+
+- Desarrollo: `DJANGO_SETTINGS_MODULE=portfolio.settings.local` (por defecto en `manage.py`).
+- Producción: `DJANGO_SETTINGS_MODULE=portfolio.settings.production` (por defecto en `wsgi/asgi`).
+
 Proceso:
 
 1) Railway construye la imagen Docker (usa `requirements.txt`).
@@ -109,4 +116,3 @@ Proceso:
 - URL pública en Railway
 - Repositorio GitHub
 - PDF con ERD (`docs/ERD.md`), capturas del sitio y capturas de GA4/GTM
-

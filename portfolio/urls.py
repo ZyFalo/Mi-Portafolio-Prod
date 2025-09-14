@@ -21,10 +21,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls')),
-    path('contactame/', include('contact.urls')),
-    path('fyq/', include('faq.urls')),
-    path('open/', include('openapp.urls')),
+    path('', include('portfolio.apps.core.urls')),
+    path('contactame/', include('portfolio.apps.contact.urls')),
+    path('fyq/', include('portfolio.apps.faq.urls')),
+    path('open/', include('portfolio.apps.openapp.urls')),
 ]
 
 if settings.DEBUG:
