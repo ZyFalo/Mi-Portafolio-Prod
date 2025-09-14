@@ -1,0 +1,17 @@
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ('openapp', '0001_initial'),
+    ]
+
+    operations = [
+        migrations.AlterField(
+            model_name='openentity',
+            name='image',
+            field=models.URLField(blank=True, null=True, verbose_name='Imagen (URL)'),
+        ),
+    ]
+

@@ -54,7 +54,7 @@
                         <!-- Imagen -->
                         <div class="position-relative">
                             {% if it.image %}
-                                <img src="{{ it.image.url }}" alt="{{ it.title }}" class="w-100" style="height: 200px; object-fit: cover;" />
+                                <img src="{{ it.image }}" alt="{{ it.title }}" class="w-100" style="height: 200px; object-fit: cover;" />
                             {% else %}
                                 <div class="w-100 bg-gradient d-flex align-items-center justify-content-center" style="height: 200px; background: linear-gradient(135deg, var(--section-alt) 0%, #F2EDE5 100%);">
                                     <i class="bi bi-image text-primary fs-1 opacity-50"></i>
@@ -217,4 +217,3 @@
     }
 </style>
 {% endblock %}
-

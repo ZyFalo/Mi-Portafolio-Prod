@@ -24,7 +24,7 @@ class OpenEntity(models.Model):
     slug = models.SlugField(max_length=220, unique=True, blank=True)
     summary = models.CharField(max_length=240)
     description = models.TextField(help_text="Puedes usar HTML básico para formato.")
-    image = models.ImageField(upload_to="open/", blank=True, null=True)
+    image = models.URLField(blank=True, null=True, verbose_name="Imagen (URL)")
     keywords = models.ManyToManyField(Tag, related_name="items", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     is_published = models.BooleanField(default=True)
