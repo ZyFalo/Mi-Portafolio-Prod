@@ -156,9 +156,14 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = _env_bool("SECURE_SSL_REDIRECT", "1")
 
 
-# Analytics (GTM)
+# Analytics (GTM / GA)
 GTM_CONTAINER_ID = os.getenv("GTM_CONTAINER_ID", "")
+GA_MEASUREMENT_ID = os.getenv("GA_MEASUREMENT_ID", "")
+
+# reCAPTCHA v2 ("No soy un robot")
+RECAPTCHA_SITE_KEY = os.getenv("RECAPTCHA_SITE_KEY", "")
+RECAPTCHA_SECRET_KEY = os.getenv("RECAPTCHA_SECRET_KEY", "")
+RECAPTCHA_ENABLED = _env_bool("RECAPTCHA_ENABLED", "1")
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-

@@ -141,6 +141,12 @@
                         <input type="text" name="website" autocomplete="off" class="visually-hidden" tabindex="-1" aria-hidden="true" />
                         <input type="hidden" name="ts" id="ts" />
 
+                        {% if RECAPTCHA_ENABLED and RECAPTCHA_SITE_KEY %}
+                        <div class="mb-3 d-flex justify-content-center">
+                            <div class="g-recaptcha" data-sitekey="{{ RECAPTCHA_SITE_KEY }}"></div>
+                        </div>
+                        {% endif %}
+
                         <div class="d-grid gap-2 d-md-flex justify-content-md-center">
                             <button id="submit-btn" type="submit" class="btn btn-primary btn-lg px-5">
                                 <i class="bi bi-send me-2"></i>
@@ -208,6 +214,9 @@
 {% endblock %}
 
 {% block scripts %}
+{% if RECAPTCHA_ENABLED and RECAPTCHA_SITE_KEY %}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% endif %}
 <script>
     // Timestamp anti-bot (ms desde que se carga la página)
     document.getElementById('ts').value = Date.now();
@@ -272,6 +281,16 @@
             return false;
         }
         
+        // reCAPTCHA v2: exigir que este resuelto antes de enviar
+        {% if RECAPTCHA_ENABLED and RECAPTCHA_SITE_KEY %}
+        if (window.grecaptcha && grecaptcha.getResponse().length === 0) {
+            e.preventDefault();
+            error.classList.remove('d-none');
+            error.textContent = 'Por favor completa el reCAPTCHA.';
+            return false;
+        }
+        {% endif %}
+
         // Mostrar estado de carga
         submitBtn.disabled = true;
         btnText.innerHTML = '<i class="spinner-border spinner-border-sm me-2"></i>Enviando...';
@@ -318,4 +337,3 @@
     {% endif %}
 </script>
 {% endblock %}
-
