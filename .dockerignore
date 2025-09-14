@@ -1,0 +1,54 @@
+# Archivos de Git
+.git
+.gitignore
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Archivos de Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Archivos de medios (se subirán por separado)
+media/
+
+# Archivos estáticos (se generan en build)
+staticfiles/
+
+# Archivos de desarrollo
+.env
+.env.local
+.env.example
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Documentación
+README.md
+docs/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de test
+.coverage
+.pytest_cache/
+
+# Archivos de Docker
+Dockerfile
+.dockerignore
