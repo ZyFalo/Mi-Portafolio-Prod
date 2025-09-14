@@ -38,4 +38,4 @@ USER app
 EXPOSE $PORT
 
 # Comando para ejecutar la aplicación
-CMD ["./start.sh"]
+CMD ["sh", "-c", "echo '🚀 Iniciando Django...' && python manage.py makemigrations && python manage.py migrate && echo '✅ Migraciones completadas' && python manage.py shell -c 'from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser(\"admin\", \"admin@example.com\", \"admin123\") if not User.objects.filter(username=\"admin\").exists() else print(\"Admin exists\")' && echo '🚀 Iniciando servidor...' && gunicorn --bind 0.0.0.0:$PORT --workers 2 portfolio.wsgi:application"]
