@@ -146,24 +146,62 @@ WSGI_APPLICATION = 'portfolio.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# Configuración de base de datos para Railway (MySQL) o desarrollo local (SQLite)
-if os.getenv('RAILWAY_ENVIRONMENT'):
-    # Configuración para Railway con MySQL
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.getenv('MYSQL_DATABASE'),
-            'USER': os.getenv('MYSQL_USER'),
-            'PASSWORD': os.getenv('MYSQL_PASSWORD'),
-            'HOST': os.getenv('MYSQL_HOST'),
-            'PORT': os.getenv('MYSQL_PORT', '3306'),
-            'OPTIONS': {
-                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-                'charset': 'utf8mb4',
-            },
+# Configuración de base de datos - Railway vs Local
+# Railway puede usar DATABASE_URL o variables MYSQL_ individuales
+DATABASE_URL = os.getenv('DATABASE_URL')
+MYSQL_HOST = os.getenv('MYSQL_HOST') or os.getenv('MYSQLHOST')
+MYSQL_DATABASE = os.getenv('MYSQL_DATABASE') or os.getenv('MYSQLDATABASE') 
+MYSQL_USER = os.getenv('MYSQL_USER') or os.getenv('MYSQLUSER')
+MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD') or os.getenv('MYSQLPASSWORD')
+MYSQL_PORT = os.getenv('MYSQL_PORT') or os.getenv('MYSQLPORT', '3306')
+
+# Detectar si estamos en Railway (múltiples formas)
+IS_RAILWAY = any([
+    os.getenv('RAILWAY_ENVIRONMENT'),
+    os.getenv('RAILWAY_PROJECT_ID'),
+    os.getenv('RAILWAY_SERVICE_ID'),
+    DATABASE_URL,
+    MYSQL_HOST
+])
+
+if IS_RAILWAY and (DATABASE_URL or MYSQL_HOST):
+    print(f"🔗 Configurando MySQL para Railway")
+    print(f"   - HOST: {MYSQL_HOST}")
+    print(f"   - DATABASE: {MYSQL_DATABASE}")
+    print(f"   - USER: {MYSQL_USER}")
+    
+    if DATABASE_URL:
+        # Usar DATABASE_URL si está disponible
+        import dj_database_url
+        DATABASES = {
+            'default': dj_database_url.parse(DATABASE_URL)
         }
-    }
+    elif MYSQL_HOST and MYSQL_DATABASE and MYSQL_USER and MYSQL_PASSWORD:
+        # Usar variables MySQL individuales
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': MYSQL_DATABASE,
+                'USER': MYSQL_USER,
+                'PASSWORD': MYSQL_PASSWORD,
+                'HOST': MYSQL_HOST,
+                'PORT': MYSQL_PORT,
+                'OPTIONS': {
+                    'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                    'charset': 'utf8mb4',
+                },
+            }
+        }
+    else:
+        print("⚠️ Variables MySQL incompletas, usando SQLite como fallback")
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
 else:
+    print("🏠 Usando SQLite para desarrollo local")
     # Configuración para desarrollo local con SQLite
     DATABASES = {
         'default': {
