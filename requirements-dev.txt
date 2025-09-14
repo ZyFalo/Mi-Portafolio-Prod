@@ -1,0 +1,4 @@
+-r requirements-base.txt
+
+# Dev server doesn't need MySQL or Gunicorn
+

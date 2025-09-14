@@ -1,31 +1,27 @@
 #!/bin/bash
+set -euo pipefail
 
-# Script de inicio para producción en Railway
-echo "🚀 Iniciando aplicación Django..."
-
-# Ejecutar migraciones
-echo "📦 Aplicando migraciones..."
-python manage.py makemigrations --noinput
+echo "[start] Applying migrations..."
 python manage.py migrate --noinput
 
-# Crear superusuario si no existe
-echo "👤 Configurando superusuario..."
-python manage.py shell -c "
+# Optional superuser creation via env vars
+if [ -n "${DJANGO_SUPERUSER_USERNAME:-}" ] && [ -n "${DJANGO_SUPERUSER_EMAIL:-}" ] && [ -n "${DJANGO_SUPERUSER_PASSWORD:-}" ]; then
+  echo "[start] Ensuring superuser exists (${DJANGO_SUPERUSER_USERNAME})..."
+  python - <<'PY'
 from django.contrib.auth import get_user_model
+import os
 User = get_user_model()
-if not User.objects.filter(username='admin').exists():
-    User.objects.create_superuser('admin', 'admin@example.com', 'admin123')
-    print('✅ Superusuario creado')
+username = os.environ['DJANGO_SUPERUSER_USERNAME']
+email = os.environ['DJANGO_SUPERUSER_EMAIL']
+password = os.environ['DJANGO_SUPERUSER_PASSWORD']
+if not User.objects.filter(username=username).exists():
+    User.objects.create_superuser(username=username, email=email, password=password)
+    print('[start] Superuser created')
 else:
-    print('✅ Superusuario ya existe')
-"
+    print('[start] Superuser already exists')
+PY
+fi
 
-# Verificar que los modelos principales funcionan
-echo "🔍 Verificando base de datos..."
-python manage.py shell -c "
-from core.models import Developer
-print(f'✅ Base de datos OK - {Developer.objects.count()} desarrolladores')
-"
-
-echo "🌐 Iniciando servidor en puerto ${PORT:-8000}..."
+echo "[start] Launching Gunicorn on ${PORT:-8000}..."
 exec gunicorn --bind 0.0.0.0:${PORT:-8000} --workers 3 --timeout 120 portfolio.wsgi:application
+

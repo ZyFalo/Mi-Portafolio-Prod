@@ -19,3 +19,4 @@ class ContactMessage(models.Model):
 
 
 # Create your models here.
+
