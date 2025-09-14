@@ -69,44 +69,58 @@ python manage.py runserver
 
 ### Despliegue en Railway:
 
-1. **Crear servicios en Railway:**
-   - Servicio MySQL (Database)
-   - Servicio Web (tu aplicación Docker)
+#### 1. **Estructura de archivos para Railway:**
+- `Dockerfile` - Configuración del contenedor Docker
+- `railway.json` - Configuración específica de Railway
+- `start.sh` - Script de inicialización automática
+- `requirements.txt` - Dependencias Python
 
-2. **Variables de entorno a configurar en Railway:**
-   ```
-   SECRET_KEY=tu-secret-key-super-seguro-aqui
-   DEBUG=0
-   ALLOWED_HOSTS=tu-dominio.railway.app
-   GTM_CONTAINER_ID=GTM-XXXXXXX
-   
-   # Variables de MySQL (se generan automáticamente al crear el servicio MySQL)
-   MYSQL_DATABASE=railway
-   MYSQL_USER=root
-   MYSQL_PASSWORD=auto-generado-por-railway
-   MYSQL_HOST=containers-us-west-xxx.railway.app
-   MYSQL_PORT=3306
-   RAILWAY_ENVIRONMENT=production
-   ```
-
-3. **Puerto de la aplicación:**
-   - Railway asigna automáticamente el puerto via variable `PORT`
-   - La aplicación escucha en el puerto 8000 internamente
-   - Acceso público: `https://tu-dominio.railway.app`
-
-4. **Proceso de despliegue:**
-   - Railway detecta automáticamente el `Dockerfile`
-   - Construye la imagen Docker
-   - Ejecuta migraciones y collectstatic automáticamente
-   - Despliega la aplicación
-
-### Comandos útiles para Railway:
+#### 2. **Variables de entorno necesarias:**
 ```bash
-# Ejecutar migraciones (se hace automáticamente)
-python manage.py migrate
+# Variables principales (configurar en Railway)
+SECRET_KEY=tu-secret-key-super-seguro-aqui
+DEBUG=0
+ALLOWED_HOSTS=tu-dominio.railway.app
+GTM_CONTAINER_ID=GTM-XXXXXXX
 
-# Crear superusuario (via Railway CLI)
-railway run python manage.py createsuperuser
+# Variables MySQL (Railway las genera automáticamente al crear servicio MySQL)
+MYSQL_DATABASE=railway
+MYSQL_USER=root
+MYSQL_PASSWORD=auto-generado
+MYSQL_HOST=containers-us-west-xxx.railway.app
+MYSQL_PORT=3306
+```
+
+#### 3. **Proceso de despliegue automático:**
+1. **Build:** Railway construye la imagen Docker
+2. **Migraciones:** `start.sh` ejecuta automáticamente todas las migraciones
+3. **Superusuario:** Se crea automáticamente (admin/admin123)
+4. **Servidor:** Gunicorn inicia en el puerto asignado por Railway
+
+#### 4. **Acceso a la aplicación:**
+- **Web:** `https://tu-dominio.railway.app`
+- **Admin:** `https://tu-dominio.railway.app/admin`
+  - Usuario: `admin`
+  - Contraseña: `admin123`
+
+#### 5. **Base de datos:**
+- **Desarrollo:** SQLite (automático)
+- **Producción:** MySQL en Railway (opcional)
+- **Fallback:** Si MySQL no está configurado, usa SQLite automáticamente
+
+### Configuración MySQL en Railway (opcional):
+1. En tu proyecto Railway: **Add Service** → **Database** → **MySQL**
+2. Railway genera automáticamente todas las variables `MYSQL_*`
+3. Redespliega la aplicación para usar MySQL
+
+### Logs y debugging:
+Los logs de Railway mostrarán:
+```bash
+🚀 Iniciando aplicación Django...
+📦 Aplicando migraciones...
+👤 Configurando superusuario...
+🔍 Verificando base de datos...
+🌐 Iniciando servidor en puerto 8000...
 ```
 
 ## Evidencia / Documentación
