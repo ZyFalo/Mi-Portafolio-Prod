@@ -337,6 +337,42 @@
         <p class="text-center text-main mb-5">Conoce los increíbles portafolios de mis colegas desarrolladores</p>
         
         <div class="row g-4">
+            {% if developers %}
+            {% for dev in developers %}
+            <div class="col-lg-4 col-md-6">
+                <div class="developer-card h-100">
+                    <a
+                        class="data-banner text-decoration-none d-block h-100"
+                        href="{{ dev.tracked_url }}"
+                        data-banner-name="{{ dev.banner_name }}"
+                        target="_blank" rel="noreferrer"
+                    >
+                        <div class="card-custom p-4 h-100 developer-card-inner">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="developer-avatar me-3">
+                                    <img src="{{ dev.display_avatar }}" alt="{{ dev.name }}" class="rounded-circle">
+                                </div>
+                                <div>
+                                    <h5 class="text-primary fw-bold mb-1">{{ dev.name }}</h5>
+                                    <p class="text-main small mb-0">{{ dev.role }}</p>
+                                </div>
+                            </div>
+                            <p class="text-main small mb-3">{{ dev.bio }}</p>
+                            <div class="d-flex flex-wrap gap-1 mb-3">
+                                {% for skill in dev.skills_list %}
+                                <span class="tech-badge-small">{{ skill }}</span>
+                                {% endfor %}
+                            </div>
+                            <div class="mt-auto d-flex align-items-center justify-content-between">
+                                <small class="text-accent">Ver portafolio</small>
+                                <i class="bi bi-arrow-up-right text-primary"></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
             <!-- Portfolio Cards -->
             <div class="col-lg-4 col-md-6">
                 <div class="developer-card h-100">
@@ -536,6 +572,7 @@
                 </div>
             </div>
         </div>
+            {% endif %}
 
         <!-- Analytics Info -->
         <div class="row justify-content-center mt-5">
@@ -707,4 +744,3 @@
     }
 </script>
 {% endblock %}
-
