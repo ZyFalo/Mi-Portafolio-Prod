@@ -552,5 +552,28 @@
     if (devSection) {
         devSectionObserver.observe(devSection);
     }
+
+    // Estándar GA4: select_promotion al hacer clic en banners de desarrolladores
+    document.querySelectorAll('.data-banner').forEach(el => {
+        el.addEventListener('click', () => {
+            const name = el.getAttribute('data-banner-name') || 'unknown';
+            const link = el.getAttribute('href') || '';
+            let utmContent = name;
+            try {
+                utmContent = (new URL(link, window.location.origin)).searchParams.get('utm_content') || name;
+            } catch (e) {}
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'select_promotion',
+                promotion_name: name,
+                creative_name: name,
+                location_id: 'home_developers',
+                link_url: link,
+                utm_content: utmContent,
+                page_location: window.location.href,
+                timestamp: new Date().toISOString()
+            });
+        });
+    });
 </script>
 {% endblock %}

@@ -155,14 +155,23 @@
 {% block scripts %}
 <script>
     // Tracking de clicks en FAQ para GTM
-    function trackFaqClick(question) {
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            event: 'faq_click',
-            faq_question: question,
-            timestamp: new Date().toISOString()
-        });
-    }
+function trackFaqClick(question) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: 'faq_click',
+        faq_question: question,
+        page_location: window.location.href,
+        timestamp: new Date().toISOString()
+    });
+    // Estándar GA4: select_content para FAQ
+    window.dataLayer.push({
+        event: 'select_content',
+        content_type: 'faq_question',
+        item_name: question,
+        page_location: window.location.href,
+        timestamp: new Date().toISOString()
+    });
+}
 
     // Smooth scroll al abrir acordeón
     document.addEventListener('DOMContentLoaded', function() {
@@ -226,4 +235,3 @@
     }
 </script>
 {% endblock %}
-

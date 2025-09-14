@@ -168,6 +168,20 @@
                     page_location: window.location.href,
                     timestamp: new Date().toISOString()
                 });
+
+                // Estándar GA4: select_content al seleccionar un gadget desde la lista
+                let href = this.getAttribute('href') || '';
+                let slug = '';
+                try { slug = (new URL(href, window.location.origin)).pathname.split('/').filter(Boolean).pop(); } catch (err) {}
+                window.dataLayer.push({
+                    event: 'select_content',
+                    content_type: 'gadget',
+                    item_id: slug,
+                    item_name: title,
+                    item_list_name: 'Gadgets & Setups',
+                    page_location: window.location.href,
+                    timestamp: new Date().toISOString()
+                });
             });
         });
     });
@@ -191,6 +205,24 @@
                 imageObserver.observe(img);
             });
         }
+    });
+
+    // Estándar GA4: view_item_list al cargar la lista de gadgets
+    document.addEventListener('DOMContentLoaded', function() {
+        {% if items %}
+        const itemsPayload = [
+            {% for it in items %}{ item_id: '{{ it.slug }}', item_name: '{{ it.title|escapejs }}' }{% if not forloop.last %},{% endif %}{% endfor %}
+        ];
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            event: 'view_item_list',
+            item_list_id: 'open_list',
+            item_list_name: 'Gadgets & Setups',
+            items: itemsPayload,
+            page_location: window.location.href,
+            timestamp: new Date().toISOString()
+        });
+        {% endif %}
     });
 </script>
 

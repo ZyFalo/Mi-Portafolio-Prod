@@ -16,19 +16,66 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/portfolio.css' %}">
 
-    <!-- Google Tag Manager -->
-    {% if GTM_CONTAINER_ID %}
+    <!-- Google Tag Manager / GA4 instrumentation -->
     <script>
+      // Always define dataLayer
       window.dataLayer = window.dataLayer || [];
-      dataLayer.push({ 'event': 'page_view' });
+      // Push page_view with UTM params so GTM/GA4 los capture
+      (function() {
+        try {
+          var href = window.location.href;
+          var url = new URL(href);
+          function q(key) { return url.searchParams.get(key) || ''; }
+          var payload = {
+            event: 'page_view',
+            page_location: href,
+            page_title: document.title,
+            page_referrer: document.referrer || '',
+            utm_source: q('utm_source'),
+            utm_medium: q('utm_medium'),
+            utm_campaign: q('utm_campaign'),
+            utm_term: q('utm_term'),
+            utm_content: q('utm_content')
+          };
+          window.dataLayer.push(payload);
+        } catch (e) {
+          window.dataLayer.push({ event: 'page_view' });
+        }
+      })();
     </script>
+    {% if GTM_CONTAINER_ID %}
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','{{ GTM_CONTAINER_ID }}');</script>
+    {% elif GA_MEASUREMENT_ID %}
+    <!-- GA4 fallback (sin GTM) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA_MEASUREMENT_ID }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '{{ GA_MEASUREMENT_ID }}');
+      // Mapear pushes de dataLayer a gtag en fallback
+      (function() {
+        var origPush = window.dataLayer.push;
+        window.dataLayer.push = function(){
+          var args = Array.prototype.slice.call(arguments);
+          try {
+            var e = args[0] || {};
+            if (window.gtag && e.event) {
+              var params = {};
+              for (var k in e) { if (k !== 'event') params[k] = e[k]; }
+              window.gtag('event', e.event, params);
+            }
+          } catch (err) {}
+          return origPush.apply(window.dataLayer, args);
+        }
+      })();
+    </script>
     {% endif %}
-    <!-- End Google Tag Manager -->
+    <!-- End GTM/GA4 -->
 
     {% block head_extra %}{% endblock %}
   </head>
@@ -131,4 +178,3 @@
     {% block scripts %}{% endblock %}
   </body>
 </html>
-

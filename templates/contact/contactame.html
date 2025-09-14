@@ -300,6 +300,7 @@
         window.dataLayer.push({ 
             event: 'contact_form_submit', 
             form_name: 'contactame',
+            page_location: window.location.href,
             timestamp: new Date().toISOString()
         });
     });
@@ -331,6 +332,14 @@
             event: 'contact_submit_success', 
             form: 'contactame', 
             status: 'success',
+            timestamp: new Date().toISOString()
+        });
+        // Evento estándar GA4: generate_lead
+        window.dataLayer.push({
+            event: 'generate_lead',
+            form_name: 'contactame',
+            method: 'form',
+            page_location: window.location.href,
             timestamp: new Date().toISOString()
         });
     })();

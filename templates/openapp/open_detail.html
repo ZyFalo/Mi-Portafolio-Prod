@@ -144,6 +144,22 @@
 
 {% block scripts %}
 <script>
+    // Estándar GA4: view_item al cargar página de detalle
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            const title = document.querySelector('h1').textContent;
+            const path = (new URL(window.location.href)).pathname;
+            const slug = path.split('/').filter(Boolean).pop();
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'view_item',
+                item_id: slug,
+                item_name: title,
+                page_location: window.location.href,
+                timestamp: new Date().toISOString()
+            });
+        } catch (e) {}
+    });
     // Tracking de interés en elemento específico
     function trackInterest(itemTitle) {
         window.dataLayer = window.dataLayer || [];
