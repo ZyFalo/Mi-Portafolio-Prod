@@ -8,8 +8,12 @@ python manage.py migrate --noinput
 if [ -n "${DJANGO_SUPERUSER_USERNAME:-}" ] && [ -n "${DJANGO_SUPERUSER_EMAIL:-}" ] && [ -n "${DJANGO_SUPERUSER_PASSWORD:-}" ]; then
   echo "[start] Ensuring superuser exists (${DJANGO_SUPERUSER_USERNAME})..."
   python - <<'PY'
-from django.contrib.auth import get_user_model
 import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portfolio.settings')
+import django
+django.setup()
+from django.contrib.auth import get_user_model
+
 User = get_user_model()
 username = os.environ['DJANGO_SUPERUSER_USERNAME']
 email = os.environ['DJANGO_SUPERUSER_EMAIL']
@@ -24,4 +28,3 @@ fi
 
 echo "[start] Launching Gunicorn on ${PORT:-8000}..."
 exec gunicorn --bind 0.0.0.0:${PORT:-8000} --workers 3 --timeout 120 portfolio.wsgi:application
-
