@@ -34,7 +34,63 @@ def _env_bool(name: str, default: str = '1') -> bool:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = _env_bool('DEBUG', '1')
 
-ALLOWED_HOSTS = [h for h in os.getenv('ALLOWED_HOSTS', '').split(',') if h] or ['localhost', '127.0.0.1']
+# Configuración de hosts permitidos para Railway
+if os.getenv('RAILWAY_ENVIRONMENT'):
+    # En producción (Railway), permitir el dominio específico y Railway proxy
+    allowed_hosts = [h.strip() for h in os.getenv('ALLOWED_HOSTS', '').split(',') if h.strip()]
+    # Agregar dominios adicionales de Railway automáticamente
+    railway_url = os.getenv('RAILWAY_STATIC_URL', os.getenv('RAILWAY_PUBLIC_DOMAIN', ''))
+    if railway_url:
+        # Extraer solo el dominio de la URL
+        if railway_url.startswith('http'):
+            railway_domain = railway_url.split('//')[1].split('/')[0]
+        else:
+            railway_domain = railway_url.split('/')[0]
+        if railway_domain and railway_domain not in allowed_hosts:
+            allowed_hosts.append(railway_domain)
+    
+    # Agregar dominios comunes de Railway
+    allowed_hosts.extend([
+        '*.railway.app',
+        '*.up.railway.app', 
+        'dev-william-pena.up.railway.app'  # Tu dominio específico
+    ])
+    ALLOWED_HOSTS = allowed_hosts
+else:
+    # En desarrollo local
+    ALLOWED_HOSTS = [h for h in os.getenv('ALLOWED_HOSTS', '').split(',') if h] or ['localhost', '127.0.0.1']
+
+# Configuraciones adicionales para Railway
+if os.getenv('RAILWAY_ENVIRONMENT'):
+    # Configuraciones de seguridad para producción
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SECURE_SSL_REDIRECT = True
+    USE_TZ = True
+    
+    # Trust Railway proxy
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    
+    # Logging mejorado para Railway
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+            },
+        },
+        'root': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['console'],
+                'level': 'INFO',
+                'propagate': False,
+            },
+        },
+    }
 
 
 # Application definition
