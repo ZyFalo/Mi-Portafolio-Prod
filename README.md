@@ -1,118 +1,166 @@
 # Portafolio Django — Gadgets & Setups
 
-Proyecto de portafolio con Django + Admin como CMS. Cumple con:
+Sitio de portafolio profesional construido con Django 5 que combina CV, red de desarrolladores, galería de gadgets y formulario de contacto avanzado. Todo se administra desde Django Admin y está instrumentado con eventos para Google Tag Manager (GTM) y Google Analytics 4 (GA4).
 
-- Home con CV, red de desarrolladores (banners) con UTM.
-- Formulario de contacto validado con JavaScript y guardado en el CMS.
-- Preguntas frecuentes (FAQ) administrables con UI expandible/colapsable.
-- Página Open (Gadgets & Setups) con grid, imagen, resumen, descripción y tags.
-- Integración con Google Tag Manager (GTM) y eventos hacia GA4.
+## Tabla de contenidos
 
-## Stack
+- [Características principales](#caracter%C3%ADsticas-principales)
+- [Stack y dependencias](#stack-y-dependencias)
+- [Arquitectura rápida](#arquitectura-r%C3%A1pida)
+- [Entorno local](#entorno-local)
+- [Datos de ejemplo](#datos-de-ejemplo)
+- [Variables de entorno](#variables-de-entorno)
+- [Analítica y tracking](#anal%C3%ADtica-y-tracking)
+- [Frontend y experiencia de usuario](#frontend-y-experiencia-de-usuario)
+- [Pruebas y verificación](#pruebas-y-verificaci%C3%B3n)
+- [Despliegue en Railway (Docker)](#despliegue-en-railway-docker)
+- [Documentación adicional](#documentaci%C3%B3n-adicional)
 
-- Django 5 + SQLite (dev)
-- Bootstrap por CDN
-- WhiteNoise para estáticos en producción
+## Características principales
 
-## Uso local
+- **Home** con CV completo, badges de habilidades y red de desarrolladores que generan URLs con UTM automáticas para atribución.
+- **Formulario de contacto** con validación en vivo, honeypot, timestamp anti-bot y soporte opcional para Google reCAPTCHA v2. Cada envío queda guardado en `ContactMessage`.
+- **FAQ** administrables con acordeón accesible y orden configurable desde el CMS.
+- **Gadgets & Setups (OpenApp)** con grid responsive, detalle por slug, tags (`Tag`) y eventos GA4 para vistas y clics.
+- **Panel Django Admin** como CMS central: crea/ordena desarrolladores, preguntas, gadgets y mensajes.
+- **Tracking completo**: dataLayer inicializado, eventos custom + GA4 estándar, fallback automático a `gtag` si no hay contenedor GTM.
+- **Preparado para producción** con WhiteNoise, Dockerfile optimizado, script `start.sh` y soporte MySQL/SQLite.
 
-```bash
-python -m venv .venv
-. .venv/Scripts/activate  # PowerShell: .\.venv\Scripts\Activate.ps1
+## Stack y dependencias
 
-# Instala dependencias para desarrollo (sin mysqlclient)
-pip install -r requirements-dev.txt
+- Python 3.13
+- Django 5.0.7
+- SQLite (desarrollo) / MySQL (producción)
+- Bootstrap 5.3 + Bootstrap Icons vía CDN
+- WhiteNoise para servir estáticos en producción
+- Gunicorn (contenedores)
 
-python manage.py migrate
-python manage.py loaddata fixtures/seed.json  # opcional
-python manage.py createsuperuser
-python manage.py runserver
+Revisa `requirements-base.txt`, `requirements-dev.txt` y `requirements.txt` para ver dependencias por entorno.
+
+## Arquitectura rápida
+
+```
+portfolio/
+├─ apps/
+│  ├─ core (home + red de desarrolladores)
+│  ├─ contact (formulario público + anti-bot + reCAPTCHA)
+│  ├─ faq (preguntas frecuentes administrables)
+│  ├─ openapp (gadgets, tags, vistas pública)
+│  └─ analytics (context processor con IDs de seguimiento)
+├─ settings/ (base, local, production)
+└─ urls.py, wsgi.py, asgi.py
+
+templates/
+├─ base.html (layout + GTM/GA4 + payload UTM)
+├─ core/, contact/, faq/, openapp/
+static/
+├─ css/portfolio.css
+└─ js/portfolio.js (UI + dataLayer events)
 ```
 
-Abrir: http://127.0.0.1:8000 y http://127.0.0.1:8000/admin/
+## Entorno local
+
+1. Instala Python 3.13 y crea un entorno virtual:
+
+   ```bash
+   python -m venv .venv
+   . .venv/Scripts/activate  # PowerShell: .\.venv\Scripts\Activate.ps1
+   ```
+
+2. Instala dependencias de desarrollo (sin `mysqlclient`):
+
+   ```bash
+   pip install -r requirements-dev.txt
+   ```
+
+3. Ejecuta migraciones y (opcional) carga datos de ejemplo:
+
+   ```bash
+   python manage.py migrate
+   python manage.py loaddata fixtures/seed.json
+   ```
+
+4. Crea un superusuario y levanta el servidor local:
+
+   ```bash
+   python manage.py createsuperuser
+   python manage.py runserver
+   ```
+
+La configuración local usa `portfolio.settings.local` por defecto. Visita `http://127.0.0.1:8000` y `/admin/`.
+
+## Datos de ejemplo
+
+El fixture `fixtures/seed.json` agrega:
+
+- 3 preguntas frecuentes activas.
+- 6 gadgets con tags asociados.
+- Datos iniciales para probar las vistas públicas.
+
+Cárgalo con `python manage.py loaddata fixtures/seed.json` y borra/modifica los registros desde el admin según tus necesidades.
 
 ## Variables de entorno
 
-- `SECRET_KEY`: secreto de Django
-- `DEBUG`: 0/1 (por defecto 1 en dev)
-- `ALLOWED_HOSTS`: dominios separados por coma
-- `CSRF_TRUSTED_ORIGINS`: orígenes completos separados por coma (https://dominio)
-- `GTM_CONTAINER_ID`: ID de contenedor GTM (GTM-XXXX)
+| Variable | Descripción |
+| --- | --- |
+| `SECRET_KEY` | Clave secreta de Django (obligatoria en producción). |
+| `DEBUG` | `1`/`0`. En local es `1` por defecto. |
+| `ALLOWED_HOSTS` | Lista separada por comas. Por defecto `localhost,127.0.0.1` si `DEBUG=1`. |
+| `CSRF_TRUSTED_ORIGINS` | Orígenes completos (https://dominio) separados por coma. |
+| `DATABASE_URL` | Cadena compatible con `dj-database-url` (prioritaria). |
+| `MYSQL_HOST`, `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_PORT` | Alternativa si no usas `DATABASE_URL`. |
+| `GTM_CONTAINER_ID` | ID de contenedor GTM (GTM-XXXXXX). |
+| `GA_MEASUREMENT_ID` | Medición GA4 utilizada como fallback cuando no hay GTM. |
+| `RECAPTCHA_SITE_KEY` | Clave pública v2 (opcional). |
+| `RECAPTCHA_SECRET_KEY` | Clave privada v2 (opcional). |
+| `RECAPTCHA_ENABLED` | `1`/`0`. Controla si se exige reCAPTCHA (por defecto `1`). |
+| `DJANGO_SETTINGS_MODULE` | `portfolio.settings.production` en producción (`manage.py` ya configura `local`). |
+| `PORT` | Puerto para Gunicorn en contenedor (por defecto 8000). |
+| `DJANGO_SUPERUSER_*` | `USERNAME`, `EMAIL`, `PASSWORD` para autocrear superusuario desde `start.sh`. |
 
-## Estructura de apps
+## Analítica y tracking
 
-Las apps internas ahora viven bajo el paquete `portfolio/apps/` y se importan como `portfolio.apps.<nombre>`:
+- `portfolio.apps.analytics.context_processors.analytics` inyecta `GTM_CONTAINER_ID`, `GA_MEASUREMENT_ID`, `RECAPTCHA_SITE_KEY` y flags al template base.
+- `base.html` inicializa `dataLayer`, envía `page_view` con UTMs y carga GTM/GA4 según disponibilidad.
+- Eventos destacados:
+  - `developer_portfolio_click`, `banner_click`, `developer_card_click`, `section_view` en la home.
+  - `contact_form_submit`, `contact_submit_success`, `generate_lead` en el formulario.
+  - `view_item_list`, `select_content`, `gadget_click`, `view_item`, `gadget_interest`, `gadget_share` en Gadgets.
+  - `faq_click` para acordeón de preguntas.
+- Consulta `docs/analytics/README.md` para la guía completa de configuración en GTM y capturas recomendadas.
 
-- `portfolio.apps.core`: Home (CV + red de desarrolladores con UTM)
-- `portfolio.apps.contact`: Formulario de contacto (`ContactMessage`)
-- `portfolio.apps.faq`: Preguntas frecuentes (`Question`)
-- `portfolio.apps.openapp`: Gadgets & Setups (`OpenEntity`, `Tag`)
-- `portfolio.apps.analytics`: context processor para inyectar IDs de GTM/GA
+## Frontend y experiencia de usuario
 
-## Modelos (CMS)
+- `static/js/portfolio.js` maneja navegación responsive, animaciones de tarjetas, botón “back to top”, lazy loading de imágenes y empuja eventos al `dataLayer`.
+- `templates/contact/contactame.html` añade validación de formularios, contador de caracteres, feedback visual y fallback toast tras el envío.
+- WhiteNoise sirve archivos estáticos comprimidos en producción (`STATIC_ROOT=staticfiles`).
 
-- `faq.Question(title, slug, answer, order, is_active)`
-- `openapp.Tag(name, slug)`
-- `openapp.OpenEntity(title, slug, summary, description, image, keywords[M2M Tag], created_at, is_published)`
-- `contact.ContactMessage(name, email, subject, message, consent, created_at)`
-- `core.Developer(name, role, bio, avatar_image/url, skills, portfolio_url, utm_*, banner_name, is_active, order)`
+## Pruebas y verificación
 
-## Analítica (GTM + GA4)
-
-1. En GTM, crea contenedor web y añade tag "GA4 Configuration" con tu Measurement ID.
-2. Publica el contenedor y pon `GTM_CONTAINER_ID` en Railway/entorno.
-3. Eventos desde el sitio (ejemplos):
-   - Clic en card de desarrollador: `developer_portfolio_click`
-   - Envío de contacto: `contact_form_submit`
-   - Clic en gadget/lista: `gadget_click`
+- Ejecuta chequeos básicos de Django: `python manage.py check`.
+- Pruebas unitarias (placeholder): `python manage.py test`. Agrega tests en cada app bajo `tests.py` o paquetes dedicados.
+- Verifica eventos de analítica con GTM Preview y GA4 DebugView (ver `docs/analytics/`).
 
 ## Despliegue en Railway (Docker)
 
-Archivos relevantes:
+Archivos clave:
 
-- `Dockerfile` — Imagen con dependencias y collectstatic
-- `railway.json` — Define builder dockerfile y start command
-- `start.sh` — Aplica migraciones y levanta Gunicorn
-- `requirements.txt` — Producción (incluye `mysqlclient` y `gunicorn`)
-- `requirements-dev.txt` — Desarrollo local (sin `mysqlclient`)
+- `Dockerfile`: imagen Python 3.13 slim con dependencias de MySQL, `collectstatic` y usuario no-root.
+- `start.sh`: aplica migraciones, autocrea superusuario (si variables definidas) y arranca Gunicorn.
+- `railway.json`: indica a Railway usar el Dockerfile y ejecutar `./start.sh`.
 
-Variables recomendadas en Railway:
+Pasos sugeridos:
 
-```bash
-SECRET_KEY=tu-secret
-DEBUG=0
-ALLOWED_HOSTS=tu-dominio.railway.app
-GTM_CONTAINER_ID=GTM-XXXXXXX
+1. Configura variables (`SECRET_KEY`, `DEBUG=0`, `ALLOWED_HOSTS`, `GTM_CONTAINER_ID`/`GA_MEASUREMENT_ID`, `RECAPTCHA_*`, datos de BD).
+2. Despliega usando Railway → New Project → Deploy from GitHub → selecciona el repo.
+3. Railway construirá la imagen (usa `requirements.txt`), luego iniciará el contenedor ejecutando `start.sh` que corre migraciones + Gunicorn.
+4. Accede a `/admin` para gestionar contenido.
 
-# Opción A: usar DATABASE_URL
-DATABASE_URL=mysql://user:pass@host:3306/dbname
+## Documentación adicional
 
-# Opción B: usar variables MYSQL_*
-MYSQL_DATABASE=railway
-MYSQL_USER=root
-MYSQL_PASSWORD=...
-MYSQL_HOST=...
-MYSQL_PORT=3306
+- `docs/ERD.md`: diagrama Mermaid del modelo de datos.
+- `docs/analytics/README.md`: guía completa de instrumentación GTM/GA4.
+- `fixtures/seed.json`: datos iniciales listos para cargar.
+- `media/`: carpeta (vacía) para assets subidos desde el admin (`Developer.avatar_image`).
 
-# (Opcional) crear superusuario al iniciar
-DJANGO_SUPERUSER_USERNAME=admin
-DJANGO_SUPERUSER_EMAIL=admin@example.com
-DJANGO_SUPERUSER_PASSWORD=admin123
-```
-
-## Settings por entorno
-
-- Desarrollo: `DJANGO_SETTINGS_MODULE=portfolio.settings.local` (por defecto en `manage.py`).
-- Producción: `DJANGO_SETTINGS_MODULE=portfolio.settings.production` (por defecto en `wsgi/asgi`).
-
-Proceso:
-
-1) Railway construye la imagen Docker (usa `requirements.txt`).
-2) El contenedor ejecuta `start.sh` (migraciones + Gunicorn).
-3) Accede a `/admin` para gestionar contenido (FAQ, Open, Contact, Developers).
-
-## Entregables sugeridos
-
-- URL pública en Railway
-- Repositorio GitHub
-- PDF con ERD (`docs/ERD.md`), capturas del sitio y capturas de GA4/GTM
+¿Necesitas material para evaluación? Sube URL pública (Railway), repositorio GitHub y un PDF con ERD + capturas del sitio y métricas GA4.
