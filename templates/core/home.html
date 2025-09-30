@@ -333,8 +333,7 @@
 <!-- Red de Desarrolladores -->
 <section id="desarrolladores" class="py-5">
     <div class="container">
-        <h2 class="text-primary text-center mb-3 fw-bold">Red de Desarrolladores</h2>
-        {% comment %} <p class="text-center text-main mb-5">Conoce a otros desarrolladores</p> {% endcomment %}
+        <h2 class="text-primary text-center mb-5 fw-bold">Red de Desarrolladores</h2>
         
         <div class="row g-4">
             {% if developers %}
@@ -385,7 +384,7 @@
             {% endif %}
 
         <!-- Analytics Info -->
-        <div class="row justify-content-center mt-5">
+        {% comment %} <div class="row justify-content-center mt-5">
             <div class="col-lg-8">
                 <div class="card-custom p-4 text-center">
                     <div class="d-flex align-items-center justify-content-center mb-3">
@@ -404,7 +403,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
     </div>
 </section>
 
