@@ -34,7 +34,7 @@
                                 data-bs-target="#collapse{{ q.id }}" 
                                 aria-expanded="false" 
                                 aria-controls="collapse{{ q.id }}"
-                                onclick="trackFaqClick('{{ q.title|slice:':50' }}...')"
+
                             >
                                 <i class="bi bi-question-diamond text-primary me-3"></i>
                                 {{ q.title }}
@@ -154,84 +154,32 @@
 
 {% block scripts %}
 <script>
-    // Tracking de clicks en FAQ para GTM
-function trackFaqClick(question) {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-        event: 'faq_click',
-        faq_question: question,
-        page_location: window.location.href,
-        timestamp: new Date().toISOString()
-    });
-    // Estándar GA4: select_content para FAQ
-    window.dataLayer.push({
-        event: 'select_content',
-        content_type: 'faq_question',
-        item_name: question,
-        page_location: window.location.href,
-        timestamp: new Date().toISOString()
-    });
-}
-
-    // Smooth scroll al abrir acordeón
+    // Event listener simple para clicks en FAQ
     document.addEventListener('DOMContentLoaded', function() {
-        const accordionButtons = document.querySelectorAll('.accordion-button');
-        
-        accordionButtons.forEach(button => {
+        // Escuchar clicks en todos los botones de FAQ
+        document.querySelectorAll('.accordion-button').forEach(function(button, index) {
             button.addEventListener('click', function() {
-                // Pequeño delay para que se abra el acordeón primero
-                setTimeout(() => {
-                    if (!this.classList.contains('collapsed')) {
-                        this.scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'nearest'
-                        });
-                    }
-                }, 350);
+                // Obtener información básica del FAQ
+                const faqPosition = index + 1; // Posición del FAQ (1, 2, 3...)
+                const faqTitle = this.textContent.trim().replace('', '').trim(); // Quitar icono y espacios
+                
+                // Enviar evento a Google Analytics
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    event: 'faq_click',
+                    faq_position: faqPosition,
+                    faq_title: faqTitle
+                });
+                
+                // Console log para debug
+                console.log('FAQ Click:', {
+                    position: faqPosition,
+                    title: faqTitle
+                });
             });
         });
     });
 
-    // Auto-expandir FAQ si viene con hash en URL
-    document.addEventListener('DOMContentLoaded', function() {
-        const hash = window.location.hash;
-        if (hash && hash.startsWith('#faq-')) {
-            const targetId = hash.replace('#faq-', 'collapse');
-            const targetElement = document.getElementById(targetId);
-            if (targetElement) {
-                const collapseInstance = new bootstrap.Collapse(targetElement, {
-                    show: true
-                });
-                setTimeout(() => {
-                    targetElement.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'start' 
-                    });
-                }, 500);
-            }
-        }
-    });
 
-    // Búsqueda simple en FAQ (si se quiere implementar)
-    function searchFAQ() {
-        // Esta función se puede implementar si se agrega un campo de búsqueda
-        const searchTerm = document.getElementById('faq-search')?.value.toLowerCase();
-        const faqItems = document.querySelectorAll('.accordion-item');
-        
-        if (searchTerm) {
-            faqItems.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                if (text.includes(searchTerm)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        } else {
-            faqItems.forEach(item => {
-                item.style.display = 'block';
-            });
-        }
-    }
 </script>
 {% endblock %}
