@@ -17,7 +17,7 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--text-main);
-    min-width: 480px;
+    min-width: 0;
 }
 
 /* Aplicación de Variables de Color */
