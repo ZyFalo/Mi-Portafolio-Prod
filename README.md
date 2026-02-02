@@ -18,9 +18,10 @@ Sitio de portafolio profesional construido con Django 5 que combina CV, red de d
 
 ## Características principales
 
-- **Home** con CV completo, badges de habilidades y red de desarrolladores que generan URLs con UTM automáticas para atribución.
+- **Home** con CV completo, habilidades técnicas/blandas y red de desarrolladores que generan URLs con UTM automáticas para atribución.
 - **Formulario de contacto** con validación en vivo, honeypot, timestamp anti-bot y soporte opcional para Google reCAPTCHA v2. Cada envío queda guardado en `ContactMessage`.
-- **FAQ** administrables con acordeón accesible y orden configurable desde el CMS.
+- **FAQ** administrables con acordeón accesible y preguntas técnicas sobre stack, arquitectura y despliegue.
+- **Formación, certificaciones e idiomas** presentados en secciones claras dentro del CV.
 - **Gadgets & Setups (OpenApp)** con grid responsive, detalle por slug, tags (`Tag`) y eventos GA4 para vistas y clics.
 - **Panel Django Admin** como CMS central: crea/ordena desarrolladores, preguntas, gadgets y mensajes.
 - **Tracking completo**: dataLayer inicializado, eventos custom + GA4 estándar, fallback automático a `gtag` si no hay contenedor GTM.
@@ -28,7 +29,7 @@ Sitio de portafolio profesional construido con Django 5 que combina CV, red de d
 
 ## Stack y dependencias
 
-- Python 3.13
+- Python 3.12+ (Docker usa 3.12-slim)
 - Django 5.0.7
 - SQLite (desarrollo) / MySQL (producción)
 - Bootstrap 5.3 + Bootstrap Icons vía CDN
@@ -60,17 +61,17 @@ static/
 
 ## Entorno local
 
-1. Instala Python 3.13 y crea un entorno virtual:
+1. Instala Python 3.12+ y crea un entorno virtual:
 
    ```bash
-   python -m venv .venv
-   . .venv/Scripts/activate  # PowerShell: .\.venv\Scripts\Activate.ps1
+   python3 -m venv .venv
+   source .venv/bin/activate  # Windows PowerShell: .\.venv\Scripts\Activate.ps1
    ```
 
 2. Instala dependencias de desarrollo (sin `mysqlclient`):
 
    ```bash
-   pip install -r requirements-dev.txt
+   python -m pip install -r requirements-dev.txt
    ```
 
 3. Ejecuta migraciones y (opcional) carga datos de ejemplo:
@@ -93,7 +94,7 @@ La configuración local usa `portfolio.settings.local` por defecto. Visita `http
 
 El fixture `fixtures/seed.json` agrega:
 
-- 3 preguntas frecuentes activas.
+- 7 preguntas frecuentes activas (enfocadas en stack, arquitectura y despliegue).
 - 6 gadgets con tags asociados.
 - Datos iniciales para probar las vistas públicas.
 
@@ -145,21 +146,24 @@ Cárgalo con `python manage.py loaddata fixtures/seed.json` y borra/modifica los
 
 Archivos clave:
 
-- `Dockerfile`: imagen Python 3.13 slim con dependencias de MySQL, `collectstatic` y usuario no-root.
+- `Dockerfile`: imagen Python 3.12 slim con dependencias de MySQL, `collectstatic` y usuario no-root.
+- `docker/entrypoint.sh`: entrypoint liviano que delega en `start.sh`.
 - `start.sh`: aplica migraciones, autocrea superusuario (si variables definidas) y arranca Gunicorn.
-- `railway.json`: indica a Railway usar el Dockerfile y ejecutar `./start.sh`.
+- `railway.json`: indica a Railway usar el Dockerfile.
 
 Pasos sugeridos:
 
 1. Configura variables (`SECRET_KEY`, `DEBUG=0`, `ALLOWED_HOSTS`, `GTM_CONTAINER_ID`/`GA_MEASUREMENT_ID`, `RECAPTCHA_*`, datos de BD).
 2. Despliega usando Railway → New Project → Deploy from GitHub → selecciona el repo.
-3. Railway construirá la imagen (usa `requirements.txt`), luego iniciará el contenedor ejecutando `start.sh` que corre migraciones + Gunicorn.
+3. Railway construirá la imagen (usa `requirements.txt`), luego iniciará el contenedor ejecutando `/entrypoint.sh` (que llama a `start.sh`).
 4. Accede a `/admin` para gestionar contenido.
 
 ## Documentación adicional
 
 - `docs/ERD.md`: diagrama Mermaid del modelo de datos.
 - `docs/analytics/README.md`: guía completa de instrumentación GTM/GA4.
+- `AGENTS.md`: guía operativa del repo (estructura, comandos y guardrails).
+- `docs/actualizacion_portafolio.md`: comparativa y ajustes sugeridos sobre contenido del portafolio.
 - `fixtures/seed.json`: datos iniciales listos para cargar.
 - `media/`: carpeta (vacía) para assets subidos desde el admin (`Developer.avatar_image`).
 
