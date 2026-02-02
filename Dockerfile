@@ -25,6 +25,9 @@ RUN pip install --upgrade pip \
 # Copiar código de la aplicación
 COPY . .
 
+# Entrypoint explícito con permisos en build (evita chmod en runtime/rootless)
+COPY --chmod=755 docker/entrypoint.sh /entrypoint.sh
+
 # Recopilar archivos estáticos
 RUN python manage.py collectstatic --noinput
 
@@ -33,7 +36,7 @@ RUN useradd -m appuser \
     && chown -R appuser:appuser /app
 
 # Dar permisos al script de entrada antes de cambiar de usuario
-RUN chmod +x start.sh
+RUN chmod +x /app/start.sh
 
 # Cambiar al usuario no-root
 USER appuser
@@ -42,4 +45,4 @@ USER appuser
 EXPOSE $PORT
 
 # Comando de inicio
-CMD ["./start.sh"]
+CMD ["/entrypoint.sh"]
