@@ -22,10 +22,11 @@ COPY requirements.txt ./
 RUN pip install --upgrade pip \
     && pip install -r requirements.txt
 
-# Copiar código de la aplicación
+# Copiar código de la aplicación (start.sh ya viene como 100755 desde git)
 COPY . .
 
-# Entrypoint explícito con permisos en build (evita chmod en runtime/rootless)
+# Entrypoint explícito con permisos en build (evita cualquier `RUN chmod`,
+# que falla con "Operation not permitted" en builders rootless como Railway)
 COPY --chmod=755 docker/entrypoint.sh /entrypoint.sh
 
 # Recopilar archivos estáticos
@@ -34,9 +35,6 @@ RUN python manage.py collectstatic --noinput
 # Crear usuario no-root para seguridad y dar permisos
 RUN useradd -m appuser \
     && chown -R appuser:appuser /app
-
-# Dar permisos al script de entrada antes de cambiar de usuario
-RUN chmod +x /app/start.sh
 
 # Cambiar al usuario no-root
 USER appuser
