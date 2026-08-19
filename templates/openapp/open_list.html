@@ -1,239 +1,127 @@
 {% extends 'base.html' %}
-{% block title %}Gadgets & Setups — Portafolio{% endblock %}
-{% block meta_description %}Explora mi colección de gadgets favoritos y piezas de mi setup de desarrollo. Tecnología que impulsa mi productividad.{% endblock %}
+{% block title %}Gadgets & Setups — William Peña{% endblock %}
+{% block meta_description %}Los gadgets y piezas de escritorio que uso a diario como desarrollador. Pasa el cursor sobre cada uno para ver el detalle.{% endblock %}
 
 {% block content %}
-<!-- Header de la página -->
-<section class="py-5 bg-alt">
-    <div class="container">
-        <div class="row justify-content-center text-center">
-            <div class="col-lg-8">
-                <i class="bi bi-gear text-primary fs-1 mb-3"></i>
-                <h1 class="text-primary fw-bold mb-3">Gadgets & Setups</h1>
-                <p class="text-main fs-5">Descubre los gadgets y herramientas que uso para maximizar mi productividad como desarrollador.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Filtros y estadísticas -->
-{% if items %}
-<section class="py-4 bg-white shadow-sm">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-auto">
-                <div class="d-flex align-items-center justify-content-center">
-                    <i class="bi bi-collection text-primary me-2"></i>
-                    <span class="text-main fw-medium">{{ items|length }} elemento{{ items|length|pluralize }}</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endif %}
-
-<!-- Grid de elementos -->
-<section class="py-5">
+<section id="gadgets" class="py-5 my-lg-3">
     <div class="container">
 
-        <!-- Información adicional -->
-        <div class="row mb-5">
-            <div class="col-12">
-                <div class="card-custom p-4 text-center">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <i class="bi bi-star text-primary fs-2 mb-2"></i>
-                            <h5 class="text-primary fw-bold mb-1">Calidad Premium</h5>
-                            <small class="text-muted">Solo productos probados y recomendados</small>
-                        </div>
-                        <div class="col-md-4">
-                            <i class="bi bi-speedometer2 text-primary fs-2 mb-2"></i>
-                            <h5 class="text-primary fw-bold mb-1">Productividad</h5>
-                            <small class="text-muted">Herramientas que optimizan el flujo de trabajo</small>
-                        </div>
-                        <div class="col-md-4">
-                            <i class="bi bi-heart text-primary fs-2 mb-2"></i>
-                            <h5 class="text-primary fw-bold mb-1">Uso Personal</h5>
-                            <small class="text-muted">Todo lo que ves, lo uso diariamente</small>
-                        </div>
-                    </div>
-                </div>
+        <!-- Encabezado a la izquierda: mismo ritmo que el resto del sitio -->
+        <div class="section-head-left reveal">
+            <div>
+                <p class="section-label">Mi setup</p>
+                <h1 class="section-title mb-0" data-descifrar>Gadgets &amp; Setups</h1>
             </div>
+            {% if items %}
+            <p class="section-head-note mb-0">
+                {{ items|length }} pieza{{ items|length|pluralize }} · lo que uso a diario
+            </p>
+            {% endif %}
         </div>
-        
+
         {% if items %}
-        <div class="row g-4">
+        <p class="section-lead mb-4 reveal">
+            Pasa el cursor sobre una tarjeta para desplegarla.
+        </p>
+
+        <div class="galeria-elastica reveal">
             {% for it in items %}
-            <div class="col-lg-4 col-md-6">
-                <article class="card-custom h-100 overflow-hidden">
-                    <a href="{{ it.get_absolute_url }}" class="text-decoration-none text-dark">
-                        <!-- Imagen -->
-                        <div class="position-relative">
-                            {% if it.image %}
-                                <img src="{{ it.image }}" alt="{{ it.title }}" class="w-100" style="height: 200px; object-fit: cover;" />
-                            {% else %}
-                                <div class="w-100 bg-gradient d-flex align-items-center justify-content-center" style="height: 200px; background: linear-gradient(135deg, var(--section-alt) 0%, #F2EDE5 100%);">
-                                    <i class="bi bi-image text-primary fs-1 opacity-50"></i>
-                                </div>
-                            {% endif %}
-                            
-                            <!-- Badge de cantidad de keywords -->
+            <a class="gadget-elastico" href="{{ it.get_absolute_url }}"
+               aria-label="{{ it.title }}">
+                {% if it.image %}
+                <img src="{{ it.image }}" alt="{{ it.title }}" loading="lazy" />
+                {% endif %}
+
+                <!-- Rótulo vertical: visible mientras la tarjeta está estrecha -->
+                <span class="gadget-rotulo" aria-hidden="true">{{ it.title }}</span>
+
+                <div class="gadget-contenido">
+                    <i class="bi bi-{{ it.icono }} gadget-icono" aria-hidden="true"></i>
+                    <h2 class="gadget-titulo">{{ it.title }}</h2>
+
+                    <div class="gadget-detalle">
+                        <div>
+                            <p class="gadget-resumen">{{ it.summary }}</p>
                             {% if it.keywords.all %}
-                            <span class="position-absolute top-0 end-0 m-2 badge bg-primary">
-                                {{ it.keywords.all|length }} tag{{ it.keywords.all|length|pluralize }}
-                            </span>
-                            {% endif %}
-                        </div>
-                        
-                        <!-- Contenido -->
-                        <div class="p-4">
-                            <h3 class="text-primary fw-bold mb-2 h5">{{ it.title }}</h3>
-                            <p class="text-main small mb-3">{{ it.summary }}</p>
-                            
-                            <!-- Keywords/Tags -->
-                            {% if it.keywords.all %}
-                            <div class="d-flex flex-wrap gap-1 mb-3">
+                            <div class="d-flex flex-wrap gap-1 mb-2">
                                 {% for tag in it.keywords.all %}
-                                    <span class="badge bg-light text-primary border">#{{ tag.name }}</span>
+                                <span class="tech-badge-small">#{{ tag.name }}</span>
                                 {% endfor %}
                             </div>
                             {% endif %}
-                            
-                            <!-- Call to action -->
-                            <div class="d-flex align-items-center justify-content-between">
-                                <span class="portfolio-link small">
-                                    Ver detalles →
-                                </span>
-                                <i class="bi bi-arrow-right text-primary"></i>
-                            </div>
+                            <span class="gadget-cta">
+                                Ver detalles <i class="bi bi-arrow-right"></i>
+                            </span>
                         </div>
-                    </a>
-                </article>
-            </div>
-            {% endfor %}
-        </div>
-        
-        {% else %}
-        <!-- Estado vacío -->
-        <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <div class="card-custom p-5 text-center">
-                    <i class="bi bi-collection text-muted fs-1 mb-3"></i>
-                    <h4 class="text-muted mb-3">No hay elementos publicados todavía</h4>
-                    <p class="text-muted mb-4">Pronto estaré compartiendo mis gadgets y setups favoritos.</p>
-                    <div class="d-flex flex-wrap justify-content-center gap-2">
-                        <a href="/" class="btn btn-outline-primary">
-                            <i class="bi bi-house me-2"></i>Volver al inicio
-                        </a>
-                        <a href="/contactame/" class="btn btn-primary">
-                            <i class="bi bi-envelope me-2"></i>Contáctame
-                        </a>
                     </div>
                 </div>
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Criterio de selección: contexto, no relleno -->
+        <div class="row g-4 mt-5" data-reveal-group>
+            <div class="col-md-4 reveal">
+                <div class="card-custom p-4 h-100">
+                    <span class="skill-icon mb-3"><i class="bi bi-star"></i></span>
+                    <h3 class="h6 fw-bold text-primary mb-1">Probado, no recomendado</h3>
+                    <p class="text-main small mb-0">
+                        Solo aparece lo que he usado el tiempo suficiente para opinar.
+                    </p>
+                </div>
             </div>
+            <div class="col-md-4 reveal">
+                <div class="card-custom p-4 h-100">
+                    <span class="skill-icon mb-3"><i class="bi bi-speedometer2"></i></span>
+                    <h3 class="h6 fw-bold text-primary mb-1">Productividad real</h3>
+                    <p class="text-main small mb-0">
+                        Cada pieza resuelve una fricción concreta del día a día.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 reveal">
+                <div class="card-custom p-4 h-100">
+                    <span class="skill-icon mb-3"><i class="bi bi-heart"></i></span>
+                    <h3 class="h6 fw-bold text-primary mb-1">Sin patrocinios</h3>
+                    <p class="text-main small mb-0">
+                        Nadie me paga por esta lista. Es sencillamente mi escritorio.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+        <div class="card-custom p-5 text-center">
+            <i class="bi bi-collection text-primary fs-1 mb-3 d-block"></i>
+            <h2 class="h5 text-primary fw-bold mb-3">Todavía no hay nada por aquí</h2>
+            <p class="text-main mb-4">
+                Pronto publicaré las piezas de mi escritorio.
+            </p>
+            <a href="/contactame/" class="btn btn-primary">
+                <i class="bi bi-envelope me-2"></i>Escríbeme
+            </a>
         </div>
         {% endif %}
     </div>
 </section>
-
-<!-- Call to action -->
-{% if items %}
-<section class="py-5 bg-alt">
-    <div class="container text-center">
-        <h3 class="text-primary mb-4">¿Te interesa algún gadget específico?</h3>
-        <p class="text-main mb-4">Si tienes preguntas sobre cualquiera de estos elementos o quieres recomendaciones personalizadas, no dudes en contactarme.</p>
-        <div class="d-flex flex-wrap justify-content-center gap-3">
-            <a href="/contactame/" class="btn btn-primary">
-                <i class="bi bi-chat-dots me-2"></i>Hacer una consulta
-            </a>
-        </div>
-    </div>
-</section>
-{% endif %}
 {% endblock %}
 
 {% block scripts %}
 <script>
-    // Tracking de clicks en elementos para GTM
-    document.addEventListener('DOMContentLoaded', function() {
-        const itemLinks = document.querySelectorAll('article a');
-        
-        itemLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                const title = this.querySelector('h3').textContent;
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
-                    event: 'gadget_click',
-                    gadget_title: title,
-                    page_location: window.location.href,
-                    timestamp: new Date().toISOString()
-                });
+    // Sin cursor (móvil/tableta) la expansión se activa al tocar: el primer
+    // toque abre la tarjeta y el segundo sigue el enlace.
+    (function () {
+        if (!window.matchMedia('(hover: none)').matches) return;
 
-                // Estándar GA4: select_content al seleccionar un gadget desde la lista
-                let href = this.getAttribute('href') || '';
-                let slug = '';
-                try { slug = (new URL(href, window.location.origin)).pathname.split('/').filter(Boolean).pop(); } catch (err) {}
-                window.dataLayer.push({
-                    event: 'select_content',
-                    content_type: 'gadget',
-                    item_id: slug,
-                    item_name: title,
-                    item_list_name: 'Gadgets & Setups',
-                    page_location: window.location.href,
-                    timestamp: new Date().toISOString()
-                });
+        document.querySelectorAll('.gadget-elastico').forEach(function (tarjeta) {
+            tarjeta.addEventListener('click', function (evento) {
+                if (tarjeta.classList.contains('is-abierta')) return;
+                evento.preventDefault();
+                document.querySelectorAll('.gadget-elastico.is-abierta')
+                    .forEach(function (otra) { otra.classList.remove('is-abierta'); });
+                tarjeta.classList.add('is-abierta');
             });
         });
-    });
-
-    // Lazy loading para imágenes (mejora de rendimiento)
-    document.addEventListener('DOMContentLoaded', function() {
-        const images = document.querySelectorAll('img[src]');
-        
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        img.classList.add('fade-in');
-                        observer.unobserve(img);
-                    }
-                });
-            });
-
-            images.forEach(img => {
-                imageObserver.observe(img);
-            });
-        }
-    });
-
-    // Estándar GA4: view_item_list al cargar la lista de gadgets
-    document.addEventListener('DOMContentLoaded', function() {
-        {% if items %}
-        const itemsPayload = [
-            {% for it in items %}{ item_id: '{{ it.slug }}', item_name: '{{ it.title|escapejs }}' }{% if not forloop.last %},{% endif %}{% endfor %}
-        ];
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-            event: 'view_item_list',
-            item_list_id: 'open_list',
-            item_list_name: 'Gadgets & Setups',
-            items: itemsPayload,
-            page_location: window.location.href,
-            timestamp: new Date().toISOString()
-        });
-        {% endif %}
-    });
+    })();
 </script>
-
-<style>
-    .fade-in {
-        animation: fadeIn 0.5s ease-in;
-    }
-    
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-</style>
 {% endblock %}

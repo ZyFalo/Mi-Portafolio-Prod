@@ -16,3 +16,5 @@ media/
 .idea/
 *.code-workspace
 
+# Claude Code (configuración local, no compartible)
+.claude/settings.local.json

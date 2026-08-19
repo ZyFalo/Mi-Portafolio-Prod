@@ -11,7 +11,7 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(OpenEntity)
 class OpenEntityAdmin(admin.ModelAdmin):
-    list_display = ("title", "is_published", "created_at")
+    list_display = ("title", "icono_previsualizado", "is_published", "created_at")
     list_filter = ("is_published", "keywords")
     list_editable = ("is_published",)
     search_fields = ("title", "summary", "description")
@@ -19,7 +19,7 @@ class OpenEntityAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("title",)}
     fieldsets = (
         (None, {
-            'fields': ("title", "slug", "summary", "description", "image", "keywords", "is_published")
+            'fields': ("title", "slug", "summary", "description", "image", "icon", "keywords", "is_published")
         }),
         ("Metadatos", {
             'classes': ('collapse',),
@@ -27,6 +27,12 @@ class OpenEntityAdmin(admin.ModelAdmin):
         })
     )
     readonly_fields = ("created_at",)
+
+    @admin.display(description="Icono")
+    def icono_previsualizado(self, obj):
+        """Muestra qué icono se usará, sea el elegido o el deducido."""
+        origen = "elegido" if obj.icon else "automático"
+        return f"{obj.icono} ({origen})"
 
 
 # Register your models here.

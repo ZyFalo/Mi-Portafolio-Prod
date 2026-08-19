@@ -4,7 +4,7 @@
 
 {% block content %}
 <!-- Breadcrumb -->
-<section class="py-3 bg-light">
+<section class="py-3 bg-alt">
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
@@ -34,7 +34,7 @@
                 {% if item.keywords.all %}
                 <div class="d-flex flex-wrap justify-content-center gap-2 mb-3">
                     {% for tag in item.keywords.all %}
-                        <span class="badge bg-primary">#{{ tag.name }}</span>
+                        <span class="tech-badge">#{{ tag.name }}</span>
                     {% endfor %}
                 </div>
                 {% endif %}

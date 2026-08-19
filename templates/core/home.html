@@ -1,73 +1,301 @@
 {% extends 'base.html' %}
-{% block title %}Portafolio — Ingeniero de Software Full-Stack{% endblock %}
-{% block meta_description %}CV, proyectos y contacto de ingeniero de software full‑stack especializado en backend, infraestructura cloud (AWS) y desarrollo potenciado por IA.{% endblock %}
+{% block title %}William Peña — De Backend a DevOps | Cloud AWS{% endblock %}
+{% block meta_description %}Ingeniero de Software backend reconvertido a DevOps: automatización de despliegues, infraestructura AWS, Docker y CI/CD. Con liderazgo en adopción de IA agéntica.{% endblock %}
 
 {% block content %}
-<!-- Sección de Foto y Información Principal -->
-<section id="inicio" class="py-5">
+
+<!-- =====================================================================
+     1 · HERO — identidad + terminal viva
+     ===================================================================== -->
+<section id="inicio" class="hero">
     <div class="container">
-        <div class="row align-items-center">
-            <div class="col-12 col-lg-4 text-center mb-4 mb-md-0">
-                <img src="https://i.postimg.cc/VL2NxGTL/FD1A56D8-9B62-43FB-951F-807C6D482570-1-105-c.jpg" alt="Foto de perfil" class="rounded-circle img-fluid avatar-img shadow-lg mb-3">
-                <h1 class="text-primary fw-bold">
+        <div class="row align-items-center g-5">
+            <div class="col-12 col-lg-6">
+                <p class="hero-role mb-3" data-hero-in>Backend → DevOps · Cloud AWS</p>
+
+                <h1 class="hero-name" data-hero-in>
                     William Andrés
-                    <br>
-                    Peña Vargas
+                    <span class="name-accent">Peña Vargas</span>
                 </h1>
-                <p class="text-main fs-5">Ingeniero de Software</p>
-                <div class="mt-3 d-flex flex-wrap justify-content-center gap-2">
-                    <span class="tech-badge">Python</span>
-                    <span class="tech-badge">Django</span>
-                    <span class="tech-badge">JavaScript</span>
-                    <span class="tech-badge">PHP/Symfony</span>
-                    <span class="tech-badge">Java</span>
-                    <span class="tech-badge">AWS</span>
-                    <span class="tech-badge">Docker</span>
-                    <span class="tech-badge">IA/Claude Code</span>
-                    <span class="tech-badge">Bootstrap</span>
-                    <span class="tech-badge">SQLite</span>
-                    <span class="tech-badge">GA4/GTM</span>
+
+                <p class="hero-scope mb-4" data-hero-in>
+                    Empecé escribiendo el backend. Hoy me ocupo de que ese código
+                    llegue a producción solo: despliegues en AWS, contenedores y
+                    pipelines entre DEV, UAT y PDN.
+                </p>
+
+                <!-- El arco profesional, explícito -->
+                <div class="arco-track mb-4" data-hero-in>
+                    <span class="arco-paso">Backend</span>
+                    <span class="arco-flecha">→</span>
+                    <span class="arco-paso is-actual">DevOps &amp; Cloud</span>
+                    <span class="arco-flecha">→</span>
+                    <span class="arco-paso is-futuro">Platform Engineering</span>
+                </div>
+
+                <div class="row g-4 mb-4" data-hero-in>
+                    <div class="col-4 col-sm-auto">
+                        <div class="hero-stat">
+                            <span class="stat-value"><span data-contador="1.5">0</span>+</span>
+                            <span class="stat-label">años de experiencia</span>
+                        </div>
+                    </div>
+                    <div class="col-4 col-sm-auto">
+                        <div class="hero-stat">
+                            <span class="stat-value"><span data-contador="3">0</span></span>
+                            <span class="stat-label">ambientes gestionados</span>
+                        </div>
+                    </div>
+                    <div class="col-4 col-sm-auto">
+                        <div class="hero-stat">
+                            <span class="stat-value"><span data-contador="6">0</span></span>
+                            <span class="stat-label">certificaciones</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-3" data-hero-in>
+                    <a href="#pipeline" class="btn btn-primary">
+                        <i class="bi bi-rocket-takeoff me-2"></i>Lanza tu deploy
+                    </a>
+                    <a href="#construido" class="btn btn-outline-primary">
+                        <i class="bi bi-braces me-2"></i>Ver lo que he construido
+                    </a>
                 </div>
             </div>
-            <div class="col-12 col-lg-8">
-                <div class="card-custom p-4">
-                    <h2 class="text-primary mb-3">Información de Contacto</h2>
-                    <div class="row g-3">
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-envelope text-primary fs-4 me-3"></i>
-                                <div>
-                                    <small class="text-muted">Email</small>
-                                    <p class="mb-0 fw-medium">williamandres1603@gmail.com</p>
-                                </div>
+
+            <div class="col-12 col-lg-6">
+                <!-- Terminal que se escribe sola -->
+                <div class="hero-terminal" data-hero-in>
+                    <div class="console-bar">
+                        <span class="console-dot"></span>
+                        <span class="console-dot"></span>
+                        <span class="console-dot"></span>
+                        <span class="console-title">william@portafolio ~ %</span>
+                    </div>
+                    <div class="term-body" id="hero-terminal" aria-label="Terminal de presentación"></div>
+                </div>
+
+                <div class="d-flex flex-wrap justify-content-center gap-3 mt-3" data-hero-in>
+                    <a href="https://github.com/ZyFalo" target="_blank" rel="noreferrer"
+                       class="text-decoration-none text-main small">
+                        <i class="bi bi-github me-1 text-primary"></i>ZyFalo
+                    </a>
+                    <a href="https://www.linkedin.com/in/william-andres-pe%C3%B1a-vargas-62aa2a282/"
+                       target="_blank" rel="noreferrer" class="text-decoration-none text-main small">
+                        <i class="bi bi-linkedin me-1 text-primary"></i>LinkedIn
+                    </a>
+                    <span class="text-main small">
+                        <i class="bi bi-geo-alt me-1 text-primary"></i>Bogotá, Colombia
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Cinta de tecnologías: adorno tipográfico, sin logos ni colores ajenos -->
+<div class="tech-ribbon" aria-hidden="true">
+    <div class="ribbon-track">
+        {% for vuelta in "12" %}
+        <span class="ribbon-item"><i class="bi bi-cloud" aria-hidden="true"></i>AWS EC2</span>
+        <span class="ribbon-item"><i class="bi bi-bucket" aria-hidden="true"></i>S3</span>
+        <span class="ribbon-item"><i class="bi bi-hdd-stack" aria-hidden="true"></i>RDS</span>
+        <span class="ribbon-item"><i class="bi bi-shield-lock" aria-hidden="true"></i>VPC</span>
+        <span class="ribbon-item"><i class="bi bi-signpost-split" aria-hidden="true"></i>Route 53</span>
+        <span class="ribbon-item"><i class="bi bi-box-seam" aria-hidden="true"></i>Docker</span>
+        <span class="ribbon-item"><i class="bi bi-terminal" aria-hidden="true"></i>Linux</span>
+        <span class="ribbon-item"><i class="bi bi-terminal-split" aria-hidden="true"></i>Bash</span>
+        <span class="ribbon-item"><i class="bi bi-git" aria-hidden="true"></i>Git</span>
+        <span class="ribbon-item"><i class="bi bi-arrow-repeat" aria-hidden="true"></i>CI/CD</span>
+        <span class="ribbon-item"><i class="bi bi-filetype-py" aria-hidden="true"></i>Python</span>
+        <span class="ribbon-item"><i class="bi bi-server" aria-hidden="true"></i>Django</span>
+        <span class="ribbon-item"><i class="bi bi-filetype-php" aria-hidden="true"></i>PHP</span>
+        <span class="ribbon-item"><i class="bi bi-bezier2" aria-hidden="true"></i>Symfony</span>
+        <span class="ribbon-item"><i class="bi bi-cup-hot" aria-hidden="true"></i>Java</span>
+        <span class="ribbon-item"><i class="bi bi-filetype-js" aria-hidden="true"></i>JavaScript</span>
+        <span class="ribbon-item"><i class="bi bi-database" aria-hidden="true"></i>MySQL</span>
+        <span class="ribbon-item"><i class="bi bi-database-check" aria-hidden="true"></i>MariaDB</span>
+        <span class="ribbon-item"><i class="bi bi-database-gear" aria-hidden="true"></i>Oracle</span>
+        <span class="ribbon-item"><i class="bi bi-train-front" aria-hidden="true"></i>Railway</span>
+        <span class="ribbon-item"><i class="bi bi-lightning-charge" aria-hidden="true"></i>Gunicorn</span>
+        <span class="ribbon-item"><span class="chispa-ia" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.6l1.7 6.1 4.4-4.4-2.6 5.6 6.1-1.7-5.6 2.6 5.6 2.6-6.1-1.7 2.6 5.6-4.4-4.4L12 22.4l-1.7-6.1-4.4 4.4 2.6-5.6-6.1 1.7 5.6-2.6-5.6-2.6 6.1 1.7-2.6-5.6 4.4 4.4z"/></svg></span>Claude Code</span>
+        <span class="ribbon-item is-learning"><i class="bi bi-diagram-3" aria-hidden="true"></i>Terraform</span>
+        <span class="ribbon-item is-learning"><i class="bi bi-hexagon" aria-hidden="true"></i>Kubernetes</span>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- =====================================================================
+     2 · PIPELINE COLABORATIVO — lo interactivo, arriba del todo
+     ===================================================================== -->
+<section id="pipeline" class="py-5 bg-alt">
+    <div class="container">
+        <div class="text-center mb-5 reveal">
+            <p class="section-label justify-content-center">Interactivo</p>
+            <h2 class="section-title" data-descifrar>Deja tu huella en mi pipeline</h2>
+            <p class="section-lead mx-auto">
+                Lanza un deploy y míralo recorrer las etapas reales de un pipeline.
+                Tu commit queda para siempre en el muro.
+            </p>
+        </div>
+
+        <div id="pipeline-app"
+             data-url-deploys="{% url 'pipeline:deploys' %}"
+             data-url-lanzar="{% url 'pipeline:lanzar' %}">
+
+            <div class="row g-4 align-items-start" data-reveal-group>
+                <div class="col-lg-7 reveal">
+                    <div class="pipeline-console">
+                        <div class="console-bar">
+                            <span class="console-dot"></span>
+                            <span class="console-dot"></span>
+                            <span class="console-dot"></span>
+                            <span class="console-title">portafolio-ci · visitantes</span>
+                        </div>
+
+                        <div class="stage-track px-3">
+                            <div class="stage-progress" id="stage-progress"></div>
+                            <div class="stage">
+                                <div class="stage-node"></div>
+                                <span class="stage-name">checkout</span>
+                            </div>
+                            <div class="stage">
+                                <div class="stage-node"></div>
+                                <span class="stage-name">build</span>
+                            </div>
+                            <div class="stage">
+                                <div class="stage-node"></div>
+                                <span class="stage-name">test</span>
+                            </div>
+                            <div class="stage">
+                                <div class="stage-node"></div>
+                                <span class="stage-name">deploy</span>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-telephone text-primary fs-4 me-3"></i>
-                                <div>
-                                    <small class="text-muted">Teléfono</small>
-                                    <p class="mb-0 fw-medium">+57 319 6632134</p>
+
+                        <div class="console-output" id="console-output" aria-live="polite">
+                            <span class="console-line">
+                                <span class="c-dim">Esperando un nuevo deploy… completa tus datos y lanza el pipeline.</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <form id="pipeline-form" class="pipeline-form card-custom p-4 mt-4" novalidate>
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <label for="deploy-name">Autor del commit</label>
+                                <input type="text" class="form-control font-mono" id="deploy-name" name="name"
+                                       maxlength="24" placeholder="cata-dev" required
+                                       autocomplete="off" spellcheck="false"
+                                       aria-describedby="ayuda-autor">
+                                <small id="ayuda-autor" class="campo-ayuda">
+                                    Sin espacios, como en git. Los espacios se convierten en guiones.
+                                </small>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="deploy-location">País</label>
+                                <select class="form-select" id="deploy-location" name="location">
+                                    {% for valor, etiqueta in paises %}
+                                    <option value="{{ valor }}">{{ etiqueta }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="deploy-message">Mensaje del commit <span class="text-muted">(opcional)</span></label>
+                                <div class="commit-compositor">
+                                    <select class="form-select commit-tipo" id="deploy-type" name="type"
+                                            aria-label="Tipo de commit">
+                                        {% for clave, etiqueta, descripcion in tipos_commit %}
+                                        <option value="{{ clave }}" title="{{ descripcion }}">{{ etiqueta }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <span class="commit-dospuntos" aria-hidden="true">:</span>
+                                    <input type="text" class="form-control" id="deploy-message" name="message"
+                                           maxlength="80" placeholder="pasé por aquí y me gustó lo que vi">
                                 </div>
+                                <small class="campo-ayuda" id="ayuda-commit">
+                                    Formato <strong>Conventional Commits</strong> · <span id="preview-commit" class="font-mono"></span>
+                                </small>
+                            </div>
+
+                            <div class="hp-field" aria-hidden="true">
+                                <label for="deploy-website">No completar</label>
+                                <input type="text" id="deploy-website" name="website" tabindex="-1" autocomplete="off">
+                            </div>
+
+                            <div class="col-12 d-flex flex-wrap align-items-center gap-3">
+                                <button type="submit" class="btn btn-primary" id="btn-deploy">
+                                    Lanzar mi deploy
+                                </button>
+                                <span class="text-muted small">
+                                    <i class="bi bi-shield-check me-1"></i>Sin registro. No guardo tu IP, solo una huella anónima.
+                                </span>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-geo-alt text-primary fs-4 me-3"></i>
-                                <div>
-                                    <small class="text-muted">Ubicación</small>
-                                    <p class="mb-0 fw-medium">Bogotá D.C., Colombia</p>
-                                </div>
+                    </form>
+                </div>
+
+                <div class="col-lg-5 reveal">
+                    <!-- Panel de estado en vivo: métricas reales de este sitio -->
+                    <div class="status-panel mb-4"
+                         id="status-panel"
+                         data-url="{% url 'estado' %}"
+                         data-arranque="{{ estado.arranque }}">
+                        <div class="status-head">
+                            <span class="status-luz" aria-hidden="true"></span>
+                            <span class="status-titulo">Sistema operativo</span>
+                            <span class="ms-auto font-mono" style="font-size:.68rem;color:var(--ink-soft);">
+                                {{ estado.entorno }}
+                            </span>
+                        </div>
+
+                        <div class="status-grid">
+                            <div class="status-celda">
+                                <span class="status-etiqueta">Uptime</span>
+                                <span class="status-valor"><span id="status-uptime" class="v-ok">{{ estado.uptime }}</span></span>
+                            </div>
+                            <div class="status-celda">
+                                <span class="status-etiqueta">Versión</span>
+                                <span class="status-valor"><span class="v-accent">{{ estado.version.commit|default:"—" }}</span></span>
+                            </div>
+                            <div class="status-celda">
+                                <span class="status-etiqueta">Runtime</span>
+                                <span class="status-valor">{{ estado.runtime }}</span>
+                            </div>
+                            <div class="status-celda">
+                                <span class="status-etiqueta">Framework</span>
+                                <span class="status-valor">{{ estado.framework }}</span>
+                            </div>
+                            <div class="status-celda">
+                                <span class="status-etiqueta">Servidor</span>
+                                <span class="status-valor">{{ estado.servidor }}</span>
+                            </div>
+                            <div class="status-celda">
+                                <span class="status-etiqueta">Base de datos</span>
+                                <span class="status-valor">{{ estado.base_datos }}</span>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-github text-primary fs-4 me-3"></i>
-                                <div>
-                                    <small class="text-muted">GitHub</small>
-                                    <p class="mb-0 fw-medium">github.com/ZyFalo</p>
-                                </div>
-                            </div>
+
+                        <div class="status-pie">
+                            <i class="bi bi-git me-1"></i>{{ estado.version.rama|default:"—" }}
+                            · <span id="status-deploys">{{ estado.deploys_visitantes }}</span> deploys de visitantes
+                        </div>
+                    </div>
+
+                    <div class="card-custom p-4">
+                        <div class="text-center mb-4 pb-3" style="border-bottom:1px dashed var(--paper-edge);">
+                            <span class="deploy-counter" id="deploy-counter">0</span>
+                            <p class="text-muted small mb-0 mt-1">deploys exitosos</p>
+                        </div>
+
+                        <h3 class="h6 fw-bold text-primary mb-3">
+                            <i class="bi bi-clock-history me-1"></i>Últimos deploys
+                        </h3>
+
+                        <div id="deploy-wall">
+                            <p class="text-muted small mb-0 py-3 text-center">Cargando historial…</p>
                         </div>
                     </div>
                 </div>
@@ -76,331 +304,125 @@
     </div>
 </section>
 
-<!-- Descripción del Perfil -->
-<section id="perfil" class="py-5 bg-alt">
+<!-- =====================================================================
+     3 · LO QUE HE CONSTRUIDO — el trabajo, no la descripción
+     ===================================================================== -->
+<section id="construido" class="py-5">
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <h2 class="text-primary text-center mb-4 fw-bold">Perfil Profesional</h2>
-                <div class="card-custom p-4">
-                    <p class="text-main fs-6 lh-lg text-center">
-                        Estudiante de 10mo semestre de Ingeniería de Software en la Universidad Manuela Beltrán
-                        e Ingeniero de Software con 1.5+ años de experiencia, especializado en desarrollo backend,
-                        infraestructura cloud (AWS) y flujos de desarrollo potenciados por IA. Actualmente líder de
-                        desarrollo de StarApp, donde realiza despliegues en AWS, gestiona bases de datos y lideró la
-                        adopción de herramientas de IA generativa y agentes de código (Claude Code) en el equipo.
-                        Trabaja con Python, PHP (Symfony), Java y JavaScript, y bases de datos MySQL, Oracle y MariaDB,
-                        aplicando Scrum, Git e integración continua. Su objetivo es crecer hacia un rol de arquitectura
-                        de software combinando IA, cloud y mejores prácticas de ingeniería.
+        <!-- Encabezado a la izquierda: rompe la cadena de títulos centrados -->
+        <div class="section-head-left reveal">
+            <div>
+                <p class="section-label">Trabajo</p>
+                <h2 class="section-title mb-0" data-descifrar>Lo que he construido</h2>
+            </div>
+            <p class="section-head-note mb-0">04 casos · problema → acción → resultado</p>
+        </div>
+
+        <!-- Jerarquía deliberada: un caso manda, tres acompañan -->
+        <div class="row g-4 align-items-stretch" data-reveal-group>
+            <div class="col-lg-7 reveal">
+                <div class="card-custom proyecto-card proyecto-destacado h-100">
+                    <div class="destacado-cabecera">
+                        <span class="tech-badge-small">AWS · FinOps</span>
+                        <span class="proyecto-rol">Talent Advisor Consulting · 2026</span>
+                    </div>
+
+                    <h3 class="proyecto-titulo mb-3">Auditoría de infraestructura AWS</h3>
+
+                    <p class="text-main proyecto-cuerpo mb-3">
+                        La arquitectura documentada no coincidía con la desplegada. Revisé
+                        la infraestructura servicio por servicio, actualicé la documentación
+                        para que reflejara el estado real y detecté recursos que seguían
+                        encendidos sin que ningún equipo los usara.
+                    </p>
+
+                    <p class="text-main proyecto-cuerpo mb-4">
+                        El punto de partida fue una diferencia entre lo que decía el
+                        diagrama y lo que decía la factura.
+                    </p>
+
+                    <div class="destacado-detalle">
+                        <span class="detalle-titulo">Servicios revisados</span>
+                        <div class="d-flex flex-wrap gap-1 mt-2">
+                            <span class="tech-badge-small">EC2</span>
+                            <span class="tech-badge-small">S3</span>
+                            <span class="tech-badge-small">RDS</span>
+                            <span class="tech-badge-small">VPC</span>
+                            <span class="tech-badge-small">Route 53</span>
+                        </div>
+                    </div>
+
+                    <p class="proyecto-impacto mb-0">
+                        <i class="bi bi-graph-down-arrow"></i>
+                        Gasto cloud reducido y documentación fiel a la infraestructura real
                     </p>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
 
-{% comment %} <!-- Portafolio Destacado -->
-<section id="portfolio" class="py-5">
-    <div class="container">
-        <h2 class="text-primary text-center mb-5 fw-bold">Portafolio Destacado</h2>
-        <div class="row g-4">
-            <div class="col-lg-4 col-md-6">
-                <div class="card-custom p-4 h-100 d-flex flex-column">
-                    <i class="bi bi-gear text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Gadgets & Setups</h5>
-                    <p class="text-main small flex-grow-1">Galería interactiva de gadgets y configuraciones tecnológicas con sistema de gestión completo.</p>
-                    <a href="/open/" class="portfolio-link">Ver proyecto →</a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="card-custom p-4 h-100 d-flex flex-column">
-                    <i class="bi bi-question-circle text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">FAQ Dinámicas</h5>
-                    <p class="text-main small flex-grow-1">Sistema de preguntas frecuentes administrables con acordeón accesible y gestión desde panel admin.</p>
-                    <a href="/fyq/" class="portfolio-link">Ver FAQ →</a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="card-custom p-4 h-100 d-flex flex-column">
-                    <i class="bi bi-envelope text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Formulario de Contacto</h5>
-                    <p class="text-main small flex-grow-1">Formulario con validación avanzada, protección anti-bot honeypot y sistema de timestamps.</p>
-                    <a href="/contactame/" class="portfolio-link">Contactar →</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> {% endcomment %}
-
-<!-- Competencias Técnicas -->
-<section id="competencias" class="py-5">
-    <div class="container">
-        <h2 class="text-primary text-center mb-5 fw-bold">Competencias Técnicas</h2>
-        <div class="row g-4">
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-robot text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">IA & Desarrollo Asistido</h5>
-                    <p class="text-main small">Claude Code, sistemas multi-agente, OpenSpec, GitHub Copilot</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-code-slash text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Python</h5>
-                    <p class="text-main small">Django, FastAPI, Flask, Pytest, POO</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-filetype-js text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">JavaScript</h5>
-                    <p class="text-main small">ES6+, DOM, APIs REST</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-cpu text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Java</h5>
-                    <p class="text-main small">POO, backend y fundamentos</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-filetype-php text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">PHP</h5>
-                    <p class="text-main small">Symfony, backend y reglas de negocio</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-bootstrap text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Frontend</h5>
-                    <p class="text-main small">Bootstrap, HTML5, CSS3</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-database text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Bases de Datos</h5>
-                    <p class="text-main small">MySQL, Oracle, MariaDB, SQLite</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-diagram-3 text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Arquitectura</h5>
-                    <p class="text-main small">Monolitos, microservicios</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-cloud text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Cloud</h5>
-                    <p class="text-main small">Railway, AWS</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-git text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Control de Versiones</h5>
-                    <p class="text-main small">Git, GitHub, Bitbucket</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-hdd-network text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Redes</h5>
-                    <p class="text-main small">Configuración y administración Cisco</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-graph-up text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Analytics</h5>
-                    <p class="text-main small">Google Analytics 4, GTM, SEO</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-shield-check text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Seguridad</h5>
-                    <p class="text-main small">Validación, Sanitización, CSRF</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Competencias Blandas -->
-<section class="py-5 bg-alt">
-    <div class="container">
-        <h2 class="text-primary text-center mb-5 fw-bold">Competencias Blandas</h2>
-        <div class="row g-4">
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-lightbulb text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Resolución de Problemas</h5>
-                    <p class="text-main small">Análisis crítico y soluciones creativas</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-people text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Trabajo en Equipo</h5>
-                    <p class="text-main small">Colaboración efectiva y comunicación</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-clock text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Gestión del Tiempo</h5>
-                    <p class="text-main small">Organización y cumplimiento de plazos</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-arrow-repeat text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Flexibilidad</h5>
-                    <p class="text-main small">Adaptación ante nuevos retos</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-compass text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Pensamiento Estratégico</h5>
-                    <p class="text-main small">Enfoque en objetivos y prioridades</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-palette text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Pensamiento Creativo</h5>
-                    <p class="text-main small">Ideas y soluciones innovadoras</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-ear text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Escucha Activa</h5>
-                    <p class="text-main small">Comprensión y colaboración efectiva</p>
-                </div>
-            </div>
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <div class="card-custom p-3 text-center h-100">
-                    <i class="bi bi-check2-circle text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Compromiso</h5>
-                    <p class="text-main small">Responsabilidad y constancia</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Idiomas -->
-<section id="idiomas" class="py-5">
-    <div class="container">
-        <h2 class="text-primary text-center mb-5 fw-bold">Idiomas</h2>
-        <div class="row justify-content-center">
-            <div class="col-lg-6">
-                <div class="card-custom p-4 text-center h-100">
-                    <h5 class="text-primary fw-bold mb-2">Inglés</h5>
-                    <p class="text-main mb-0">Nivel intermedio B1/B2 (en mejora constante)</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Formación y Certificaciones -->
-<section class="py-5">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-6" id="formacion">
-                <h2 class="text-primary text-center mb-4 fw-bold">Formación Académica</h2>
-                <div class="card-custom p-4 mb-4">
-                    <div class="d-flex align-items-start">
-                        <i class="bi bi-mortarboard text-primary fs-2 me-4 flex-shrink-0"></i>
-                        <div>
-                            <h4 class="text-primary fw-bold mb-2">Ingeniería de Software (10° Semestre)</h4>
-                            <p class="text-main fw-medium mb-1">Universidad Manuela Beltrán</p>
-                            <p class="text-accent small mb-2">Febrero 2022 - Actualidad</p>
-                            <p class="text-main">Especialización en desarrollo de software, metodologías ágiles, bases de datos y arquitectura de sistemas. Experiencia académica con Scrum y control de versiones.</p>
+            <div class="col-lg-5">
+                <div class="row g-3 h-100">
+                    <div class="col-12 reveal">
+                        <div class="card-custom proyecto-card proyecto-mini" data-tilt>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="proyecto-num">02</span>
+                                <span class="tech-badge-small">
+                                    <span class="chispa-ia chispa-ia-girando me-1">
+                                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                            <path d="M12 1.6l1.7 6.1 4.4-4.4-2.6 5.6 6.1-1.7-5.6 2.6 5.6 2.6-6.1-1.7 2.6 5.6-4.4-4.4L12 22.4l-1.7-6.1-4.4 4.4 2.6-5.6-6.1 1.7 5.6-2.6-5.6-2.6 6.1 1.7-2.6-5.6 4.4 4.4z"/>
+                                        </svg>
+                                    </span>Claude Code
+                                </span>
+                            </div>
+                            <h3 class="proyecto-titulo mb-0">Adopción de desarrollo agéntico</h3>
+                            <p class="text-main small mb-0">
+                                Diseñé los flujos asistidos por IA del equipo y acompañé a los
+                                junior hasta que Claude Code fue parte de su día a día.
+                            </p>
+                            <p class="proyecto-impacto mb-0">
+                                <i class="bi bi-lightning-charge-fill"></i>
+                                Código más rápido y consistente en toda la operación
+                            </p>
                         </div>
                     </div>
-                </div>
 
-                <div class="card-custom p-4 mb-0">
-                    <div class="d-flex align-items-start">
-                        <i class="bi bi-book text-primary fs-2 me-4 flex-shrink-0"></i>
-                        <div>
-                            <h4 class="text-primary fw-bold mb-2">Bachiller con intensificación en inglés</h4>
-                            <p class="text-main fw-medium mb-1">Institución Educativa Domingo Savio</p>
-                            <p class="text-accent small mb-2">Febrero 2014 - Noviembre 2019</p>
-                            <p class="text-main">Formación académica integral con énfasis en idioma inglés, desarrollando bases sólidas para estudios superiores.</p>
+                    <div class="col-12 reveal">
+                        <div class="card-custom proyecto-card proyecto-mini" data-tilt>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="proyecto-num">03</span>
+                                <span class="tech-badge-small">PHP · Symfony · MariaDB</span>
+                            </div>
+                            <h3 class="proyecto-titulo mb-0">Módulo Gestor de Cargos</h3>
+                            <p class="text-main small mb-0">
+                                Construí solo el componente transversal que unifica la
+                                administración de cargos de toda StarApp.
+                            </p>
+                            <p class="proyecto-impacto mb-0">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Un único punto de verdad para la plataforma
+                            </p>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div class="col-lg-6" id="certificaciones">
-                <h2 class="text-primary text-center mb-4 fw-bold">Cursos y Certificaciones</h2>
-                <div class="card-custom p-4 mb-4">
-                    <div class="d-flex align-items-start">
-                        <i class="bi bi-cloud-check text-primary fs-2 me-4 flex-shrink-0"></i>
-                        <div>
-                            <h4 class="text-primary fw-bold mb-2">AWS Cloud Practitioner</h4>
-                            <p class="text-main fw-medium mb-1">Platzi</p>
-                            <p class="text-accent small mb-2">2026</p>
-                            <p class="text-main">Fundamentos de la nube de Amazon Web Services: servicios principales, seguridad, arquitectura y modelo de costos.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-custom p-4 mb-4">
-                    <div class="d-flex align-items-start">
-                        <i class="bi bi-patch-check text-primary fs-2 me-4 flex-shrink-0"></i>
-                        <div>
-                            <h4 class="text-primary fw-bold mb-2">Google Cloud Computing Foundations Certificate</h4>
-                            <p class="text-main fw-medium mb-1">Google</p>
-                            <p class="text-accent small mb-2">2024</p>
-                            <p class="text-main">Certificación en fundamentos de computación en la nube y servicios de Google Cloud Platform.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-custom p-4 mb-4">
-                    <div class="d-flex align-items-start">
-                        <i class="bi bi-robot text-primary fs-2 me-4 flex-shrink-0"></i>
-                        <div>
-                            <h4 class="text-primary fw-bold mb-2">Curso de Claude Code</h4>
-                            <p class="text-main fw-medium mb-1">Platzi</p>
-                            <p class="text-accent small mb-2">2026</p>
-                            <p class="text-main">Desarrollo asistido por IA con Claude: prompting efectivo, agentes de código y flujos de trabajo productivos.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-custom p-4 mb-4">
-                    <div class="d-flex align-items-start">
-                        <i class="bi bi-lightbulb text-primary fs-2 me-4 flex-shrink-0"></i>
-                        <div>
-                            <h4 class="text-primary fw-bold mb-2">Enterprise Design Thinking Practitioner</h4>
-                            <p class="text-main fw-medium mb-1">IBM SkillsBuild</p>
-                            <p class="text-accent small mb-2">2024</p>
-                            <p class="text-main">Metodología de Design Thinking empresarial de IBM, centrada en el usuario para resolución de problemas e innovación.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-custom p-4 mb-0">
-                    <div class="d-flex align-items-start">
-                        <i class="bi bi-award text-primary fs-2 me-4 flex-shrink-0"></i>
-                        <div>
-                            <h4 class="text-primary fw-bold mb-2">Certificaciones Cisco</h4>
-                            <p class="text-main fw-medium mb-1">Cisco Networking Academy</p>
-                            <p class="text-accent small mb-2">2023</p>
-                            <p class="text-main">Essentials Python 1, Networking Basics y Networking Devices and Initial Configuration. Conocimientos en redes y programación.</p>
+                    <div class="col-12 reveal">
+                        <div class="card-custom proyecto-card proyecto-mini" data-tilt>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="proyecto-num">04</span>
+                                <span class="tech-badge-small">Django · Docker · Railway</span>
+                            </div>
+                            <h3 class="proyecto-titulo mb-0">Este mismo portafolio</h3>
+                            <p class="text-main small mb-0">
+                                No describe mi perfil DevOps: lo ejecuta. Contenerizado, con
+                                un pipeline donde cada visitante deja su deploy.
+                            </p>
+                            <p class="proyecto-impacto mb-2">
+                                <i class="bi bi-activity"></i>
+                                Su estado real está publicado arriba, en vivo
+                            </p>
+                            <a class="proyecto-enlace" href="https://github.com/ZyFalo/Mi-Portafolio-Prod"
+                               target="_blank" rel="noreferrer">
+                                <i class="bi bi-github"></i>Ver el código
+                                <i class="bi bi-arrow-up-right"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -409,52 +431,77 @@
     </div>
 </section>
 
-<!-- Experiencia Profesional -->
+<!-- =====================================================================
+     4 · TRAYECTORIA — perfil y experiencia, fusionados
+     ===================================================================== -->
 <section id="experiencia" class="py-5 bg-alt">
     <div class="container">
-        <h2 class="text-primary text-center mb-5 fw-bold">Experiencia Profesional</h2>
-        <div class="row justify-content-center">
-            <div class="col-lg-10">
-                <div class="card-custom p-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="bi bi-building text-primary fs-3 me-3"></i>
-                        <div>
-                            <h4 class="text-primary fw-bold mb-1">Consultor de Tecnología | Líder de Desarrollo e Infraestructura Cloud</h4>
-                            <p class="text-main fw-medium mb-0">Talent Advisor Consulting S.A.S.</p>
-                            <p class="text-accent small">Febrero 2025 - Actualidad (1.5 años)</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="text-primary fw-bold mb-2">Liderazgo & Desarrollo:</h6>
-                            <ul class="text-main">
-                                <li>Liderazgo de la adopción de IA generativa y desarrollo agéntico (Claude Code) en el equipo</li>
-                                <li>Desarrollo backend en PHP con Symfony</li>
-                                <li>Implementación de reglas de negocio y validaciones</li>
-                                <li>Desarrollo del módulo Gestor de Cargos</li>
-                                <li>Atención a clientes y traducción de requerimientos a soluciones técnicas</li>
-                                <li>Trabajo en equipo bajo metodología Scrum</li>
+        <div class="row g-5">
+            <div class="col-lg-4">
+                <div class="reveal">
+                    <p class="section-label">Trayectoria</p>
+                    <h2 class="section-title h3 mb-3">De escribir código<br>a desplegarlo</h2>
+                    <p class="text-main">
+                        Ingeniero de Software con más de año y medio de experiencia. Entré
+                        por el backend y me fui quedando en la infraestructura: hoy me ocupo
+                        de <strong>automatizar despliegues y operar la nube en AWS</strong>.
+                    </p>
+                    <p class="text-main small mb-0">
+                        Cursando 10.º semestre en la Universidad Manuela Beltrán.
+                        Con mentalidad de dueño y gusto por dejar las cosas mejor
+                        documentadas de como las encontré.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-lg-8" data-reveal-group>
+                <div class="card-custom p-4 p-lg-5 reveal">
+                    <div class="timeline">
+                        <div class="timeline-item mb-4">
+                            <p class="timeline-date mb-1">JUL 2026 — ACTUALIDAD</p>
+                            <h3 class="timeline-role">Consultor de Desarrollo de Software</h3>
+                            <p class="timeline-scope">Líder de desarrollo e infraestructura cloud — StarApp</p>
+                            <p class="timeline-company mb-3">Talent Advisor Consulting S.A.S. · Bogotá · Híbrido</p>
+
+                            <ul class="achievement-list">
+                                <li>
+                                    Despliegues en AWS y gestión entre ambientes
+                                    <strong>DEV / UAT / PDN</strong>, administrando de forma segura
+                                    accesos, credenciales y configuraciones por ambiente.
+                                </li>
+                                <li>
+                                    Pipelines CI/CD, estrategias de branching, integración de ramas
+                                    y releases con trazabilidad y despliegues reproducibles.
+                                </li>
+                                <li>
+                                    <strong>Docker</strong> para contenerización, más monitoreo,
+                                    troubleshooting y pruebas unitarias integradas al ciclo de
+                                    despliegue.
+                                </li>
+                                <li>
+                                    Lideré la adopción de <strong>IA generativa y desarrollo
+                                    agéntico</strong> entre los desarrolladores junior del equipo.
+                                </li>
                             </ul>
                         </div>
-                        <div class="col-md-6">
-                            <h6 class="text-primary fw-bold mb-2">Cloud, Bases de Datos & DevOps:</h6>
-                            <ul class="text-main">
-                                <li>Despliegues y gestión de infraestructura en AWS</li>
-                                <li>Auditoría de arquitectura AWS y optimización de costos cloud</li>
-                                <li>Reestructuración y modelado de bases de datos en MariaDB</li>
-                                <li>Gestión de accesos a bases de datos y consultas SQL</li>
-                                <li>Integración de ramas (merge), CI y control de versiones con Git/Bitbucket</li>
+
+                        <div class="timeline-item">
+                            <p class="timeline-date mb-1">FEB 2025 — JUL 2026</p>
+                            <h3 class="timeline-role">Consultor Jr de Tecnología</h3>
+                            <p class="timeline-company mb-3">Talent Advisor Consulting S.A.S.</p>
+
+                            <ul class="achievement-list">
+                                <li>
+                                    Backend en <strong>PHP/Symfony</strong>: módulos Gestor de Cargos
+                                    y Valoración de Cargos, este último migrado desde Excel con
+                                    variables parametrizables.
+                                </li>
+                                <li>
+                                    Reestructuración y modelado de bases de datos, gestión de
+                                    accesos y consultas SQL bajo metodología Scrum.
+                                </li>
                             </ul>
                         </div>
-                    </div>
-                    <div class="mt-4">
-                        <h6 class="text-primary fw-bold mb-2">Prácticas académicas (Julio 2025 - Diciembre 2025)</h6>
-                        <p class="text-main small mb-2">Módulo de Valoración de Cargos — StarApp (Talent Advisor)</p>
-                        <ul class="text-main mb-0">
-                            <li>Centralización del proceso de valoración y migración desde Excel</li>
-                            <li>Cálculo de puntajes por cargo con variables parametrizables</li>
-                            <li>Integración del módulo con reglas de negocio y otros componentes</li>
-                        </ul>
                     </div>
                 </div>
             </div>
@@ -462,37 +509,426 @@
     </div>
 </section>
 
-<!-- Red de Desarrolladores -->
-<section id="desarrolladores" class="py-5">
+<!-- =====================================================================
+     5 · STACK + ARQUITECTURA
+     ===================================================================== -->
+<section id="competencias" class="py-5">
     <div class="container">
-        <h2 class="text-primary text-center mb-5 fw-bold">Red de Desarrolladores</h2>
-        
-        <div class="row g-4">
-            {% if developers %}
+        <div class="section-head-left reveal">
+            <div>
+                <p class="section-label">Stack</p>
+                <h2 class="section-title mb-0" data-descifrar>Con qué trabajo</h2>
+            </div>
+            <p class="section-head-note mb-0">producción · no listas de deseos</p>
+        </div>
+
+        <!-- La especialidad ocupa el doble: no todo pesa lo mismo -->
+        <div class="row g-4 mb-4" data-reveal-group>
+            <div class="col-lg-8 reveal">
+                <div class="card-custom skill-card skill-card-ancha p-4 h-100">
+                    <div>
+                        <span class="cifra-margen">3</span>
+                        <span class="cifra-pie">ambientes</span>
+                    </div>
+                    <div>
+                        <h3 class="h5 fw-bold text-primary mb-2">Despliegues entre DEV · UAT · PDN</h3>
+                        <p class="text-main small mb-3">
+                            El corazón de mi trabajo diario: mover código a producción de forma
+                            reproducible y con trazabilidad, administrando accesos, credenciales
+                            y configuración por ambiente.
+                        </p>
+                        <div class="d-flex flex-wrap gap-1">
+                            <span class="tech-badge-small">Git</span>
+                            <span class="tech-badge-small">CI/CD</span>
+                            <span class="tech-badge-small">Branching</span>
+                            <span class="tech-badge-small">Releases</span>
+                            <span class="tech-badge-small">Rollback</span>
+                            <span class="tech-badge-small">Bitbucket</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 reveal">
+                <div class="card-custom skill-card p-4 h-100" data-tilt>
+                    <span class="skill-icon mb-3"><i class="bi bi-cloud-check"></i></span>
+                    <h3 class="h5 fw-bold text-primary mb-2">Cloud AWS</h3>
+                    <p class="text-main small mb-3">
+                        Servicios, despliegues y optimización de costos sobre infraestructura
+                        real en producción.
+                    </p>
+                    <div class="d-flex flex-wrap gap-1">
+                        <span class="tech-badge-small">EC2</span>
+                        <span class="tech-badge-small">S3</span>
+                        <span class="tech-badge-small">RDS</span>
+                        <span class="tech-badge-small">VPC</span>
+                        <span class="tech-badge-small">Route 53</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mb-5" data-reveal-group>
+            <div class="col-sm-6 col-lg-4 reveal">
+                <div class="card-custom skill-card p-4" data-tilt>
+                    <span class="skill-icon mb-3"><i class="bi bi-box-seam"></i></span>
+                    <h3 class="h5 fw-bold text-primary mb-2">Infraestructura</h3>
+                    <p class="text-main small mb-3">
+                        Contenerización, administración de Linux, scripting y automatización
+                        de procesos operativos.
+                    </p>
+                    <div class="d-flex flex-wrap gap-1">
+                        <span class="tech-badge-small">Docker</span>
+                        <span class="tech-badge-small">Linux</span>
+                        <span class="tech-badge-small">Bash</span>
+                        <span class="tech-badge-small">Railway</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4 reveal">
+                <div class="card-custom skill-card p-4" data-tilt>
+                    <span class="skill-icon mb-3"><i class="bi bi-shield-check"></i></span>
+                    <h3 class="h5 fw-bold text-primary mb-2">Observabilidad &amp; Seguridad</h3>
+                    <p class="text-main small mb-3">
+                        Monitoreo, logging y troubleshooting en producción; gestión segura de
+                        accesos, credenciales y secretos.
+                    </p>
+                    <div class="d-flex flex-wrap gap-1">
+                        <span class="tech-badge-small">Monitoreo</span>
+                        <span class="tech-badge-small">Logging</span>
+                        <span class="tech-badge-small">DevSecOps</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-lg-4 reveal">
+                <div class="card-custom skill-card p-4" data-tilt>
+                    <span class="skill-icon mb-3"><i class="bi bi-code-slash"></i></span>
+                    <h3 class="h5 fw-bold text-primary mb-2">Backend &amp; Datos</h3>
+                    <p class="text-main small mb-3">
+                        De donde vengo: APIs REST, reglas de negocio y modelado de bases de
+                        datos, con pruebas en el ciclo de despliegue.
+                    </p>
+                    <div class="d-flex flex-wrap gap-1">
+                        <span class="tech-badge-small">Python</span>
+                        <span class="tech-badge-small">PHP/Symfony</span>
+                        <span class="tech-badge-small">Java</span>
+                        <span class="tech-badge-small">MySQL</span>
+                        <span class="tech-badge-small">Oracle</span>
+                        <span class="tech-badge-small">MariaDB</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Arquitectura real de este sitio, trazada al entrar en pantalla -->
+        <div class="row justify-content-center mb-5" data-reveal-group>
+            <div class="col-lg-11 reveal">
+                <div class="card-custom p-4 p-lg-5">
+                    <div class="text-center mb-4">
+                        <p class="section-label justify-content-center">Cómo está desplegado esto</p>
+                        <h3 class="h4 mb-2">La arquitectura de este portafolio</h3>
+                        <p class="text-muted small mb-0">
+                            El mismo camino que recorre tu petición hasta llegar a esta página.
+                        </p>
+                    </div>
+
+                    <div class="arq-envoltura">
+                        <svg id="arquitectura" viewBox="0 0 900 240" role="img"
+                             aria-label="Diagrama: navegador, Railway, contenedor Docker con Gunicorn, Django y WhiteNoise, y base de datos">
+
+                            <!-- Trazos de conexión -->
+                            <path class="arq-trazo" d="M138 84 H196" />
+                            <path class="arq-trazo" d="M330 84 H392" />
+                            <path class="arq-trazo" d="M528 84 H590" />
+                            <path class="arq-trazo" d="M724 84 V150 H460 V178" />
+
+                            <!-- Navegador -->
+                            <g class="arq-nodo">
+                                <rect class="arq-caja" x="18" y="52" width="120" height="64" rx="12" />
+                                <text class="arq-titulo" x="78" y="80" text-anchor="middle">Visitante</text>
+                                <text class="arq-sub" x="78" y="99" text-anchor="middle">HTTPS</text>
+                            </g>
+
+                            <!-- Railway -->
+                            <g class="arq-nodo">
+                                <rect class="arq-caja" x="196" y="52" width="134" height="64" rx="12" />
+                                <text class="arq-titulo" x="263" y="80" text-anchor="middle">Railway</text>
+                                <text class="arq-sub" x="263" y="99" text-anchor="middle">TLS · proxy</text>
+                            </g>
+
+                            <!-- Gunicorn -->
+                            <g class="arq-nodo">
+                                <rect class="arq-caja arq-caja-destacada" x="392" y="52" width="136" height="64" rx="12" />
+                                <text class="arq-titulo" x="460" y="80" text-anchor="middle">Gunicorn</text>
+                                <text class="arq-sub" x="460" y="99" text-anchor="middle">3 workers</text>
+                            </g>
+
+                            <!-- Django -->
+                            <g class="arq-nodo">
+                                <rect class="arq-caja arq-caja-destacada" x="590" y="52" width="134" height="64" rx="12" />
+                                <text class="arq-titulo" x="657" y="80" text-anchor="middle">Django 5</text>
+                                <text class="arq-sub" x="657" y="99" text-anchor="middle">WhiteNoise</text>
+                            </g>
+
+                            <!-- Base de datos -->
+                            <g class="arq-nodo">
+                                <rect class="arq-caja" x="392" y="178" width="136" height="52" rx="12" />
+                                <text class="arq-titulo" x="460" y="200" text-anchor="middle">Base de datos</text>
+                                <text class="arq-sub" x="460" y="217" text-anchor="middle">MySQL · SQLite</text>
+                            </g>
+
+                            <!-- Envoltura del contenedor -->
+                            <g class="arq-nodo">
+                                <rect x="374" y="32" width="368" height="104" rx="16"
+                                      fill="none" stroke="currentColor" stroke-dasharray="5 5"
+                                      style="color: var(--accent); opacity:.4" />
+                                <text class="arq-etiqueta" x="380" y="26">contenedor Docker</text>
+                            </g>
+
+                            <text class="arq-etiqueta" x="800" y="88">respuesta</text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fila 7/5: la herramienta que define mi día a día, y lo que viene -->
+        <div class="row g-4" data-reveal-group>
+            <div class="col-lg-7 reveal">
+                <div class="card-custom skill-card skill-card-ancha p-4 h-100">
+                    <span class="skill-icon" style="width:3.4rem;height:3.4rem;font-size:1.9rem;">
+                        <span class="chispa-ia chispa-ia-girando">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                <path d="M12 1.6l1.7 6.1 4.4-4.4-2.6 5.6 6.1-1.7-5.6 2.6 5.6 2.6-6.1-1.7 2.6 5.6-4.4-4.4L12 22.4l-1.7-6.1-4.4 4.4 2.6-5.6-6.1 1.7 5.6-2.6-5.6-2.6 6.1 1.7-2.6-5.6 4.4 4.4z"/>
+                            </svg>
+                        </span>
+                    </span>
+                    <div>
+                        <h3 class="h5 fw-bold text-primary mb-2">Trabajo con IA, todos los días</h3>
+                        <p class="text-main small mb-3">
+                            Claude Code no es una herramienta que probé: es parte de mi flujo.
+                            Diseñé los workflows asistidos del equipo y acompañé a los
+                            desarrolladores junior hasta que se volvieron rutina. Este
+                            portafolio también se construyó así.
+                        </p>
+                        <div class="d-flex flex-wrap gap-1">
+                            <span class="tech-badge-small">Claude Code</span>
+                            <span class="tech-badge-small">Sistemas multi-agente</span>
+                            <span class="tech-badge-small">GitHub Copilot</span>
+                            <span class="tech-badge-small">Scrum</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5 reveal">
+                <div class="card-custom p-4 h-100">
+                    <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+                        <h3 class="h5 fw-bold text-primary mb-0">El siguiente paso</h3>
+                        <span class="tech-badge badge-learning ms-auto">
+                            <i class="bi bi-book"></i>En formación
+                        </span>
+                    </div>
+                    <p class="text-main small mb-3">
+                        Llevar la infraestructura que ya opero hacia código declarativo y
+                        orquestación. Estudio en curso, todavía sin uso en producción.
+                    </p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="tech-badge badge-learning">Terraform</span>
+                        <span class="tech-badge badge-learning">Kubernetes</span>
+                        <span class="tech-badge badge-learning">IaC</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================================
+     6 · CREDENCIALES — compactas, escaneables
+     ===================================================================== -->
+<section id="formacion" class="py-5 bg-alt">
+    <div class="container">
+        <div class="text-center mb-5 reveal">
+            <p class="section-label justify-content-center">Credenciales</p>
+            <h2 class="section-title" data-descifrar>Formación</h2>
+        </div>
+
+        <div class="row g-4" data-reveal-group>
+            <div class="col-lg-5 reveal">
+                <div class="card-custom p-4 h-100">
+                    <h3 class="h6 fw-bold text-primary mb-3">
+                        <i class="bi bi-mortarboard me-1"></i>Académica
+                    </h3>
+                    <div class="timeline">
+                        <div class="timeline-item mb-3">
+                            <p class="timeline-date mb-1">FEB 2022 — 2027</p>
+                            <h4 class="timeline-role h6 mb-1">Ingeniería de Software · 10.º semestre</h4>
+                            <p class="timeline-company mb-0">Universidad Manuela Beltrán</p>
+                        </div>
+                        <div class="timeline-item">
+                            <p class="timeline-date mb-1">FEB 2014 — NOV 2019</p>
+                            <h4 class="timeline-role h6 mb-1">Bachiller con énfasis en inglés</h4>
+                            <p class="timeline-company mb-0">I. E. Domingo Savio</p>
+                        </div>
+                    </div>
+
+                    <hr style="border-color:var(--paper-edge);">
+
+                    <h3 class="h6 fw-bold text-primary mb-3">
+                        <i class="bi bi-translate me-1"></i>Idiomas
+                    </h3>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-main small">Español</span>
+                        <span class="tech-badge-small">Nativo</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-main small">Inglés</span>
+                        <span class="tech-badge-small">B1/B2 intermedio</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7 reveal">
+                <div class="card-custom p-4 h-100">
+                    <h3 class="h6 fw-bold text-primary mb-3">
+                        <i class="bi bi-patch-check me-1"></i>Certificaciones
+                    </h3>
+
+                    <div class="timeline">
+                        <div class="timeline-item mb-3">
+                            <p class="timeline-date mb-1">PLATZI · 2026</p>
+                            <h4 class="timeline-role h6 mb-1">AWS Cloud Practitioner</h4>
+                            <p class="timeline-company mb-0">Servicios, seguridad, arquitectura y modelo de costos</p>
+                        </div>
+                        <div class="timeline-item mb-3">
+                            <p class="timeline-date mb-1">PLATZI · 2026</p>
+                            <h4 class="timeline-role h6 mb-1">Curso de Claude AI</h4>
+                            <p class="timeline-company mb-0">Prompting, agentes de código y flujos productivos</p>
+                        </div>
+                        <div class="timeline-item mb-3">
+                            <p class="timeline-date mb-1">GOOGLE · 2024</p>
+                            <h4 class="timeline-role h6 mb-1">Google Cloud Computing Foundations</h4>
+                            <p class="timeline-company mb-0">Fundamentos de cloud y servicios de GCP</p>
+                        </div>
+                        <div class="timeline-item mb-3">
+                            <p class="timeline-date mb-1">IBM SKILLSBUILD · 2024</p>
+                            <h4 class="timeline-role h6 mb-1">Enterprise Design Thinking Practitioner</h4>
+                            <p class="timeline-company mb-0">Resolución de problemas centrada en el usuario</p>
+                        </div>
+                        <div class="timeline-item">
+                            <p class="timeline-date mb-1">CISCO · 2023</p>
+                            <h4 class="timeline-role h6 mb-1">CCNA: Introduction to Networks · Learn-A-Thon</h4>
+                            <p class="timeline-company mb-0">Redes, dispositivos y Python Essentials</p>
+                        </div>
+                    </div>
+
+                    <!-- Blandas: una línea, no una sección entera -->
+                    <hr style="border-color:var(--paper-edge);">
+                    <p class="text-muted small mb-2">Cómo trabajo</p>
+                    <div class="d-flex flex-wrap gap-1">
+                        <span class="tech-badge-small">Pensamiento estratégico</span>
+                        <span class="tech-badge-small">Escucha activa</span>
+                        <span class="tech-badge-small">Documentación</span>
+                        <span class="tech-badge-small">Trabajo en equipo</span>
+                        <span class="tech-badge-small">Orientación a clientes</span>
+                        <span class="tech-badge-small">Mejora continua</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================================
+     7 · CONTACTO
+     ===================================================================== -->
+<section id="contacto" class="py-5">
+    <div class="container">
+        <div class="row justify-content-center" data-reveal-group>
+            <div class="col-lg-9 text-center reveal">
+                <p class="section-label justify-content-center">Contacto</p>
+                <h2 class="section-title" data-descifrar>¿Trabajamos juntos?</h2>
+                <p class="section-lead mx-auto mb-4">
+                    Busco equipos donde la automatización y la infraestructura bien hecha
+                    importen. Si eso suena a tu equipo, hablemos.
+                </p>
+            </div>
+
+            <div class="col-lg-9 reveal">
+                <div class="card-custom p-4 p-lg-5">
+                    <div class="row g-4 text-center text-md-start">
+                        <div class="col-md-6">
+                            <p class="section-label mb-2">Escríbeme</p>
+                            <a href="mailto:williamandres1603@gmail.com"
+                               class="text-decoration-none text-main d-block mb-2">
+                                <i class="bi bi-envelope text-primary me-2"></i>williamandres1603@gmail.com
+                            </a>
+                            <a href="tel:+573196632134" class="text-decoration-none text-main d-block">
+                                <i class="bi bi-telephone text-primary me-2"></i>+57 319 663 2134
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="section-label mb-2">Encuéntrame</p>
+                            <a href="https://github.com/ZyFalo" target="_blank" rel="noreferrer"
+                               class="text-decoration-none text-main d-block mb-2">
+                                <i class="bi bi-github text-primary me-2"></i>github.com/ZyFalo
+                            </a>
+                            <a href="https://www.linkedin.com/in/william-andres-pe%C3%B1a-vargas-62aa2a282/"
+                               target="_blank" rel="noreferrer"
+                               class="text-decoration-none text-main d-block">
+                                <i class="bi bi-linkedin text-primary me-2"></i>LinkedIn
+                            </a>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" style="border-color:var(--paper-edge);">
+
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="/contactame/" class="btn btn-primary">
+                            <i class="bi bi-send me-2"></i>Enviar un mensaje
+                        </a>
+                        <a href="/open/" class="btn btn-outline-primary">
+                            <i class="bi bi-eye me-2"></i>Ver mis gadgets
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- =====================================================================
+     Red de desarrolladores — cierre discreto, ya no compite con el CTA
+     ===================================================================== -->
+{% if developers %}
+<section id="desarrolladores" class="py-5 bg-alt">
+    <div class="container">
+        <div class="text-center mb-4 reveal">
+            <p class="section-label justify-content-center">Comunidad</p>
+            <h2 class="h4 mb-0">Colegas que vale la pena conocer</h2>
+        </div>
+
+        <div class="row g-3 justify-content-center" data-reveal-group>
             {% for dev in developers %}
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-4 col-md-6 reveal">
                 <div class="developer-card h-100">
-                    <a
-                        class="data-banner text-decoration-none d-block h-100"
-                        href="{{ dev.tracked_url }}"
-                        data-banner-name="{{ dev.banner_name }}"
-                        target="_blank" rel="noreferrer"
-                    >
-                        <div class="card-custom p-4 h-100 developer-card-inner">
-                            <div class="d-flex align-items-center mb-3">
+                    <a class="data-banner text-decoration-none d-block h-100"
+                       href="{{ dev.tracked_url }}"
+                       data-banner-name="{{ dev.banner_name }}"
+                       target="_blank" rel="noreferrer">
+                        <div class="card-custom p-3 h-100 developer-card-inner">
+                            <div class="d-flex align-items-center mb-2">
                                 <div class="developer-avatar me-3">
                                     <img src="{{ dev.display_avatar }}" alt="{{ dev.name }}" class="rounded-circle">
                                 </div>
                                 <div>
-                                    <h5 class="text-primary fw-bold mb-1">{{ dev.name }}</h5>
+                                    <h3 class="h6 text-primary fw-bold mb-0">{{ dev.name }}</h3>
                                     <p class="text-main small mb-0">{{ dev.role }}</p>
                                 </div>
-                            </div>
-                            <p class="text-main small mb-3">{{ dev.bio }}</p>
-                            <div class="d-flex flex-wrap gap-1 mb-3">
-                                {% for skill in dev.skills_list %}
-                                <span class="tech-badge-small">{{ skill }}</span>
-                                {% endfor %}
                             </div>
                             <div class="mt-auto d-flex align-items-center justify-content-between">
                                 <small class="text-accent">Ver portafolio</small>
@@ -503,189 +939,17 @@
                 </div>
             </div>
             {% endfor %}
-            {% else %}
-            <div class="col-12">
-                <div class="card-custom p-4 text-center d-flex flex-column align-items-center justify-content-center" style="min-height:180px;">
-                    <div class="mb-3">
-                        <i class="bi bi-people text-primary" style="font-size:2.5rem;"></i>
-                    </div>
-                    <h5 class="text-primary fw-bold mb-2">¡Red vacía por ahora!</h5>
-                    <p class="text-main mb-0">Pronto se sumarán colegas desarrolladores a esta red.<br>¿Te gustaría aparecer aquí? <a href="/contactame/" class="text-primary fw-medium">Contáctame</a>.</p>
-                </div>
-            </div>
-            {% endif %}
-        </div>
-
-        <!-- Analytics Info -->
-        {% comment %} <div class="row justify-content-center mt-5">
-            <div class="col-lg-8">
-                <div class="card-custom p-4 text-center">
-                    <div class="d-flex align-items-center justify-content-center mb-3">
-                        <i class="bi bi-graph-up text-primary fs-3 me-3"></i>
-                        <h4 class="text-primary fw-bold mb-0">Tracking Avanzado</h4>
-                    </div>
-                    <p class="text-main mb-3">
-                        Cada clic en estos portafolios se rastrea automáticamente con Google Analytics 4 y Tag Manager, 
-                        incluyendo parámetros UTM personalizados para análisis detallado del tráfico referido.
-                    </p>
-                    <div class="d-flex flex-wrap justify-content-center gap-2">
-                        <span class="badge bg-primary">GTM Events</span>
-                        <span class="badge bg-primary">UTM Tracking</span>
-                        <span class="badge bg-primary">Referral Analytics</span>
-                        <span class="badge bg-primary">Click Tracking</span>
-                    </div>
-                </div>
-            </div>
-        </div> {% endcomment %}
-    </div>
-</section>
-
-{% comment %} <!-- Contacto Final -->
-<section id="contacto" class="py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <h2 class="text-primary text-center mb-5 fw-bold">¡Trabajemos Juntos!</h2>
-                <div class="card-custom p-4 text-center">
-                    <p class="text-main fs-5 mb-4">¿Tienes un proyecto en mente? Me especializo en crear soluciones web robustas y escalables.</p>
-                    <div class="d-flex flex-wrap justify-content-center gap-3">
-                        <a href="/contactame/" class="btn btn-primary">
-                            <i class="bi bi-envelope me-2"></i>Escríbeme
-                        </a>
-                        <a href="/open/" class="btn btn-outline-primary">
-                            <i class="bi bi-eye me-2"></i>Ver Proyectos
-                        </a>
-                    </div>
-                    <p class="text-muted small mt-3">Respuesta garantizada en 24 horas</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> {% endcomment %}
-
-<section id="contacto" class="py-5 bg-alt">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
-                <h2 class="text-primary text-center mb-5 fw-bold">¡Trabajemos Juntos!</h2>
-                <div class="card-custom p-4 text-center">
-                    <p class="text-main fs-5 mb-4">
-                        ¿Tienes un proyecto interesante? ¿Necesitas ayuda con desarrollo backend o bases de datos? 
-                        ¡Me encantaría conocer más sobre tu próximo desafío tecnológico!
-                    </p>
-                    <div class="row g-3 justify-content-center">
-                        <div class="col-sm-6 col-md-4">
-                            <a href="/contactame/" class="btn btn-primary w-100">
-                                <i class="bi bi-envelope me-2"></i>Escríbeme
-                            </a>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                            <a href="https://www.linkedin.com/in/william-andres-pe%C3%B1a-vargas-62aa2a282/" class="btn btn-outline-primary w-100" target="_blank">
-                                <i class="bi bi-linkedin me-2"></i>LinkedIn
-                            </a>
-                        </div>
-                        <div class="col-sm-6 col-md-4">
-                            <a href="https://github.com/ZyFalo" class="btn btn-outline-primary w-100" target="_blank">
-                                <i class="bi bi-github me-2"></i>GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </section>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}
+{% load static %}
+<script src="{% static 'js/pipeline.js' %}"></script>
 <script>
-    // Banner click → evento a dataLayer (GTM)
-    document.querySelectorAll('.data-banner').forEach(el => {
-        el.addEventListener('click', () => {
-            const name = el.getAttribute('data-banner-name') || 'unknown';
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({ 
-                event: 'developer_portfolio_click', 
-                developer_name: name,
-                source: 'william_portfolio',
-                timestamp: new Date().toISOString()
-            });
-            console.log('Developer portfolio clicked:', name);
-        });
-    });
-
-    // Smooth scroll para navegación interna
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-
-    // Animación simple para tarjetas al hacer scroll
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    // Aplicar animación a todas las tarjetas
-    document.querySelectorAll('.card-custom').forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-        observer.observe(card);
-    });
-
-    // Tracking básico de clicks en desarrolladores
-    document.querySelectorAll('.developer-card').forEach(card => {
-        const developerName = card.querySelector('.data-banner').getAttribute('data-banner-name');
-        
-        card.addEventListener('click', () => {
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-                event: 'developer_card_click',
-                developer_name: developerName,
-                timestamp: new Date().toISOString()
-            });
-        });
-    });
-
-    // Tracking de visualización de sección
-    const devSectionObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
-                    event: 'developer_section_view',
-                    total_developers: document.querySelectorAll('.developer-card').length,
-                    timestamp: new Date().toISOString()
-                });
-            }
-        });
-    }, { threshold: 0.5 });
-
-    // Observar la sección de desarrolladores
-    const devSection = document.getElementById('desarrolladores');
-    if (devSection) {
-        devSectionObserver.observe(devSection);
-    }
-
-    // Estándar GA4: select_promotion al hacer clic en banners de desarrolladores
+    // Estándar GA4: select_promotion + evento heredado en banners de desarrolladores
     document.querySelectorAll('.data-banner').forEach(el => {
         el.addEventListener('click', () => {
             const name = el.getAttribute('data-banner-name') || 'unknown';
@@ -703,6 +967,12 @@
                 link_url: link,
                 utm_content: utmContent,
                 page_location: window.location.href,
+                timestamp: new Date().toISOString()
+            });
+            window.dataLayer.push({
+                event: 'developer_portfolio_click',
+                developer_name: name,
+                source: 'william_portfolio',
                 timestamp: new Date().toISOString()
             });
         });
