@@ -637,82 +637,93 @@
                     </div>
 
                     <div class="arq-envoltura">
-                        <svg id="arquitectura" viewBox="0 0 840 290" role="img"
-                             aria-label="Diagrama del recorrido de una petición: el visitante entra por HTTPS, pasa por el proxy de Railway, llega al contenedor Docker donde Gunicorn entrega la petición a Django, que consulta la base de datos, y la respuesta vuelve al visitante.">
+                        <svg id="arquitectura" viewBox="0 0 762 322" role="img"
+                             aria-label="Diagrama del recorrido de una petición: el visitante entra por HTTPS a Railway, que aloja tanto el contenedor Docker con Gunicorn y Django como el servicio de base de datos; la respuesta HTML vuelve al visitante.">
 
-                            <!-- Punta de flecha reutilizable -->
                             <defs>
+                                <!-- context-stroke hace que la punta tome el color del
+                                     trazo que la usa; un <marker> vive en <defs>, así que
+                                     currentColor se resolvería contra el SVG raíz y las
+                                     flechas saldrían grises. -->
                                 <marker id="punta" viewBox="0 0 10 10" refX="9" refY="5"
                                         markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                                    <path d="M0 0 L10 5 L0 10 z" fill="currentColor" />
+                                    <path d="M0 0 L10 5 L0 10 z"
+                                          fill="context-stroke" style="fill: context-stroke;" />
                                 </marker>
                             </defs>
 
-                            <!-- Contenedor Docker: envuelve solo a los procesos -->
+                            <!-- Railway envuelve todo lo desplegado: el proxy de entrada,
+                                 el contenedor de la aplicación y el servicio de datos. -->
                             <g class="arq-nodo">
-                                <rect x="352" y="46" width="372" height="112" rx="16"
-                                      fill="none" stroke="currentColor" stroke-dasharray="5 5"
-                                      style="color: var(--accent); opacity:.45" />
-                                <use href="#logo-docker" x="360" y="26" width="13" height="13" class="arq-logo"/>
-                                <text class="arq-etiqueta" x="380" y="38">contenedor Docker</text>
+                                <rect class="arq-plataforma" x="176" y="44" width="566" height="222" rx="18" />
+                                <use href="#logo-railway" x="192" y="26" width="13" height="13" class="arq-logo"/>
+                                <text class="arq-etiqueta" x="212" y="38">Railway · plataforma</text>
                             </g>
 
                             <!-- Visitante -->
                             <g class="arq-nodo">
-                                <rect class="arq-caja" x="14" y="72" width="132" height="60" rx="12" />
-                                <text class="arq-titulo" x="80" y="98" text-anchor="middle">Visitante</text>
-                                <text class="arq-sub" x="80" y="117" text-anchor="middle">navegador</text>
+                                <rect class="arq-caja" x="14" y="110" width="124" height="58" rx="12" />
+                                <text class="arq-titulo" x="76" y="135" text-anchor="middle">Visitante</text>
+                                <text class="arq-sub" x="76" y="153" text-anchor="middle">navegador</text>
                             </g>
 
-                            <!-- Railway -->
+                            <!-- Entrada de Railway -->
                             <g class="arq-nodo">
-                                <rect class="arq-caja" x="196" y="72" width="132" height="60" rx="12" />
-                                <use href="#logo-railway" x="216" y="86" width="15" height="15" class="arq-logo"/>
-                                <text class="arq-titulo" x="272" y="98" text-anchor="middle">Railway</text>
-                                <text class="arq-sub" x="262" y="117" text-anchor="middle">TLS · proxy</text>
+                                <rect class="arq-caja" x="196" y="110" width="112" height="58" rx="12" />
+                                <text class="arq-titulo" x="252" y="135" text-anchor="middle">Edge</text>
+                                <text class="arq-sub" x="252" y="153" text-anchor="middle">TLS · proxy</text>
+                            </g>
+
+                            <!-- Contenedor Docker, dentro de Railway -->
+                            <g class="arq-nodo">
+                                <rect x="344" y="86" width="378" height="106" rx="14"
+                                      fill="none" stroke="currentColor" stroke-dasharray="5 5"
+                                      style="color: var(--accent); opacity:.5" />
+                                <use href="#logo-docker" x="352" y="70" width="12" height="12" class="arq-logo"/>
+                                <text class="arq-etiqueta" x="370" y="80">contenedor Docker</text>
                             </g>
 
                             <!-- Gunicorn -->
                             <g class="arq-nodo">
-                                <rect class="arq-caja arq-caja-destacada" x="374" y="72" width="140" height="60" rx="12" />
-                                <use href="#logo-gunicorn" x="392" y="86" width="15" height="15" class="arq-logo"/>
-                                <text class="arq-titulo" x="454" y="98" text-anchor="middle">Gunicorn</text>
-                                <text class="arq-sub" x="444" y="117" text-anchor="middle">3 workers</text>
+                                <rect class="arq-caja arq-caja-destacada" x="362" y="110" width="134" height="58" rx="12" />
+                                <use href="#logo-gunicorn" x="378" y="124" width="14" height="14" class="arq-logo"/>
+                                <text class="arq-titulo" x="436" y="135" text-anchor="middle">Gunicorn</text>
+                                <text class="arq-sub" x="429" y="153" text-anchor="middle">3 workers</text>
                             </g>
 
                             <!-- Django -->
                             <g class="arq-nodo">
-                                <rect class="arq-caja arq-caja-destacada" x="562" y="72" width="140" height="60" rx="12" />
-                                <use href="#logo-django" x="582" y="86" width="15" height="15" class="arq-logo"/>
-                                <text class="arq-titulo" x="642" y="98" text-anchor="middle">Django 5</text>
-                                <text class="arq-sub" x="632" y="117" text-anchor="middle">WhiteNoise</text>
+                                <rect class="arq-caja arq-caja-destacada" x="540" y="110" width="134" height="58" rx="12" />
+                                <use href="#logo-django" x="556" y="124" width="14" height="14" class="arq-logo"/>
+                                <text class="arq-titulo" x="614" y="135" text-anchor="middle">Django 5</text>
+                                <text class="arq-sub" x="607" y="153" text-anchor="middle">WhiteNoise</text>
                             </g>
 
-                            <!-- Base de datos: colgada de Django, no del contenedor -->
+                            <!-- Base de datos: otro servicio de Railway, fuera del contenedor -->
                             <g class="arq-nodo">
-                                <rect class="arq-caja" x="562" y="196" width="140" height="56" rx="12" />
-                                <use href="#logo-mysql" x="576" y="209" width="15" height="15" class="arq-logo"/>
-                                <text class="arq-titulo" x="642" y="220" text-anchor="middle">Base de datos</text>
-                                <text class="arq-sub" x="632" y="238" text-anchor="middle">MySQL · SQLite</text>
+                                <rect class="arq-caja" x="540" y="200" width="134" height="52" rx="12" />
+                                <use href="#logo-mysql" x="556" y="212" width="14" height="14" class="arq-logo"/>
+                                <text class="arq-titulo" x="614" y="223" text-anchor="middle">Base de datos</text>
+                                <text class="arq-sub" x="607" y="241" text-anchor="middle">MySQL gestionado</text>
                             </g>
 
-                            <!-- Ida: cada tramo con su protocolo -->
-                            <path class="arq-trazo" d="M146 102 H190" marker-end="url(#punta)" />
-                            <text class="arq-etiqueta" x="168" y="92" text-anchor="middle">HTTPS</text>
+                            <!-- Ida -->
+                            <path class="arq-trazo" d="M138 139 H190" marker-end="url(#punta)" />
+                            <text class="arq-etiqueta" x="164" y="129" text-anchor="middle">HTTPS</text>
 
-                            <path class="arq-trazo" d="M328 102 H368" marker-end="url(#punta)" />
+                            <path class="arq-trazo" d="M308 139 H356" marker-end="url(#punta)" />
 
-                            <path class="arq-trazo" d="M514 102 H556" marker-end="url(#punta)" />
-                            <text class="arq-etiqueta" x="535" y="92" text-anchor="middle">WSGI</text>
+                            <path class="arq-trazo" d="M496 139 H534" marker-end="url(#punta)" />
+                            <text class="arq-etiqueta" x="515" y="129" text-anchor="middle">WSGI</text>
 
-                            <!-- Consulta a datos: sale de Django -->
-                            <path class="arq-trazo" d="M632 132 V190" marker-end="url(#punta)" />
-                            <text class="arq-etiqueta" x="644" y="166">SQL</text>
+                            <!-- Consulta interna: no sale de la red de Railway -->
+                            <path class="arq-trazo" d="M607 168 V194" marker-end="url(#punta)" />
+                            <text class="arq-etiqueta" x="619" y="186">SQL</text>
 
-                            <!-- Vuelta: discontinua, para distinguirla de la ida -->
+                            <!-- Vuelta -->
                             <path class="arq-trazo arq-trazo-vuelta"
-                                  d="M562 132 V172 H80 V138" marker-end="url(#punta)" />
-                            <text class="arq-etiqueta" x="320" y="164" text-anchor="middle">HTML renderizado</text>
+                                  d="M344 192 V292 H76 V174" marker-end="url(#punta)" />
+                            <text class="arq-etiqueta" x="210" y="286" text-anchor="middle">HTML renderizado</text>
                         </svg>
                     </div>
                 </div>

@@ -2421,3 +2421,10 @@ button:focus-visible,
     fill: var(--primary);
     opacity: 0.85;
 }
+
+/* Caja de la plataforma: contiene al contenedor y al servicio de datos */
+.arq-plataforma {
+    fill: color-mix(in srgb, var(--accent) 5%, transparent);
+    stroke: color-mix(in srgb, var(--accent) 38%, transparent);
+    stroke-width: 1.2;
+}
