@@ -56,6 +56,7 @@
     --bs-focus-ring-color: rgba(205, 133, 63, 0.28);
 
     /* Ritmo */
+    --ancho-maximo: 1140px;
     --radius-sm: 0.65rem;
     --radius: 1rem;
     --radius-lg: 1.5rem;
@@ -2402,4 +2403,23 @@ button:focus-visible,
     fill: color-mix(in srgb, var(--accent) 5%, transparent);
     stroke: color-mix(in srgb, var(--accent) 38%, transparent);
     stroke-width: 1.2;
+}
+
+
+/* =========================================================================
+   37. ANCHO DE PÁGINA
+   Bootstrap deja crecer el contenedor hasta 1320 px, y en monitores anchos
+   los párrafos alcanzan longitudes incómodas de leer. Se recoge a un ancho
+   más contenido; al ir sobre `.container`, afecta a todas las páginas.
+   ========================================================================= */
+.container,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl,
+.container-xxl {
+    max-width: var(--ancho-maximo);
+    /* Bootstrap deja 0.75rem a cada lado; se añade un respiro extra para
+       que el contenido no quede pegado al borde en pantallas estrechas. */
+    padding-inline: calc(0.75rem + 5px);
 }

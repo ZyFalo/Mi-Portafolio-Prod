@@ -633,7 +633,7 @@
                     </div>
 
                     <div class="arq-envoltura">
-                        <svg id="arquitectura" viewBox="0 0 762 322" role="img"
+                        <svg id="arquitectura" viewBox="0 0 762 366" role="img"
                              aria-label="Diagrama del recorrido de una petición: el visitante entra por HTTPS a Railway, que aloja tanto el contenedor Docker con Gunicorn y Django como el servicio de base de datos; la respuesta HTML vuelve al visitante.">
 
                             <defs>
@@ -651,7 +651,7 @@
                             <!-- Railway envuelve todo lo desplegado: el proxy de entrada,
                                  el contenedor de la aplicación y el servicio de datos. -->
                             <g class="arq-nodo">
-                                <rect class="arq-plataforma" x="176" y="44" width="566" height="222" rx="18" />
+                                <rect class="arq-plataforma" x="176" y="44" width="566" height="252" rx="18" />
                                 <use href="#logo-railway" x="192" y="26" width="13" height="13" class="arq-logo"/>
                                 <text class="arq-etiqueta" x="212" y="38">Railway · plataforma</text>
                             </g>
@@ -697,10 +697,10 @@
 
                             <!-- Base de datos: otro servicio de Railway, fuera del contenedor -->
                             <g class="arq-nodo">
-                                <rect class="arq-caja" x="540" y="200" width="134" height="52" rx="12" />
-                                <use href="#logo-mysql" x="556" y="212" width="14" height="14" class="arq-logo"/>
-                                <text class="arq-titulo" x="614" y="223" text-anchor="middle">Base de datos</text>
-                                <text class="arq-sub" x="607" y="241" text-anchor="middle">MySQL gestionado</text>
+                                <rect class="arq-caja" x="540" y="222" width="134" height="52" rx="12" />
+                                <use href="#logo-mysql" x="556" y="234" width="14" height="14" class="arq-logo"/>
+                                <text class="arq-titulo" x="614" y="245" text-anchor="middle">Base de datos</text>
+                                <text class="arq-sub" x="607" y="263" text-anchor="middle">MySQL gestionado</text>
                             </g>
 
                             <!-- Ida -->
@@ -713,13 +713,13 @@
                             <text class="arq-etiqueta" x="515" y="129" text-anchor="middle">WSGI</text>
 
                             <!-- Consulta interna: no sale de la red de Railway -->
-                            <path class="arq-trazo" d="M607 168 V194" marker-end="url(#punta)" />
-                            <text class="arq-etiqueta" x="619" y="186">SQL</text>
+                            <path class="arq-trazo" d="M607 168 V216" marker-end="url(#punta)" />
+                            <text class="arq-etiqueta" x="619" y="197">SQL</text>
 
                             <!-- Vuelta -->
                             <path class="arq-trazo arq-trazo-vuelta"
-                                  d="M344 192 V292 H76 V174" marker-end="url(#punta)" />
-                            <text class="arq-etiqueta" x="210" y="286" text-anchor="middle">HTML renderizado</text>
+                                  d="M344 192 V330 H76 V174" marker-end="url(#punta)" />
+                            <text class="arq-etiqueta" x="210" y="322" text-anchor="middle">HTML renderizado</text>
                         </svg>
                     </div>
                 </div>
