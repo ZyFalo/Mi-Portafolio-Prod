@@ -78,7 +78,7 @@ docker run -e DEBUG=0 -e SECRET_KEY=your-key -p 8000:8000 mi-portafolio
 ### Production flow (Docker/Railway)
 `Dockerfile` (Python 3.12-slim) → `docker/entrypoint.sh` → `start.sh` (migrations + superuser creation + Gunicorn with 3 workers). `railway.json` configures Railway to use the Dockerfile builder.
 
-**Note:** `start.sh` only creates a superuser when `DJANGO_SUPERUSER_USERNAME`, `DJANGO_SUPERUSER_EMAIL` and `DJANGO_SUPERUSER_PASSWORD` are set. Never hardcode credentials here: this file is versioned in a public repository.
+**Superuser & access recovery:** `start.sh` only touches the superuser when `DJANGO_SUPERUSER_USERNAME`, `DJANGO_SUPERUSER_EMAIL` and `DJANGO_SUPERUSER_PASSWORD` are set. If the account already exists, its password is re-synced from the variable — so to regain admin access, change the value in Railway and redeploy. Never hardcode credentials here: this file is versioned in a public repository.
 
 ## Guardrails
 
