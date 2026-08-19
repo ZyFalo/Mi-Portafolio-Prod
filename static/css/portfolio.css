@@ -1270,6 +1270,27 @@ button:focus-visible,
 .status-valor .v-ok { color: var(--sage); }
 .status-valor .v-accent { color: var(--accent); }
 
+/* Cuando un visitante despliega, su commit toma el relevo como versión en
+   producción: un destello breve señala el cambio sin robar la atención. */
+#status-version {
+    border-radius: 0.25rem;
+    padding-inline: 0.22rem;
+    margin-inline: -0.22rem;
+}
+
+#status-version.is-nuevo {
+    animation: revision-nueva 1.6s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+@keyframes revision-nueva {
+    0%   { background: color-mix(in srgb, var(--accent) 34%, transparent); }
+    100% { background: transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #status-version.is-nuevo { animation: none; }
+}
+
 .status-pie {
     padding: 0.7rem 1.15rem;
     border-top: 1px solid var(--paper-edge);

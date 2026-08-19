@@ -84,25 +84,59 @@
 
         const relojUptime = document.getElementById('status-uptime');
         const relojDesplegado = document.getElementById('status-desplegado');
+        const version = document.getElementById('status-version');
         const arranque = parseFloat(panel.dataset.arranque || '0');
-        const despliegue = parseFloat(panel.dataset.despliegue || '0');
+
+        // La versión en producción es la del último deploy del pipeline, así
+        // que el instante de referencia cambia sobre la marcha: el reloj se
+        // reinicia sin recargar la página.
+        let despliegue = parseFloat(panel.dataset.despliegue || '0');
 
         // Ambos relojes avanzan en pantalla sin volver a pedir nada al
-        // servidor: el del proceso se reinicia con cada arranque, el del
-        // despliegue solo cambia cuando se publica una versión nueva.
-        function tictac(elemento, desde) {
-            if (!elemento || !desde) return;
-            const refrescar = function () {
-                elemento.textContent = formatearUptime(Math.floor(Date.now() / 1000 - desde));
-            };
-            refrescar();
-            setInterval(refrescar, 1000);
+        // servidor: el del proceso cuenta desde el arranque del contenedor,
+        // el de producción desde el último deploy publicado.
+        function pintarRelojes() {
+            const ahora = Date.now() / 1000;
+            if (relojUptime && arranque) {
+                relojUptime.textContent = formatearUptime(Math.floor(ahora - arranque));
+            }
+            if (relojDesplegado && despliegue) {
+                relojDesplegado.textContent = formatearUptime(Math.floor(ahora - despliegue));
+            }
         }
 
-        tictac(relojUptime, arranque);
-        tictac(relojDesplegado, despliegue);
+        pintarRelojes();
+        setInterval(pintarRelojes, 1000);
 
-        // Refresco discreto del resto de métricas
+        // Publica una revisión nueva en el panel: el hash pasa a ser el suyo y
+        // el contador de "en producción" vuelve a cero. La llama pipeline.js
+        // en cuanto un visitante completa su deploy, para que vea su propio
+        // commit tomar el relevo.
+        window.publicarRevision = function (deploy, total) {
+            if (!deploy || !deploy.commit) return;
+
+            const contador = document.getElementById('status-deploys');
+            if (contador && typeof total === 'number') contador.textContent = total;
+
+            despliegue = deploy.created_at
+                ? new Date(deploy.created_at).getTime() / 1000
+                : Date.now() / 1000;
+
+            if (version) {
+                version.textContent = deploy.commit;
+                version.title = [deploy.actor, deploy.full_message]
+                    .filter(Boolean).join(' · ');
+
+                // Reiniciar la animación exige forzar un reflujo intermedio
+                version.classList.remove('is-nuevo');
+                void version.offsetWidth;
+                version.classList.add('is-nuevo');
+            }
+
+            pintarRelojes();
+        };
+
+        // Refresco discreto: otro visitante puede desplegar mientras se lee
         const url = panel.dataset.url;
         if (!url) return;
 
@@ -112,8 +146,22 @@
                 const respuesta = await fetch(url, { headers: { Accept: 'application/json' } });
                 if (!respuesta.ok) return;
                 const datos = await respuesta.json();
+
                 const contador = document.getElementById('status-deploys');
                 if (contador) contador.textContent = datos.deploys_visitantes;
+
+                // Se compara por hash y no por fecha: los flotantes del
+                // servidor y los del navegador nunca coinciden al milisegundo
+                // y el panel destellaría cada minuto sin motivo.
+                const publicado = datos.version && datos.version.commit;
+                if (publicado && version && publicado !== version.textContent.trim()) {
+                    window.publicarRevision({
+                        commit: publicado,
+                        actor: datos.version.autor,
+                        full_message: datos.version.asunto,
+                        created_at: new Date(datos.despliegue * 1000).toISOString()
+                    }, datos.deploys_visitantes);
+                }
             } catch (e) { /* sin conexión: el panel conserva el último valor */ }
         }, 60000);
     }

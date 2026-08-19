@@ -260,7 +260,9 @@
                             </div>
                             <div class="status-celda">
                                 <span class="status-etiqueta">Versión</span>
-                                <span class="status-valor"><span class="v-accent">{{ estado.version.commit|default:"—" }}</span></span>
+                                <span class="status-valor"><span id="status-version" class="v-accent"
+                                      title="{{ estado.version.autor }}{% if estado.version.asunto %} · {{ estado.version.asunto }}{% endif %}"
+                                >{{ estado.version.commit|default:"—" }}</span></span>
                             </div>
                             <div class="status-celda">
                                 <span class="status-etiqueta">Runtime</span>

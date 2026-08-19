@@ -4,6 +4,10 @@ Estado del sistema en vivo.
 Todos los valores que se publican aquí son reales: se leen del proceso, del
 repositorio y de la base de datos. Nada se simula — la gracia del panel es
 justamente que sea verificable.
+
+La versión en producción es la del último deploy del pipeline colaborativo:
+el panel describe la aplicación que construyen los visitantes, servida sobre
+la infraestructura real de este portafolio.
 """
 
 import os
@@ -42,7 +46,10 @@ def _git(*argumentos):
 
 def _detectar_version():
     """
-    Identifica la revisión desplegada.
+    Identifica la revisión del repositorio que sirve el sitio.
+
+    Es el commit inicial del sistema: a partir de ahí, quien manda en el panel
+    son los deploys que dejan los visitantes.
 
     En Railway el repositorio no viaja en la imagen, así que se prefieren las
     variables de entorno que la plataforma inyecta durante el build.
@@ -67,31 +74,32 @@ def _detectar_version():
     }
 
 
-def _momento_despliegue():
-    """
-    Instante en que se desplegó esta versión, como marca de tiempo Unix.
+# El repositorio no cambia mientras el proceso vive: se resuelve una sola vez.
+VERSION = _detectar_version()
 
-    Se busca por orden de fiabilidad: el sello que el Dockerfile escribe
-    durante el build, una variable de entorno, y por último la fecha del
-    último commit (el caso del entorno local, donde sí hay repositorio).
+
+def _fecha_respaldo():
     """
-    candidatos = []
+    Fecha del commit inicial, para cuando todavía no hay deploys de visitantes.
+
+    Se busca por orden de fidelidad: la fecha real del último commit (solo
+    disponible donde viaja el repositorio, es decir en local), el sello que el
+    Dockerfile escribe durante el build, y una variable de entorno.
+    """
+    candidatos = [VERSION.get("fecha", ""), os.environ.get("BUILD_TIMESTAMP", "")]
 
     sello = RAIZ / "BUILD_TIME"
     try:
         if sello.is_file():
-            candidatos.append(sello.read_text(encoding="utf-8").strip())
+            candidatos.insert(1, sello.read_text(encoding="utf-8").strip())
     except OSError:
         pass
 
-    candidatos.append(os.environ.get("BUILD_TIMESTAMP", ""))
-    candidatos.append(VERSION.get("fecha", ""))
-
-    for texto in candidatos:
-        if not texto:
+    for texto_fecha in candidatos:
+        if not texto_fecha:
             continue
         try:
-            momento = datetime.fromisoformat(texto.replace("Z", "+00:00"))
+            momento = datetime.fromisoformat(texto_fecha.replace("Z", "+00:00"))
             if momento.tzinfo is None:
                 momento = momento.replace(tzinfo=timezone.utc)
             return momento.timestamp()
@@ -101,9 +109,43 @@ def _momento_despliegue():
     return None
 
 
-# La revisión no cambia mientras el proceso vive: se resuelve una sola vez.
-VERSION = _detectar_version()
-DESPLIEGUE = _momento_despliegue()
+def _revision_en_produccion():
+    """
+    Revisión que el panel declara en producción.
+
+    El sistema que describe este panel no es el repositorio del portafolio,
+    sino la aplicación que se construye entre todos: cada visitante que lanza
+    su pipeline publica una versión nueva, y esa pasa a ser la que está en
+    producción. Mientras nadie haya desplegado se muestra la revisión del
+    repositorio, que hace las veces de commit inicial.
+    """
+    try:
+        from portfolio.apps.pipeline.models import Deploy
+
+        # El modelo ya ordena por fecha descendente y tiene índice para ello
+        ultimo = Deploy.objects.filter(is_visible=True).first()
+    except Exception:
+        # Sin base de datos todavía (migraciones, collectstatic)
+        ultimo = None
+
+    if ultimo is None:
+        return {
+            "commit": VERSION.get("commit", ""),
+            "rama": VERSION.get("rama", ""),
+            "autor": "",
+            "asunto": VERSION.get("asunto", ""),
+            "momento": _fecha_respaldo(),
+            "inicial": True,
+        }
+
+    return {
+        "commit": ultimo.commit_hash,
+        "rama": VERSION.get("rama", ""),
+        "autor": ultimo.actor,
+        "asunto": ultimo.mensaje_convencional,
+        "momento": ultimo.created_at.timestamp(),
+        "inicial": False,
+    }
 
 
 def _motor_bd():
@@ -117,17 +159,24 @@ def _motor_bd():
 
 
 def formatear_uptime(segundos):
-    """Convierte segundos en una cadena compacta: 3d 4h 12m."""
-    segundos = int(segundos)
+    """
+    Convierte segundos en una cadena compacta: 3d 4h 12m, 2h 5m 30s, 40s.
+
+    El formato es el mismo que usa formatearUptime() en efectos.js: los relojes
+    siguen contando en el navegador y no deben dar un salto al tomar el relevo.
+    """
+    segundos = max(0, int(segundos))
     dias, resto = divmod(segundos, 86400)
     horas, resto = divmod(resto, 3600)
-    minutos = resto // 60
+    minutos, restantes = divmod(resto, 60)
 
     if dias:
         return f"{dias}d {horas}h {minutos}m"
     if horas:
-        return f"{horas}h {minutos}m"
-    return f"{minutos}m"
+        return f"{horas}h {minutos}m {restantes}s"
+    if minutos:
+        return f"{minutos}m {restantes}s"
+    return f"{restantes}s"
 
 
 def recolectar():
@@ -142,9 +191,11 @@ def recolectar():
     except Exception:
         deploys = 0
 
-    # Antigüedad del despliegue: no se reinicia aunque el proceso sí lo haga
-    if DESPLIEGUE:
-        desde_despliegue = max(0, time.time() - DESPLIEGUE)
+    # Antigüedad de la versión publicada: solo cambia cuando alguien despliega
+    revision = _revision_en_produccion()
+    despliegue = revision["momento"]
+    if despliegue:
+        desde_despliegue = max(0, time.time() - despliegue)
         desplegado = formatear_uptime(desde_despliegue)
     else:
         desde_despliegue = None
@@ -156,11 +207,16 @@ def recolectar():
         "uptime_segundos": int(activo),
         "uptime": formatear_uptime(activo),
         "arranque": ARRANQUE,
-        # Tiempo desde la última publicación: es el dato estable
-        "despliegue": DESPLIEGUE,
+        # Tiempo desde el último deploy publicado en el muro
+        "despliegue": despliegue,
         "desplegado_segundos": int(desde_despliegue) if desde_despliegue else None,
         "desplegado": desplegado,
-        "version": VERSION,
+        "version": {
+            "commit": revision["commit"],
+            "rama": revision["rama"],
+            "autor": revision["autor"],
+            "asunto": revision["asunto"],
+        },
         "entorno": "producción" if not settings.DEBUG else "local",
         "runtime": f"Python {platform.python_version()}",
         "framework": f"Django {django.get_version()}",

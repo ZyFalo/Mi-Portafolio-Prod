@@ -270,6 +270,12 @@
             }
             actualizarContador(datos.total);
 
+            // El commit del visitante pasa a ser la versión en producción:
+            // el panel de estado lo refleja al instante (ver efectos.js)
+            if (typeof window.publicarRevision === 'function') {
+                window.publicarRevision(deploy, datos.total);
+            }
+
             form.reset();
             empujarEvento('pipeline_deploy_exitoso', {
                 commit: deploy.commit,
