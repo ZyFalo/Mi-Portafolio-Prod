@@ -5,13 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{% block title %}Portafolio{% endblock %}</title>
     <meta name="description" content="{% block meta_description %}Portafolio y proyectos{% endblock %}">
+    <meta name="theme-color" content="#FAF8F5">
+
+    <!-- Favicon: la "W" sobre el terracota de la marca -->
+    {% load static %}
+    <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{% static 'img/favicon.svg' %}">
+
+    <!-- Evita el parpadeo de tema: se aplica antes de pintar -->
+    <script>
+      (function () {
+        try {
+          var guardado = localStorage.getItem('tema');
+          var prefiereOscuro = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var tema = guardado || (prefiereOscuro ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', tema);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
+
+    <!-- Tipografía: Fraunces (display), Karla (texto), JetBrains Mono (técnico) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Karla:ital,wght@0,300..700;1,300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    
+
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    
+
     <!-- Custom CSS -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/portfolio.css' %}">
@@ -88,22 +113,28 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <!-- Header con Navbar -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container">
-                <a class="navbar-brand fw-bold text-primary fs-3" href="/">William Peña</a>
-                
-                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <a class="navbar-brand" href="/">William Peña<span class="brand-dot">.</span></a>
+
+                <div class="d-flex align-items-center gap-2 order-lg-3">
+                    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Cambiar entre modo claro y oscuro" title="Cambiar tema">
+                        <i class="bi bi-moon-stars" aria-hidden="true"></i>
+                    </button>
+
+                    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Abrir menú de navegación">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+
+                <div class="collapse navbar-collapse order-lg-2" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link text-main fw-medium" href="/">Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-main fw-medium" href="/open/">Gadgets & Setups</a>
+                            <a class="nav-link text-main fw-medium" href="/open/">Gadgets &amp; Setups</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-main fw-medium" href="/fyq/">FAQ</a>
@@ -114,6 +145,7 @@
                     </ul>
                 </div>
             </div>
+            <div class="read-progress-track"><div id="read-progress"></div></div>
         </nav>
     </header>
 
@@ -123,25 +155,25 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-4 bg-white">
+    <footer class="py-4">
         <div class="container">
             <div class="row align-items-center">
                 <!-- Derechos reservados -->
                 <div class="col-12 col-md-6 text-center text-md-start order-2 order-md-1">
-                    <p class="text-main mb-0" aria-label="Copyright">
+                    <p class="text-main mb-0 small" aria-label="Copyright">
                     &copy; 2026 William Andrés Peña Vargas. Todos los derechos reservados.
                     </p>
                 </div>
-                
+
                 <!-- Navegación secundaria -->
-                <div class="col-12 col-md-6 text-center text-md-end order-1 order-md-2 mb-4 mb-md-0">
+                <div class="col-12 col-md-6 text-center text-md-end order-1 order-md-2 mb-3 mb-md-0">
                     <nav aria-label="Enlaces secundarios del pie de página">
                         <ul class="list-inline mb-0">
                             <li class="list-inline-item">
                                 <a href="/" class="text-main text-decoration-none small">Inicio</a>
                             </li>
                             <li class="list-inline-item">
-                                <a href="/open/" class="text-main text-decoration-none small">Gadgets & Setups</a>
+                                <a href="/open/" class="text-main text-decoration-none small">Gadgets &amp; Setups</a>
                             </li>
                             <li class="list-inline-item">
                                 <a href="/fyq/" class="text-main text-decoration-none small">FAQ</a>
@@ -155,6 +187,10 @@
             </div>
         </div>
     </footer>
+
+    <button class="back-to-top" id="back-to-top" type="button" aria-label="Volver arriba">
+        <i class="bi bi-arrow-up" aria-hidden="true"></i>
+    </button>
 
     <div id="toast" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100;">
         <div class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
@@ -170,10 +206,17 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    
+
+    <!-- Librerías de animación: GSAP + ScrollTrigger (reveals) y Lenis (scroll suave) -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+
     <!-- Custom JS -->
     {% load static %}
     <script src="{% static 'js/portfolio.js' %}"></script>
+    <script src="{% static 'js/motion.js' %}"></script>
+    <script src="{% static 'js/efectos.js' %}"></script>
 
     {% block scripts %}{% endblock %}
   </body>

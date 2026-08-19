@@ -1,95 +1,87 @@
 {% extends 'base.html' %}
-{% block title %}Preguntas Frecuentes — Portafolio{% endblock %}
-{% block meta_description %}Preguntas frecuentes sobre desarrollo web, tecnologías y servicios. Respuestas a las dudas más comunes.{% endblock %}
+{% block title %}Preguntas Frecuentes — William Peña{% endblock %}
+{% block meta_description %}Respuestas sobre el stack de este portafolio, su arquitectura, el despliegue en Railway y las prácticas DevOps que hay detrás.{% endblock %}
 
 {% block content %}
-<!-- Header de la página -->
-<section class="py-5 bg-alt">
+<section id="faq" class="py-5 my-lg-4">
     <div class="container">
-        <div class="row justify-content-center text-center">
-            <div class="col-lg-8">
-                <i class="bi bi-question-circle text-primary fs-1 mb-3"></i>
-                <h1 class="text-primary fw-bold mb-3">Preguntas Frecuentes</h1>
-                <p class="text-main fs-5">Aquí encontrarás respuestas a las dudas más comunes sobre desarrollo web y mis servicios.</p>
-                <p class="text-muted small">¿No encuentras lo que buscas? <a href="/contactame/" class="text-primary text-decoration-none fw-medium">Contáctame directamente</a></p>
+        <div class="row g-5">
+
+            <!-- Columna izquierda: contexto fijo mientras se leen las respuestas -->
+            <div class="col-lg-5">
+                <div class="faq-intro reveal">
+                    <p class="section-label">Dudas frecuentes</p>
+                    <h1 class="section-title" data-descifrar>Preguntas frecuentes</h1>
+                    <p class="section-lead mb-4">
+                        Todo lo que suelen preguntarme sobre cómo está hecho y desplegado
+                        este portafolio.
+                    </p>
+
+                    <div class="faq-nota">
+                        <i class="bi bi-chat-dots"></i>
+                        <p class="mb-0">
+                            ¿No encuentras lo que buscas?
+                            <a href="/contactame/">Escríbeme directamente</a> y te respondo.
+                        </p>
+                    </div>
+
+                    {% if items %}
+                    <div class="faq-metricas">
+                        <div>
+                            <span class="faq-metrica-valor">{{ items|length }}</span>
+                            <span class="faq-metrica-pie">preguntas</span>
+                        </div>
+                        <div>
+                            <span class="faq-metrica-valor">&lt;24h</span>
+                            <span class="faq-metrica-pie">de respuesta</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-    </div>
-</section>
 
-<!-- Acordeón de preguntas -->
-<section class="py-5">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
+            <!-- Columna derecha: el acordeón -->
+            <div class="col-lg-7">
                 {% if items %}
-                <div class="accordion" id="faqAccordion">
+                <div class="accordion accordion-faq" id="faqAccordion" data-reveal-group>
                     {% for q in items %}
-                    <div class="accordion-item card-custom mb-3 border">
-                        <h3 class="accordion-header" id="heading{{ q.id }}">
-                            <button 
-                                class="accordion-button collapsed fw-medium" 
-                                type="button" 
-                                data-bs-toggle="collapse" 
-                                data-bs-target="#collapse{{ q.id }}" 
-                                aria-expanded="false" 
+                    <div class="accordion-item reveal">
+                        <h2 class="accordion-header" id="heading{{ q.id }}">
+                            <button
+                                class="accordion-button collapsed"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapse{{ q.id }}"
+                                aria-expanded="false"
                                 aria-controls="collapse{{ q.id }}"
-
                             >
-                                <i class="bi bi-question-diamond text-primary me-3"></i>
+                                <span class="faq-indice">{{ forloop.counter|stringformat:"02d" }}</span>
                                 {{ q.title }}
                             </button>
-                        </h3>
-                        <div 
-                            id="collapse{{ q.id }}" 
-                            class="accordion-collapse collapse" 
-                            aria-labelledby="heading{{ q.id }}" 
+                        </h2>
+                        <div
+                            id="collapse{{ q.id }}"
+                            class="accordion-collapse collapse"
+                            aria-labelledby="heading{{ q.id }}"
                             data-bs-parent="#faqAccordion"
                         >
                             <div class="accordion-body">
-                                <div class="text-main lh-lg">
+                                <!-- El texto se revela al abrir: ver efectos.js -->
+                                <div class="faq-respuesta" data-revelar-texto>
                                     {{ q.answer|linebreaks }}
-                                </div>
-                                <div class="mt-3 pt-3 border-top">
-                                    <small class="text-muted">
-                                        <i class="bi bi-info-circle me-1"></i>
-                                        ¿Te ayudó esta respuesta? 
-                                        <a href="/contactame/" class="text-primary text-decoration-none">Contáctame para más detalles</a>
-                                    </small>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
                 </div>
-                
-                <!-- Estadísticas -->
-                <div class="card-custom p-4 mt-5 text-center">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <i class="bi bi-patch-question text-primary fs-2 mb-2"></i>
-                            <h5 class="text-primary fw-bold mb-1">{{ items|length }}</h5>
-                            <small class="text-muted">Preguntas respondidas</small>
-                        </div>
-                        <div class="col-md-4">
-                            <i class="bi bi-clock text-primary fs-2 mb-2"></i>
-                            <h5 class="text-primary fw-bold mb-1">< 24h</h5>
-                            <small class="text-muted">Tiempo de respuesta</small>
-                        </div>
-                        <div class="col-md-4">
-                            <i class="bi bi-shield-check text-primary fs-2 mb-2"></i>
-                            <h5 class="text-primary fw-bold mb-1">100%</h5>
-                            <small class="text-muted">Satisfacción garantizada</small>
-                        </div>
-                    </div>
-                </div>
-                
                 {% else %}
-                <!-- Estado vacío -->
                 <div class="card-custom p-5 text-center">
-                    <i class="bi bi-question-circle text-muted fs-1 mb-3"></i>
-                    <h4 class="text-muted mb-3">No hay preguntas frecuentes todavía</h4>
-                    <p class="text-muted mb-4">Sé el primero en hacer una pregunta y ayudar a otros desarrolladores.</p>
+                    <i class="bi bi-question-circle text-primary fs-1 mb-3 d-block"></i>
+                    <h2 class="h5 text-primary fw-bold mb-3">Todavía no hay preguntas</h2>
+                    <p class="text-main mb-4">
+                        Sé quien haga la primera y ayuda a los que vengan después.
+                    </p>
                     <a href="/contactame/" class="btn btn-primary">
                         <i class="bi bi-envelope me-2"></i>Hacer una pregunta
                     </a>
@@ -99,87 +91,4 @@
         </div>
     </div>
 </section>
-
-<!-- Categorías de ayuda adicional -->
-{% comment %} <section class="py-5 bg-alt">
-    <div class="container">
-        <h2 class="text-primary text-center mb-5 fw-bold">¿Necesitas más ayuda?</h2>
-        <div class="row g-4">
-            <div class="col-lg-4">
-                <div class="card-custom p-4 text-center h-100">
-                    <i class="bi bi-gear text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Servicios Técnicos</h5>
-                    <p class="text-main small mb-3">Consultas sobre desarrollo web, Django, APIs y arquitectura de software.</p>
-                    <a href="/contactame/" class="btn btn-outline-primary btn-sm">Consultar</a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card-custom p-4 text-center h-100">
-                    <i class="bi bi-currency-dollar text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Cotizaciones</h5>
-                    <p class="text-main small mb-3">Información sobre presupuestos, tiempos de entrega y modalidades de trabajo.</p>
-                    <a href="/contactame/" class="btn btn-outline-primary btn-sm">Cotizar proyecto</a>
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <div class="card-custom p-4 text-center h-100">
-                    <i class="bi bi-lightbulb text-primary fs-1 mb-3"></i>
-                    <h5 class="text-primary fw-bold">Consultoría</h5>
-                    <p class="text-main small mb-3">Asesoramiento en decisiones tecnológicas y mejores prácticas de desarrollo.</p>
-                    <a href="/contactame/" class="btn btn-outline-primary btn-sm">Consultar</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section> {% endcomment %}
-
-<!-- Enlaces relacionados -->
-<section class="py-5 bg-alt">
-    <div class="container text-center">
-        <h3 class="text-primary mb-4">Explora más contenido</h3>
-        <div class="d-flex flex-wrap justify-content-center gap-3">
-            <a href="/" class="btn btn-outline-primary">
-                <i class="bi bi-house me-2"></i>Ver portafolio
-            </a>
-            <a href="/open/" class="btn btn-outline-primary">
-                <i class="bi bi-gear me-2"></i>Gadgets & Setups
-            </a>
-            <a href="/contactame/" class="btn btn-primary">
-                <i class="bi bi-envelope me-2"></i>Contacto directo
-            </a>
-        </div>
-    </div>
-</section>
-{% endblock %}
-
-{% block scripts %}
-<script>
-    // Event listener simple para clicks en FAQ
-    document.addEventListener('DOMContentLoaded', function() {
-        // Escuchar clicks en todos los botones de FAQ
-        document.querySelectorAll('.accordion-button').forEach(function(button, index) {
-            button.addEventListener('click', function() {
-                // Obtener información básica del FAQ
-                const faqPosition = index + 1; // Posición del FAQ (1, 2, 3...)
-                const faqTitle = this.textContent.trim().replace('', '').trim(); // Quitar icono y espacios
-                
-                // Enviar evento a Google Analytics
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
-                    event: 'faq_click',
-                    faq_position: faqPosition,
-                    faq_title: faqTitle
-                });
-                
-                // Console log para debug
-                console.log('FAQ Click:', {
-                    position: faqPosition,
-                    title: faqTitle
-                });
-            });
-        });
-    });
-
-
-</script>
 {% endblock %}
