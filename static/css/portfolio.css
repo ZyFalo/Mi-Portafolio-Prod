@@ -1288,7 +1288,7 @@ button:focus-visible,
 
 #arquitectura {
     width: 100%;
-    min-width: 620px;
+    min-width: 560px;
     height: auto;
 }
 
@@ -1327,6 +1327,16 @@ button:focus-visible,
     stroke: var(--accent);
     stroke-width: 1.6;
     stroke-linecap: round;
+    /* La punta de flecha hereda el color del trazo vía currentColor */
+    color: var(--accent);
+}
+
+/* El regreso se distingue de la ida: discontinuo y algo más tenue */
+.arq-trazo-vuelta {
+    stroke-dasharray: 6 5;
+    opacity: 0.75;
+    color: var(--primary);
+    stroke: var(--primary);
 }
 
 .arq-etiqueta {
@@ -2391,3 +2401,23 @@ button:focus-visible,
 }
 
 .breadcrumb-item a:hover { color: var(--accent); }
+
+/* =========================================================================
+   36. LOGOS DE MARCA
+   Simple Icons incrustados: monocromos, así que heredan el color del sitio
+   en lugar de traer el azul de Docker o el amarillo de Python, que
+   romperían la paleta cálida.
+   ========================================================================= */
+.logo-marca {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    vertical-align: -0.125em;
+    flex-shrink: 0;
+}
+
+/* Logos dentro del diagrama de arquitectura */
+.arq-logo {
+    fill: var(--primary);
+    opacity: 0.85;
+}

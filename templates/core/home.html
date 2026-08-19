@@ -98,30 +98,31 @@
 <div class="tech-ribbon" aria-hidden="true">
     <div class="ribbon-track">
         {% for vuelta in "12" %}
-        <span class="ribbon-item"><i class="bi bi-cloud" aria-hidden="true"></i>AWS EC2</span>
-        <span class="ribbon-item"><i class="bi bi-bucket" aria-hidden="true"></i>S3</span>
-        <span class="ribbon-item"><i class="bi bi-hdd-stack" aria-hidden="true"></i>RDS</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-amazonwebservices"/></svg>AWS EC2</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-amazonwebservices"/></svg>S3</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-amazonwebservices"/></svg>RDS</span>
         <span class="ribbon-item"><i class="bi bi-shield-lock" aria-hidden="true"></i>VPC</span>
         <span class="ribbon-item"><i class="bi bi-signpost-split" aria-hidden="true"></i>Route 53</span>
-        <span class="ribbon-item"><i class="bi bi-box-seam" aria-hidden="true"></i>Docker</span>
-        <span class="ribbon-item"><i class="bi bi-terminal" aria-hidden="true"></i>Linux</span>
-        <span class="ribbon-item"><i class="bi bi-terminal-split" aria-hidden="true"></i>Bash</span>
-        <span class="ribbon-item"><i class="bi bi-git" aria-hidden="true"></i>Git</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-docker"/></svg>Docker</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-linux"/></svg>Linux</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-gnubash"/></svg>Bash</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-git"/></svg>Git</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-github"/></svg>GitHub</span>
         <span class="ribbon-item"><i class="bi bi-arrow-repeat" aria-hidden="true"></i>CI/CD</span>
-        <span class="ribbon-item"><i class="bi bi-filetype-py" aria-hidden="true"></i>Python</span>
-        <span class="ribbon-item"><i class="bi bi-server" aria-hidden="true"></i>Django</span>
-        <span class="ribbon-item"><i class="bi bi-filetype-php" aria-hidden="true"></i>PHP</span>
-        <span class="ribbon-item"><i class="bi bi-bezier2" aria-hidden="true"></i>Symfony</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-python"/></svg>Python</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-django"/></svg>Django</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-php"/></svg>PHP</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-symfony"/></svg>Symfony</span>
         <span class="ribbon-item"><i class="bi bi-cup-hot" aria-hidden="true"></i>Java</span>
-        <span class="ribbon-item"><i class="bi bi-filetype-js" aria-hidden="true"></i>JavaScript</span>
-        <span class="ribbon-item"><i class="bi bi-database" aria-hidden="true"></i>MySQL</span>
-        <span class="ribbon-item"><i class="bi bi-database-check" aria-hidden="true"></i>MariaDB</span>
-        <span class="ribbon-item"><i class="bi bi-database-gear" aria-hidden="true"></i>Oracle</span>
-        <span class="ribbon-item"><i class="bi bi-train-front" aria-hidden="true"></i>Railway</span>
-        <span class="ribbon-item"><i class="bi bi-lightning-charge" aria-hidden="true"></i>Gunicorn</span>
-        <span class="ribbon-item"><span class="chispa-ia" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.6l1.7 6.1 4.4-4.4-2.6 5.6 6.1-1.7-5.6 2.6 5.6 2.6-6.1-1.7 2.6 5.6-4.4-4.4L12 22.4l-1.7-6.1-4.4 4.4 2.6-5.6-6.1 1.7 5.6-2.6-5.6-2.6 6.1 1.7-2.6-5.6 4.4 4.4z"/></svg></span>Claude Code</span>
-        <span class="ribbon-item is-learning"><i class="bi bi-diagram-3" aria-hidden="true"></i>Terraform</span>
-        <span class="ribbon-item is-learning"><i class="bi bi-hexagon" aria-hidden="true"></i>Kubernetes</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-javascript"/></svg>JavaScript</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-mysql"/></svg>MySQL</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-mariadb"/></svg>MariaDB</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-oracle"/></svg>Oracle</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-railway"/></svg>Railway</span>
+        <span class="ribbon-item"><svg class="logo-marca" aria-hidden="true"><use href="#logo-gunicorn"/></svg>Gunicorn</span>
+        <span class="ribbon-item"><i class="bi bi-claude" aria-hidden="true"></i>Claude Code</span>
+        <span class="ribbon-item is-learning"><svg class="logo-marca" aria-hidden="true"><use href="#logo-terraform"/></svg>Terraform</span>
+        <span class="ribbon-item is-learning"><svg class="logo-marca" aria-hidden="true"><use href="#logo-kubernetes"/></svg>Kubernetes</span>
         {% endfor %}
     </div>
 </div>
@@ -636,59 +637,82 @@
                     </div>
 
                     <div class="arq-envoltura">
-                        <svg id="arquitectura" viewBox="0 0 900 240" role="img"
-                             aria-label="Diagrama: navegador, Railway, contenedor Docker con Gunicorn, Django y WhiteNoise, y base de datos">
+                        <svg id="arquitectura" viewBox="0 0 840 290" role="img"
+                             aria-label="Diagrama del recorrido de una petición: el visitante entra por HTTPS, pasa por el proxy de Railway, llega al contenedor Docker donde Gunicorn entrega la petición a Django, que consulta la base de datos, y la respuesta vuelve al visitante.">
 
-                            <!-- Trazos de conexión -->
-                            <path class="arq-trazo" d="M138 84 H196" />
-                            <path class="arq-trazo" d="M330 84 H392" />
-                            <path class="arq-trazo" d="M528 84 H590" />
-                            <path class="arq-trazo" d="M724 84 V150 H460 V178" />
+                            <!-- Punta de flecha reutilizable -->
+                            <defs>
+                                <marker id="punta" viewBox="0 0 10 10" refX="9" refY="5"
+                                        markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                                    <path d="M0 0 L10 5 L0 10 z" fill="currentColor" />
+                                </marker>
+                            </defs>
 
-                            <!-- Navegador -->
+                            <!-- Contenedor Docker: envuelve solo a los procesos -->
                             <g class="arq-nodo">
-                                <rect class="arq-caja" x="18" y="52" width="120" height="64" rx="12" />
-                                <text class="arq-titulo" x="78" y="80" text-anchor="middle">Visitante</text>
-                                <text class="arq-sub" x="78" y="99" text-anchor="middle">HTTPS</text>
+                                <rect x="352" y="46" width="372" height="112" rx="16"
+                                      fill="none" stroke="currentColor" stroke-dasharray="5 5"
+                                      style="color: var(--accent); opacity:.45" />
+                                <use href="#logo-docker" x="360" y="26" width="13" height="13" class="arq-logo"/>
+                                <text class="arq-etiqueta" x="380" y="38">contenedor Docker</text>
+                            </g>
+
+                            <!-- Visitante -->
+                            <g class="arq-nodo">
+                                <rect class="arq-caja" x="14" y="72" width="132" height="60" rx="12" />
+                                <text class="arq-titulo" x="80" y="98" text-anchor="middle">Visitante</text>
+                                <text class="arq-sub" x="80" y="117" text-anchor="middle">navegador</text>
                             </g>
 
                             <!-- Railway -->
                             <g class="arq-nodo">
-                                <rect class="arq-caja" x="196" y="52" width="134" height="64" rx="12" />
-                                <text class="arq-titulo" x="263" y="80" text-anchor="middle">Railway</text>
-                                <text class="arq-sub" x="263" y="99" text-anchor="middle">TLS · proxy</text>
+                                <rect class="arq-caja" x="196" y="72" width="132" height="60" rx="12" />
+                                <use href="#logo-railway" x="216" y="86" width="15" height="15" class="arq-logo"/>
+                                <text class="arq-titulo" x="272" y="98" text-anchor="middle">Railway</text>
+                                <text class="arq-sub" x="262" y="117" text-anchor="middle">TLS · proxy</text>
                             </g>
 
                             <!-- Gunicorn -->
                             <g class="arq-nodo">
-                                <rect class="arq-caja arq-caja-destacada" x="392" y="52" width="136" height="64" rx="12" />
-                                <text class="arq-titulo" x="460" y="80" text-anchor="middle">Gunicorn</text>
-                                <text class="arq-sub" x="460" y="99" text-anchor="middle">3 workers</text>
+                                <rect class="arq-caja arq-caja-destacada" x="374" y="72" width="140" height="60" rx="12" />
+                                <use href="#logo-gunicorn" x="392" y="86" width="15" height="15" class="arq-logo"/>
+                                <text class="arq-titulo" x="454" y="98" text-anchor="middle">Gunicorn</text>
+                                <text class="arq-sub" x="444" y="117" text-anchor="middle">3 workers</text>
                             </g>
 
                             <!-- Django -->
                             <g class="arq-nodo">
-                                <rect class="arq-caja arq-caja-destacada" x="590" y="52" width="134" height="64" rx="12" />
-                                <text class="arq-titulo" x="657" y="80" text-anchor="middle">Django 5</text>
-                                <text class="arq-sub" x="657" y="99" text-anchor="middle">WhiteNoise</text>
+                                <rect class="arq-caja arq-caja-destacada" x="562" y="72" width="140" height="60" rx="12" />
+                                <use href="#logo-django" x="582" y="86" width="15" height="15" class="arq-logo"/>
+                                <text class="arq-titulo" x="642" y="98" text-anchor="middle">Django 5</text>
+                                <text class="arq-sub" x="632" y="117" text-anchor="middle">WhiteNoise</text>
                             </g>
 
-                            <!-- Base de datos -->
+                            <!-- Base de datos: colgada de Django, no del contenedor -->
                             <g class="arq-nodo">
-                                <rect class="arq-caja" x="392" y="178" width="136" height="52" rx="12" />
-                                <text class="arq-titulo" x="460" y="200" text-anchor="middle">Base de datos</text>
-                                <text class="arq-sub" x="460" y="217" text-anchor="middle">MySQL · SQLite</text>
+                                <rect class="arq-caja" x="562" y="196" width="140" height="56" rx="12" />
+                                <use href="#logo-mysql" x="576" y="209" width="15" height="15" class="arq-logo"/>
+                                <text class="arq-titulo" x="642" y="220" text-anchor="middle">Base de datos</text>
+                                <text class="arq-sub" x="632" y="238" text-anchor="middle">MySQL · SQLite</text>
                             </g>
 
-                            <!-- Envoltura del contenedor -->
-                            <g class="arq-nodo">
-                                <rect x="374" y="32" width="368" height="104" rx="16"
-                                      fill="none" stroke="currentColor" stroke-dasharray="5 5"
-                                      style="color: var(--accent); opacity:.4" />
-                                <text class="arq-etiqueta" x="380" y="26">contenedor Docker</text>
-                            </g>
+                            <!-- Ida: cada tramo con su protocolo -->
+                            <path class="arq-trazo" d="M146 102 H190" marker-end="url(#punta)" />
+                            <text class="arq-etiqueta" x="168" y="92" text-anchor="middle">HTTPS</text>
 
-                            <text class="arq-etiqueta" x="800" y="88">respuesta</text>
+                            <path class="arq-trazo" d="M328 102 H368" marker-end="url(#punta)" />
+
+                            <path class="arq-trazo" d="M514 102 H556" marker-end="url(#punta)" />
+                            <text class="arq-etiqueta" x="535" y="92" text-anchor="middle">WSGI</text>
+
+                            <!-- Consulta a datos: sale de Django -->
+                            <path class="arq-trazo" d="M632 132 V190" marker-end="url(#punta)" />
+                            <text class="arq-etiqueta" x="644" y="166">SQL</text>
+
+                            <!-- Vuelta: discontinua, para distinguirla de la ida -->
+                            <path class="arq-trazo arq-trazo-vuelta"
+                                  d="M562 132 V172 H80 V138" marker-end="url(#punta)" />
+                            <text class="arq-etiqueta" x="320" y="164" text-anchor="middle">HTML renderizado</text>
                         </svg>
                     </div>
                 </div>

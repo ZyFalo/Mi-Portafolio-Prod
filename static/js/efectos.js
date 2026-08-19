@@ -137,8 +137,15 @@
             return;
         }
 
-        // Preparar cada trazo con su propia longitud
+        // Preparar cada trazo con su propia longitud. El camino de vuelta ya
+        // es discontinuo por diseño, así que se revela con opacidad en vez de
+        // con dasharray, que le borraría el punteado.
         trazos.forEach(function (trazo) {
+            if (trazo.classList.contains('arq-trazo-vuelta')) {
+                trazo.style.opacity = '0';
+                trazo.style.transition = 'opacity 0.9s cubic-bezier(0.33, 1, 0.68, 1)';
+                return;
+            }
             const largo = trazo.getTotalLength();
             trazo.style.strokeDasharray = largo;
             trazo.style.strokeDashoffset = largo;
@@ -153,7 +160,13 @@
                     setTimeout(function () { nodo.style.opacity = '1'; }, i * 170);
                 });
                 trazos.forEach(function (trazo, i) {
-                    setTimeout(function () { trazo.style.strokeDashoffset = '0'; }, 240 + i * 170);
+                    setTimeout(function () {
+                        if (trazo.classList.contains('arq-trazo-vuelta')) {
+                            trazo.style.opacity = '0.75';
+                        } else {
+                            trazo.style.strokeDashoffset = '0';
+                        }
+                    }, 240 + i * 170);
                 });
 
                 observador.disconnect();
@@ -161,6 +174,19 @@
         }, { threshold: 0.35 });
 
         observador.observe(svg);
+
+        // Red de seguridad: los nodos parten de opacidad 0, así que si el
+        // observador no llega a dispararse el diagrama quedaría invisible.
+        setTimeout(function () {
+            nodos.forEach(function (n) { n.style.opacity = '1'; });
+            trazos.forEach(function (t) {
+                if (t.classList.contains('arq-trazo-vuelta')) {
+                    t.style.opacity = '0.75';
+                } else {
+                    t.style.strokeDashoffset = '0';
+                }
+            });
+        }, 6000);
     }
 
     /* --------------------------------------------------------------------
