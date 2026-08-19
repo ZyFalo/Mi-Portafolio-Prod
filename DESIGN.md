@@ -49,8 +49,9 @@ Prohibidas: Inter, Roboto, Arial, Space Grotesk y fuentes de sistema.
    | Vía | Ejemplo | Solución |
    |---|---|---|
    | Variables `--bs-*` | `.bg-primary` | Redefinir en `:root` |
-   | Variables declaradas en la clase del componente | acordeón | Redefinir **sobre esa misma clase**: `:root` pierde por especificidad |
+   | Variables declaradas en la clase del componente | acordeón, miga de pan | Redefinir **sobre esa misma clase**: `:root` pierde por especificidad |
    | Color fijo dentro de un SVG incrustado | chevron del `.form-select`, checkbox | Reemplazar el `data:` URI entero; ninguna variable lo alcanza |
+   | La variante `-rgb` de una variable ya mapeada | `<a>` sin clase usa `--bs-link-color-rgb` | Definir **también** la versión `-rgb`; mapear solo la base no basta |
 
    Antes de dar por bueno un componente de Bootstrap, míralo en **ambos
    temas**: el azul suele aparecer solo en un estado (activo, marcado,
