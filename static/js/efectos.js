@@ -83,15 +83,24 @@
         if (!panel) return;
 
         const relojUptime = document.getElementById('status-uptime');
+        const relojDesplegado = document.getElementById('status-desplegado');
         const arranque = parseFloat(panel.dataset.arranque || '0');
+        const despliegue = parseFloat(panel.dataset.despliegue || '0');
 
-        // El uptime avanza en pantalla sin volver a pedir nada al servidor
-        if (relojUptime && arranque) {
-            setInterval(function () {
-                const seg = Math.floor(Date.now() / 1000 - arranque);
-                relojUptime.textContent = formatearUptime(seg);
-            }, 1000);
+        // Ambos relojes avanzan en pantalla sin volver a pedir nada al
+        // servidor: el del proceso se reinicia con cada arranque, el del
+        // despliegue solo cambia cuando se publica una versión nueva.
+        function tictac(elemento, desde) {
+            if (!elemento || !desde) return;
+            const refrescar = function () {
+                elemento.textContent = formatearUptime(Math.floor(Date.now() / 1000 - desde));
+            };
+            refrescar();
+            setInterval(refrescar, 1000);
         }
+
+        tictac(relojUptime, arranque);
+        tictac(relojDesplegado, despliegue);
 
         // Refresco discreto del resto de métricas
         const url = panel.dataset.url;

@@ -10,6 +10,7 @@ import os
 import platform
 import subprocess
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 import django
@@ -66,8 +67,43 @@ def _detectar_version():
     }
 
 
+def _momento_despliegue():
+    """
+    Instante en que se desplegó esta versión, como marca de tiempo Unix.
+
+    Se busca por orden de fiabilidad: el sello que el Dockerfile escribe
+    durante el build, una variable de entorno, y por último la fecha del
+    último commit (el caso del entorno local, donde sí hay repositorio).
+    """
+    candidatos = []
+
+    sello = RAIZ / "BUILD_TIME"
+    try:
+        if sello.is_file():
+            candidatos.append(sello.read_text(encoding="utf-8").strip())
+    except OSError:
+        pass
+
+    candidatos.append(os.environ.get("BUILD_TIMESTAMP", ""))
+    candidatos.append(VERSION.get("fecha", ""))
+
+    for texto in candidatos:
+        if not texto:
+            continue
+        try:
+            momento = datetime.fromisoformat(texto.replace("Z", "+00:00"))
+            if momento.tzinfo is None:
+                momento = momento.replace(tzinfo=timezone.utc)
+            return momento.timestamp()
+        except ValueError:
+            continue
+
+    return None
+
+
 # La revisión no cambia mientras el proceso vive: se resuelve una sola vez.
 VERSION = _detectar_version()
+DESPLIEGUE = _momento_despliegue()
 
 
 def _motor_bd():
@@ -106,11 +142,24 @@ def recolectar():
     except Exception:
         deploys = 0
 
+    # Antigüedad del despliegue: no se reinicia aunque el proceso sí lo haga
+    if DESPLIEGUE:
+        desde_despliegue = max(0, time.time() - DESPLIEGUE)
+        desplegado = formatear_uptime(desde_despliegue)
+    else:
+        desde_despliegue = None
+        desplegado = "—"
+
     return {
         "operativo": True,
+        # Tiempo del proceso: se pone a cero en cada reinicio del contenedor
         "uptime_segundos": int(activo),
         "uptime": formatear_uptime(activo),
         "arranque": ARRANQUE,
+        # Tiempo desde la última publicación: es el dato estable
+        "despliegue": DESPLIEGUE,
+        "desplegado_segundos": int(desde_despliegue) if desde_despliegue else None,
+        "desplegado": desplegado,
         "version": VERSION,
         "entorno": "producción" if not settings.DEBUG else "local",
         "runtime": f"Python {platform.python_version()}",

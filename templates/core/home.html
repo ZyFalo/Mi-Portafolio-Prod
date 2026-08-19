@@ -243,7 +243,8 @@
                     <div class="status-panel mb-4"
                          id="status-panel"
                          data-url="{% url 'estado' %}"
-                         data-arranque="{{ estado.arranque }}">
+                         data-arranque="{{ estado.arranque }}"
+                         data-despliegue="{{ estado.despliegue|default_if_none:0 }}">
                         <div class="status-head">
                             <span class="status-luz" aria-hidden="true"></span>
                             <span class="status-titulo">Sistema operativo</span>
@@ -254,8 +255,8 @@
 
                         <div class="status-grid">
                             <div class="status-celda">
-                                <span class="status-etiqueta">Uptime</span>
-                                <span class="status-valor"><span id="status-uptime" class="v-ok">{{ estado.uptime }}</span></span>
+                                <span class="status-etiqueta">En producción</span>
+                                <span class="status-valor"><span id="status-desplegado" class="v-ok">{{ estado.desplegado }}</span></span>
                             </div>
                             <div class="status-celda">
                                 <span class="status-etiqueta">Versión</span>
@@ -281,6 +282,7 @@
 
                         <div class="status-pie">
                             <i class="bi bi-git me-1"></i>{{ estado.version.rama|default:"—" }}
+                            · proceso activo <span id="status-uptime">{{ estado.uptime }}</span>
                             · <span id="status-deploys">{{ estado.deploys_visitantes }}</span> deploys de visitantes
                         </div>
                     </div>

@@ -29,6 +29,10 @@ COPY . .
 # que falla con "Operation not permitted" en builders rootless como Railway)
 COPY --chmod=755 docker/entrypoint.sh /entrypoint.sh
 
+# Sellar el momento del build: `.git` no viaja en la imagen, así que sin
+# esto la aplicación no puede saber cuándo se desplegó.
+RUN date -u +"%Y-%m-%dT%H:%M:%SZ" > /app/BUILD_TIME
+
 # Recopilar archivos estáticos
 RUN python manage.py collectstatic --noinput
 
