@@ -93,7 +93,7 @@
 
         const actor = document.createElement('span');
         actor.className = 'deploy-actor';
-        actor.textContent = (deploy.flag ? deploy.flag + ' ' : '') + deploy.actor;
+        actor.textContent = deploy.actor;
 
         const estado = document.createElement('span');
         estado.className = 'deploy-status';
