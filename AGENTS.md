@@ -126,7 +126,7 @@ Notas:
 
 `start.sh`:
 - Migra BD.
-- Crea superusuario fijo `zyfalo` con password `admin123` si no existe.
+- Crea un superusuario solo si están definidas las variables `DJANGO_SUPERUSER_*`.
 - Opcional: crea superusuario desde env vars `DJANGO_SUPERUSER_*`.
 
 `docker/entrypoint.sh`:

@@ -4,28 +4,11 @@ set -euo pipefail
 echo "[start] Applying migrations..."
 python manage.py migrate --noinput
 
-# Create additional superuser: zyfalo
-echo "[start] Creating additional superuser 'zyfalo'..."
-python - <<'PY'
-import os
-import django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'portfolio.settings.production')
-django.setup()
-from django.contrib.auth import get_user_model
+# El superusuario se crea solo a partir de variables de entorno.
+# Antes se creaba uno con credenciales escritas en este mismo archivo, que
+# vive en un repositorio publico: cualquiera podia leerlas.
 
-User = get_user_model()
-username = 'zyfalo'
-email = 'zyfalo@admin.com'
-password = 'admin123'
-
-if not User.objects.filter(username=username).exists():
-    User.objects.create_superuser(username=username, email=email, password=password)
-    print('[start] Additional superuser "zyfalo" created successfully')
-else:
-    print('[start] Additional superuser "zyfalo" already exists')
-PY
-
-# Optional superuser creation via env vars
+# Creacion del superusuario mediante variables de entorno
 if [ -n "${DJANGO_SUPERUSER_USERNAME:-}" ] && [ -n "${DJANGO_SUPERUSER_EMAIL:-}" ] && [ -n "${DJANGO_SUPERUSER_PASSWORD:-}" ]; then
   echo "[start] Ensuring superuser exists (${DJANGO_SUPERUSER_USERNAME})..."
   python - <<'PY'

@@ -31,8 +31,8 @@ python manage.py test portfolio.apps.contact.tests     # single test module
 # Static files (required after CSS/JS changes for production)
 python manage.py collectstatic --noinput
 
-# Custom management commands
-python manage.py createsuperuserzyfalo    # creates fixed superuser (zyfalo/admin123)
+# Superuser (interactive)
+python manage.py createsuperuser
 
 # Docker
 docker build -t mi-portafolio .
@@ -78,7 +78,7 @@ docker run -e DEBUG=0 -e SECRET_KEY=your-key -p 8000:8000 mi-portafolio
 ### Production flow (Docker/Railway)
 `Dockerfile` (Python 3.12-slim) → `docker/entrypoint.sh` → `start.sh` (migrations + superuser creation + Gunicorn with 3 workers). `railway.json` configures Railway to use the Dockerfile builder.
 
-**Note:** `start.sh` creates a hardcoded superuser `zyfalo`/`admin123` on every startup — review before real production use.
+**Note:** `start.sh` only creates a superuser when `DJANGO_SUPERUSER_USERNAME`, `DJANGO_SUPERUSER_EMAIL` and `DJANGO_SUPERUSER_PASSWORD` are set. Never hardcode credentials here: this file is versioned in a public repository.
 
 ## Guardrails
 
