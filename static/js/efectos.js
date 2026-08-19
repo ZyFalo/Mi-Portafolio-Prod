@@ -164,53 +164,52 @@
     }
 
     /* --------------------------------------------------------------------
-       4. Títulos que se descifran
+       4. Revelado del título
+       Una cortina descubre el texto de izquierda a derecha. Sustituye al
+       efecto de letras desordenadas, que distraía de la lectura.
+
+       El estado inicial lo pone el propio script: si el JavaScript no
+       llegara a ejecutarse, el título se ve normal desde el primer momento
+       en lugar de quedarse oculto por el recorte.
        -------------------------------------------------------------------- */
-    const ALFABETO = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&/*<>{}[]';
+    function iniciarRevelarTitulos() {
+        const titulos = document.querySelectorAll('[data-revelar-titulo]');
+        if (!titulos.length || quieto || !('IntersectionObserver' in window)) return;
 
-    function descifrar(elemento) {
-        const original = elemento.dataset.textoOriginal || elemento.textContent;
-        elemento.dataset.textoOriginal = original;
+        titulos.forEach(function (titulo) { titulo.classList.add('titulo-cortina'); });
 
-        let cuadro = 0;
-        const total = original.length;
+        function abrir(titulo) { titulo.classList.add('is-revelado'); }
 
-        const temporizador = setInterval(function () {
-            const avance = cuadro / 3;
-            let salida = '';
-
-            for (let i = 0; i < total; i++) {
-                const c = original[i];
-                if (c === ' ' || i < avance) {
-                    salida += c;
-                } else {
-                    salida += ALFABETO[Math.floor(Math.random() * ALFABETO.length)];
-                }
-            }
-
-            elemento.textContent = salida;
-            cuadro++;
-
-            if (avance >= total) {
-                clearInterval(temporizador);
-                elemento.textContent = original;
-            }
-        }, 34);
-    }
-
-    function iniciarDescifrado() {
-        const objetivos = document.querySelectorAll('[data-descifrar]');
-        if (!objetivos.length || quieto || !('IntersectionObserver' in window)) return;
-
+        // Umbral bajo: un titular alto en pantalla pequeña puede no llegar
+        // nunca a estar visible en su mayor parte.
         const observador = new IntersectionObserver(function (entradas) {
             entradas.forEach(function (entrada) {
                 if (!entrada.isIntersecting) return;
-                descifrar(entrada.target);
+                abrir(entrada.target);
                 observador.unobserve(entrada.target);
             });
-        }, { threshold: 0.8 });
+        }, { threshold: 0.15, rootMargin: '0px 0px -5% 0px' });
 
-        objetivos.forEach(function (o) { observador.observe(o); });
+        titulos.forEach(function (titulo) { observador.observe(titulo); });
+
+        // Red de seguridad: un título recortado que no se abra queda
+        // invisible, así que nada puede quedarse a medias.
+        function abrirLoVisible() {
+            document.querySelectorAll('[data-revelar-titulo]:not(.is-revelado)')
+                .forEach(function (titulo) {
+                    const caja = titulo.getBoundingClientRect();
+                    if (caja.top < window.innerHeight && caja.bottom > 0) abrir(titulo);
+                });
+        }
+
+        window.addEventListener('scroll', abrirLoVisible, { passive: true });
+        window.addEventListener('resize', abrirLoVisible);
+        abrirLoVisible();
+
+        // Último recurso: pasados unos segundos, ningún título sigue oculto.
+        setTimeout(function () {
+            document.querySelectorAll('[data-revelar-titulo]').forEach(abrir);
+        }, 6000);
     }
 
     /* --------------------------------------------------------------------
@@ -335,7 +334,7 @@
         iniciarTerminal();
         iniciarEstado();
         iniciarArquitectura();
-        iniciarDescifrado();
+        iniciarRevelarTitulos();
         iniciarInclinacion();
         iniciarProgreso();
         iniciarRevelarTexto();

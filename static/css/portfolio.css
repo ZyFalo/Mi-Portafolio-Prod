@@ -2172,19 +2172,26 @@ button:focus-visible,
     background: color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
+/* El panel ocupa TODO el ancho de la tarjeta: si se le fija un ancho, al
+   expandirse queda corto y deja ver el fondo por la derecha. */
 .gadget-contenido {
     position: relative;
     z-index: 2;
+    width: 100%;
     padding: 1.4rem;
-    /* Ancho fijo = la maquetación interna no se recalcula durante la
-       expansión. La caja crece; el contenido solo se revela. Es lo que
-       evita que el icono y el título "bailen" mientras se anima. */
-    width: 21rem;
-    max-width: 100%;
     background: linear-gradient(to top,
         var(--card-bg) 62%,
         color-mix(in srgb, var(--card-bg) 70%, transparent) 88%,
         transparent 100%);
+}
+
+/* El ancho fijo se aplica solo al TEXTO, no al panel: así la maquetación no
+   se recalcula mientras la tarjeta crece (que era lo que hacía saltar al
+   icono) y el fondo sigue llegando de borde a borde. */
+.gadget-titulo,
+.gadget-detalle {
+    width: 18.2rem;
+    max-width: 100%;
 }
 
 .gadget-titulo {
@@ -2336,3 +2343,28 @@ button:focus-visible,
     margin-top: 0.7rem;
 }
 
+
+/* =========================================================================
+   34. REVELADO DEL TÍTULO
+   Una cortina descubre el texto de izquierda a derecha. Reemplaza al efecto
+   de letras desordenadas, que entorpecía la lectura del titular.
+
+   La clase .titulo-cortina la añade el script, nunca la plantilla: así, si
+   el JavaScript falla, el título se muestra normal en vez de quedar oculto
+   tras el recorte.
+   ========================================================================= */
+.titulo-cortina {
+    clip-path: inset(0 100% -0.35em 0);
+    transition: clip-path 0.95s var(--ease-cozy);
+}
+
+.titulo-cortina.is-revelado {
+    clip-path: inset(0 0 -0.35em 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .titulo-cortina {
+        clip-path: none;
+        transition: none;
+    }
+}
