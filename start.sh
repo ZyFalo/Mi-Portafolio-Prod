@@ -22,14 +22,16 @@ User = get_user_model()
 username = os.environ['DJANGO_SUPERUSER_USERNAME']
 email = os.environ['DJANGO_SUPERUSER_EMAIL']
 password = os.environ['DJANGO_SUPERUSER_PASSWORD']
-# Solo se crea la cuenta si no existe. Nunca se reescribe la contraseña de
-# una cuenta ya creada: si se hiciera, cada despliegue revertiría el cambio
-# que se hubiera hecho desde el propio panel de administración.
-if not User.objects.filter(username=username).exists():
-    User.objects.create_superuser(username=username, email=email, password=password)
-    print('[start] Superuser created')
+# Se comprueba si ya hay ALGÚN superusuario, no solo el de este nombre: así
+# un cambio de DJANGO_SUPERUSER_USERNAME no acaba creando una segunda cuenta
+# con acceso total. Si ya existe alguna, no se toca nada — ni contraseñas ni
+# permisos —, de modo que lo que se cambie desde el panel sobrevive a los
+# despliegues.
+if User.objects.filter(is_superuser=True).exists():
+    print('[start] A superuser already exists, nothing to do')
 else:
-    print('[start] Superuser already exists, left untouched')
+    User.objects.create_superuser(username=username, email=email, password=password)
+    print('[start] No superuser found: initial account created')
 PY
 fi
 
