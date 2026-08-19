@@ -22,20 +22,14 @@ User = get_user_model()
 username = os.environ['DJANGO_SUPERUSER_USERNAME']
 email = os.environ['DJANGO_SUPERUSER_EMAIL']
 password = os.environ['DJANGO_SUPERUSER_PASSWORD']
-usuario = User.objects.filter(username=username).first()
-if usuario is None:
+# Solo se crea la cuenta si no existe. Nunca se reescribe la contraseña de
+# una cuenta ya creada: si se hiciera, cada despliegue revertiría el cambio
+# que se hubiera hecho desde el propio panel de administración.
+if not User.objects.filter(username=username).exists():
     User.objects.create_superuser(username=username, email=email, password=password)
     print('[start] Superuser created')
 else:
-    # Vía de recuperación: si se pierde el acceso, basta con cambiar la
-    # variable en Railway y volver a desplegar. Evita tener que dejar
-    # credenciales escritas en el repositorio.
-    usuario.set_password(password)
-    usuario.email = email
-    usuario.is_staff = True
-    usuario.is_superuser = True
-    usuario.save()
-    print('[start] Superuser password updated from environment')
+    print('[start] Superuser already exists, left untouched')
 PY
 fi
 
