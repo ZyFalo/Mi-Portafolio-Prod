@@ -1476,7 +1476,7 @@ button:focus-visible,
 /* El icono es el "logo": Bootstrap Icons en la paleta propia, en vez de
    los logotipos de marca, cuyos colores romperían la gama cálida. */
 .ribbon-item i,
-.ribbon-item .chispa-ia {
+.ribbon-item .logo-marca {
     color: var(--accent);
     font-size: 0.95rem;
     opacity: 0.75;
@@ -1484,7 +1484,7 @@ button:focus-visible,
 }
 
 .ribbon-item:hover i,
-.ribbon-item:hover .chispa-ia {
+.ribbon-item:hover .logo-marca {
     opacity: 1;
     transform: translateY(-1px) scale(1.12);
 }
@@ -1512,31 +1512,6 @@ button:focus-visible,
     .ribbon-track { animation: none; }
 }
 
-/* =========================================================================
-   25. GUIÑO A CLAUDE CODE
-   Marca propia, no el logo de Anthropic: un destello que evoca el trabajo
-   asistido por IA sin suplantar identidad ajena ni meter colores externos.
-   ========================================================================= */
-.chispa-ia {
-    display: inline-block;
-    width: 1em;
-    height: 1em;
-    vertical-align: -0.12em;
-    color: var(--accent);
-}
-
-.chispa-ia svg { width: 100%; height: 100%; display: block; }
-
-.chispa-ia-girando svg {
-    animation: girarChispa 9s linear infinite;
-    transform-origin: 50% 50%;
-}
-
-@keyframes girarChispa { to { transform: rotate(360deg); } }
-
-@media (prefers-reduced-motion: reduce) {
-    .chispa-ia-girando svg { animation: none; }
-}
 
 /* =========================================================================
    26. NARRATIVA BACKEND → DEVOPS
