@@ -48,6 +48,10 @@
     --bs-primary-rgb: 139, 69, 19;
     --bs-link-color: #8B4513;
     --bs-link-hover-color: #A0522D;
+    /* Bootstrap pinta los enlaces con la variante -rgb, no con la anterior:
+       sin estas, cualquier <a> sin clase de color sale azul de fábrica. */
+    --bs-link-color-rgb: 139, 69, 19;
+    --bs-link-hover-color-rgb: 160, 82, 45;
     --bs-border-color: rgba(139, 69, 19, 0.15);
     --bs-focus-ring-color: rgba(205, 133, 63, 0.28);
 
@@ -88,6 +92,8 @@
     --bs-primary-rgb: 217, 160, 102;
     --bs-link-color: #D9A066;
     --bs-link-hover-color: #E8B888;
+    --bs-link-color-rgb: 217, 160, 102;
+    --bs-link-hover-color-rgb: 232, 184, 136;
     --bs-border-color: rgba(205, 133, 63, 0.20);
     --bs-focus-ring-color: rgba(217, 160, 102, 0.30);
 
@@ -2232,17 +2238,6 @@ button:focus-visible,
         margin-top: 0.7rem;
     }
 
-    /* Mientras nadie señala nada, la primera queda abierta: así la sección
-       nunca se ve "toda cerrada" al llegar. */
-    .galeria-elastica:not(:hover):not(:focus-within) .gadget-elastico:first-child {
-        flex-grow: 2.6;
-    }
-
-    .galeria-elastica:not(:hover):not(:focus-within) .gadget-elastico:first-child .gadget-detalle {
-        grid-template-rows: 1fr;
-        opacity: 1;
-        margin-top: 0.7rem;
-    }
 }
 
 /* Sin hover (móvil y tabletas): todo visible, nada oculto tras un gesto */
@@ -2264,6 +2259,14 @@ button:focus-visible,
     font-size: 0.88rem;
     line-height: 1.6;
     margin-bottom: 0.6rem;
+    /* Un resumen largo se cortaba a mitad de palabra y parecía un fallo.
+       Se limita a cuatro líneas y se cierra con puntos suspensivos; el
+       texto completo sigue estando en la página de detalle. */
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .gadget-cta {
@@ -2311,14 +2314,12 @@ button:focus-visible,
 @media (min-width: 992px) {
     /* Tarjeta activa: se oculta el rótulo vertical y entra el contenido */
     .gadget-elastico:hover .gadget-rotulo,
-    .gadget-elastico:focus-visible .gadget-rotulo,
-    .galeria-elastica:not(:hover):not(:focus-within) .gadget-elastico:first-child .gadget-rotulo {
+    .gadget-elastico:focus-visible .gadget-rotulo {
         opacity: 0;
     }
 
     .gadget-elastico:hover .gadget-contenido,
-    .gadget-elastico:focus-visible .gadget-contenido,
-    .galeria-elastica:not(:hover):not(:focus-within) .gadget-elastico:first-child .gadget-contenido {
+    .gadget-elastico:focus-visible .gadget-contenido {
         opacity: 1;
     }
 
@@ -2368,3 +2369,25 @@ button:focus-visible,
         transition: none;
     }
 }
+
+
+/* =========================================================================
+   35. MIGA DE PAN
+   Bootstrap declara estas variables dentro de `.breadcrumb`, así que se
+   redefinen sobre el mismo selector (igual que en el acordeón).
+   ========================================================================= */
+.breadcrumb {
+    --bs-breadcrumb-divider-color: var(--accent);
+    --bs-breadcrumb-item-active-color: var(--ink-soft);
+    --bs-breadcrumb-item-padding-x: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+}
+
+.breadcrumb-item a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s var(--ease-soft);
+}
+
+.breadcrumb-item a:hover { color: var(--accent); }
