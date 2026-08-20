@@ -1,7 +1,8 @@
 /* =========================================================================
    MOVIMIENTO Y ATMÓSFERA
-   Scroll suave (Lenis), revelados al hacer scroll (GSAP + ScrollTrigger),
-   interruptor de tema y botón de volver arriba.
+   Revelados al hacer scroll (GSAP + ScrollTrigger), interruptor de tema y
+   botón de volver arriba.
+   El desplazamiento es el nativo del navegador: ver la nota de la sección 3.
    Todo degrada con elegancia: si una librería no carga, el sitio funciona.
    ========================================================================= */
 (function () {
@@ -56,75 +57,35 @@
 
         if (botonArriba) {
             botonArriba.addEventListener('click', function () {
-                if (window.lenisInstancia) {
-                    window.lenisInstancia.scrollTo(0);
-                } else {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         }
     }
 
     /* --------------------------------------------------------------------
-       3. Scroll suave con Lenis
+       3. Por qué el scroll es el del navegador
        -------------------------------------------------------------------- */
-    // El trackpad de macOS ya aplica su propia inercia; Lenis encima suma un
-    // segundo suavizado y el scroll se siente pesado. La rueda de un ratón,
-    // en cambio, sí gana con la interpolación.
+    // Aquí vivía Lenis, una librería de scroll suave. Se retiró porque
+    // introducía un retardo perceptible y no había manera de contentar a los
+    // dos dispositivos a la vez:
     //
-    // Por eso arrancamos SIN Lenis y solo lo activamos si aparece una rueda.
-    // Encenderlo de entrada y apagarlo al detectar el trackpad cancelaba la
-    // animación del primer gesto a media ejecución: ese scroll se perdía y
-    // se sentía como un tirón. Empezando en nativo, el trackpad nunca lo sufre.
+    //   · Con trackpad, macOS ya aplica su propia inercia. Lenis encima sumaba
+    //     un segundo suavizado y el desplazamiento se sentía pesado.
+    //   · Con rueda, el problema era la configuración por duración: cada clic
+    //     reinicia la animación hacia un destino nuevo con su tiempo completo,
+    //     así que al girar de forma continua el destino se aleja antes de
+    //     alcanzarlo y el scroll nunca termina de asentarse. Se percibe como
+    //     un arrastre elástico.
     //
-    // Heurística: la rueda manda deltas grandes y enteros (100, 120, 53…);
-    // el trackpad, deltas pequeños y a menudo fraccionarios (4.5, 12.3…).
-    function crearLenis() {
-        const lenis = new Lenis({
-            duration: 0.9,
-            easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
-            smoothWheel: true
-        });
-
-        function bucle(tiempo) {
-            lenis.raf(tiempo);
-            requestAnimationFrame(bucle);
-        }
-        requestAnimationFrame(bucle);
-
-        window.lenisInstancia = lenis;
-
-        // ScrollTrigger debe seguir el scroll de Lenis una vez activo
-        if (typeof ScrollTrigger !== 'undefined' && typeof gsap !== 'undefined') {
-            lenis.on('scroll', ScrollTrigger.update);
-            gsap.ticker.lagSmoothing(0);
-            ScrollTrigger.refresh();
-        }
-
-        return lenis;
-    }
-
-    function observarDispositivo() {
-        if (prefiereMenosMovimiento || typeof Lenis === 'undefined') return;
-
-        function alGirar(evento) {
-            const delta = Math.abs(evento.deltaY);
-            const esRueda = evento.deltaMode !== 0 ||
-                (delta >= 50 && Number.isInteger(evento.deltaY));
-
-            // Sea rueda o trackpad, la decisión se toma una sola vez.
-            window.removeEventListener('wheel', alGirar);
-
-            // Trackpad: nos quedamos con el scroll nativo del sistema.
-            if (esRueda) crearLenis();
-        }
-
-        window.addEventListener('wheel', alGirar, { passive: true });
-    }
+    // Detectar el dispositivo y activarlo solo para la rueda tampoco sirvió:
+    // no eliminaba el segundo caso, solo lo escondía tras un dispositivo.
+    //
+    // El scroll nativo responde al instante en ambos y no cuesta nada de red.
+    // Los revelados de GSAP —lo que de verdad da carácter al sitio— siguen
+    // intactos: ScrollTrigger trabaja mejor sobre el scroll del navegador.
 
     /* --------------------------------------------------------------------
        3b. Enlaces internos
-       Funciona con Lenis o sin él, según lo que haya en ese momento.
        -------------------------------------------------------------------- */
     function iniciarAnclas() {
         document.querySelectorAll('a[href^="#"]').forEach(function (ancla) {
@@ -136,12 +97,9 @@
                 if (!objetivo) return;
                 evento.preventDefault();
 
-                if (window.lenisInstancia) {
-                    window.lenisInstancia.scrollTo(objetivo, { offset: -90 });
-                } else {
-                    const arriba = objetivo.getBoundingClientRect().top + window.pageYOffset - 90;
-                    window.scrollTo({ top: arriba, behavior: 'smooth' });
-                }
+                // 90px de margen: la altura de la barra fija
+                const arriba = objetivo.getBoundingClientRect().top + window.pageYOffset - 90;
+                window.scrollTo({ top: arriba, behavior: 'smooth' });
             });
         });
     }
@@ -339,10 +297,7 @@
         iniciarTema();
         iniciarScrollUI();
         iniciarAnclas();
-        // Los revelados arrancan sobre el scroll nativo; si más tarde entra
-        // Lenis, crearLenis() se encarga de sincronizar ScrollTrigger.
         iniciarRevelados();
-        observarDispositivo();
         iniciarHero();
         iniciarContadores();
     });
