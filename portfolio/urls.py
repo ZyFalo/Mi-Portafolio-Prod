@@ -25,7 +25,7 @@ urlpatterns = [
     path('contactame/', include('portfolio.apps.contact.urls')),
     path('fyq/', include('portfolio.apps.faq.urls')),
     path('open/', include('portfolio.apps.openapp.urls')),
-    path('pipeline/', include('portfolio.apps.pipeline.urls')),
+    path('cielo/', include('portfolio.apps.cielo.urls')),
 ]
 
 if settings.DEBUG:

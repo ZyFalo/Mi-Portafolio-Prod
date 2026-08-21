@@ -29,3 +29,4 @@ class DeveloperAdmin(admin.ModelAdmin):
             "fields": ("created_at",),
         }),
     )
+

@@ -76,110 +76,7 @@
     }
 
     /* --------------------------------------------------------------------
-       2. Panel de estado en vivo
-       -------------------------------------------------------------------- */
-    function iniciarEstado() {
-        const panel = document.getElementById('status-panel');
-        if (!panel) return;
-
-        const relojUptime = document.getElementById('status-uptime');
-        const relojDesplegado = document.getElementById('status-desplegado');
-        const version = document.getElementById('status-version');
-        const arranque = parseFloat(panel.dataset.arranque || '0');
-
-        // La versión en producción es la del último deploy del pipeline, así
-        // que el instante de referencia cambia sobre la marcha: el reloj se
-        // reinicia sin recargar la página.
-        let despliegue = parseFloat(panel.dataset.despliegue || '0');
-
-        // Ambos relojes avanzan en pantalla sin volver a pedir nada al
-        // servidor: el del proceso cuenta desde el arranque del contenedor,
-        // el de producción desde el último deploy publicado.
-        function pintarRelojes() {
-            const ahora = Date.now() / 1000;
-            if (relojUptime && arranque) {
-                relojUptime.textContent = formatearUptime(Math.floor(ahora - arranque));
-            }
-            if (relojDesplegado && despliegue) {
-                relojDesplegado.textContent = formatearUptime(Math.floor(ahora - despliegue));
-            }
-        }
-
-        pintarRelojes();
-        setInterval(pintarRelojes, 1000);
-
-        // Publica una revisión nueva en el panel: el hash pasa a ser el suyo y
-        // el contador de "en producción" vuelve a cero. La llama pipeline.js
-        // en cuanto un visitante completa su deploy, para que vea su propio
-        // commit tomar el relevo.
-        window.publicarRevision = function (deploy, total) {
-            if (!deploy || !deploy.commit) return;
-
-            const contador = document.getElementById('status-deploys');
-            if (contador && typeof total === 'number') contador.textContent = total;
-
-            despliegue = deploy.created_at
-                ? new Date(deploy.created_at).getTime() / 1000
-                : Date.now() / 1000;
-
-            if (version) {
-                version.textContent = deploy.commit;
-                version.title = [deploy.actor, deploy.full_message]
-                    .filter(Boolean).join(' · ');
-
-                // Reiniciar la animación exige forzar un reflujo intermedio
-                version.classList.remove('is-nuevo');
-                void version.offsetWidth;
-                version.classList.add('is-nuevo');
-            }
-
-            pintarRelojes();
-        };
-
-        // Refresco discreto: otro visitante puede desplegar mientras se lee
-        const url = panel.dataset.url;
-        if (!url) return;
-
-        setInterval(async function () {
-            if (document.hidden) return;
-            try {
-                const respuesta = await fetch(url, { headers: { Accept: 'application/json' } });
-                if (!respuesta.ok) return;
-                const datos = await respuesta.json();
-
-                const contador = document.getElementById('status-deploys');
-                if (contador) contador.textContent = datos.deploys_visitantes;
-
-                // Se compara por hash y no por fecha: los flotantes del
-                // servidor y los del navegador nunca coinciden al milisegundo
-                // y el panel destellaría cada minuto sin motivo.
-                const publicado = datos.version && datos.version.commit;
-                if (publicado && version && publicado !== version.textContent.trim()) {
-                    window.publicarRevision({
-                        commit: publicado,
-                        actor: datos.version.autor,
-                        full_message: datos.version.asunto,
-                        created_at: new Date(datos.despliegue * 1000).toISOString()
-                    }, datos.deploys_visitantes);
-                }
-            } catch (e) { /* sin conexión: el panel conserva el último valor */ }
-        }, 60000);
-    }
-
-    function formatearUptime(segundos) {
-        if (segundos < 0) segundos = 0;
-        const d = Math.floor(segundos / 86400);
-        const h = Math.floor((segundos % 86400) / 3600);
-        const m = Math.floor((segundos % 3600) / 60);
-        const s = segundos % 60;
-        if (d) return d + 'd ' + h + 'h ' + m + 'm';
-        if (h) return h + 'h ' + m + 'm ' + s + 's';
-        if (m) return m + 'm ' + s + 's';
-        return s + 's';
-    }
-
-    /* --------------------------------------------------------------------
-       3. Diagrama de arquitectura que se traza solo
+       2. Diagrama de arquitectura que se traza solo
        -------------------------------------------------------------------- */
     function iniciarArquitectura() {
         const svg = document.getElementById('arquitectura');
@@ -247,7 +144,7 @@
     }
 
     /* --------------------------------------------------------------------
-       4. Revelado del título
+       3. Revelado del título
        Una cortina descubre el texto de izquierda a derecha. Sustituye al
        efecto de letras desordenadas, que distraía de la lectura.
 
@@ -296,7 +193,7 @@
     }
 
     /* --------------------------------------------------------------------
-       5. Inclinación 3D en tarjetas
+       4. Inclinación 3D en tarjetas
        -------------------------------------------------------------------- */
     function iniciarInclinacion() {
         if (quieto || window.matchMedia('(hover: none)').matches) return;
@@ -327,7 +224,7 @@
     }
 
     /* --------------------------------------------------------------------
-       6. Barra de progreso de lectura
+       5. Barra de progreso de lectura
        -------------------------------------------------------------------- */
     function iniciarProgreso() {
         const barra = document.getElementById('read-progress');
@@ -346,7 +243,7 @@
 
 
     /* --------------------------------------------------------------------
-       7. Revelado del texto en el FAQ
+       6. Revelado del texto en el FAQ
        Equivale al "BlurredStagger" de framer-motion, pero con CSS puro y
        por PALABRAS en vez de por letras: una respuesta larga generaría
        cientos de nodos por letra, y además romper palabra a palabra
@@ -415,7 +312,6 @@
        -------------------------------------------------------------------- */
     document.addEventListener('DOMContentLoaded', function () {
         iniciarTerminal();
-        iniciarEstado();
         iniciarArquitectura();
         iniciarRevelarTitulos();
         iniciarInclinacion();

@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     "portfolio.apps.faq",
     "portfolio.apps.openapp",
     "portfolio.apps.analytics",
-    "portfolio.apps.pipeline",
+    "portfolio.apps.cielo",
 ]
 
 

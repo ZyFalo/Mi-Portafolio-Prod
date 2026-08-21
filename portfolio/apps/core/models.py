@@ -91,5 +91,4 @@ class Developer(models.Model):
             return url
 
 
-# Create your models here.
 

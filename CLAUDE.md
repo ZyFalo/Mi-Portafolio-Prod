@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Django 5.0.7 portfolio site (Spanish-language) with five modular apps: home/developer network, contact form, FAQ, gadgets/setups gallery, and analytics. Content is managed via Django Admin. Deployed on Railway with Docker.
+Django 5.0.7 portfolio site (Spanish-language) with six modular apps: home/developer network, contact form, FAQ, gadgets/setups gallery, visitor sky, and analytics. Content is managed via Django Admin. Deployed on Railway with Docker.
 
 ## Common Commands
 
@@ -24,9 +24,14 @@ DEBUG=0 SECRET_KEY=x python manage.py runserver --settings=portfolio.settings.pr
 
 # Checks
 python manage.py check
-python manage.py test                                  # all apps (tests are currently stubs)
-python manage.py test portfolio.apps.core              # single app
-python manage.py test portfolio.apps.contact.tests     # single test module
+python manage.py test                                  # all apps
+python manage.py test portfolio.apps.cielo             # single app
+
+# NOTE: any test that renders a template fails on Python 3.14 with
+# "'super' object has no attribute 'dicts'" — Django 5.0 only supports up to
+# 3.12, and the test client's template instrumentation breaks. It is not an
+# application bug: the same suite passes inside the container.
+docker run --rm -e SECRET_KEY=x -e DEBUG=1 mi-portafolio python manage.py test
 
 # Static files (required after CSS/JS changes for production)
 python manage.py collectstatic --noinput
@@ -57,10 +62,11 @@ docker run -e DEBUG=0 -e SECRET_KEY=your-key -p 8000:8000 mi-portafolio
 - **contact** — `ContactMessage` model. Form has honeypot field (`website`), timestamp validation (>1500ms), and optional reCAPTCHA v2. Anti-bot logic lives in `forms.py` + `views.py`.
 - **faq** — `Question` model with auto-slug, ordering, `is_active` flag. View: `fyq`.
 - **openapp** — `OpenEntity` + `Tag` (M2M). Gadgets grid and slug-based detail. Views: `open_list`, `open_detail`.
+- **cielo** — `Star` model. Collaborative minigame: each visitor taps the sky to place a star with their name and country. Normalized coordinates (0–1), closed country catalog, honeypot (`website`), per-IP rate limit, and minimum separation so stars never overlap. Views: `estrellas` (GET), `encender` (POST).
 - **analytics** — Context processor only (no models). Injects `GTM_CONTAINER_ID`, `GA_MEASUREMENT_ID`, reCAPTCHA keys into all templates.
 
 ### URL routes (`portfolio/urls.py`)
-`/` home · `/contactame/` contact · `/fyq/` FAQ · `/open/` gadgets list · `/open/<slug>/` gadget detail · `/admin/` Django Admin
+`/` home · `/contactame/` contact · `/fyq/` FAQ · `/open/` gadgets list · `/open/<slug>/` gadget detail · `/cielo/estrellas/` sky (JSON) · `/cielo/encender/` light a star (POST) · `/admin/` Django Admin
 
 ### Frontend
 - Bootstrap 5.3 + Bootstrap Icons via CDN (loaded in `templates/base.html`)
@@ -88,7 +94,7 @@ To reset a lost password, use `railway run python manage.py changepassword <user
 
 - Do not edit `staticfiles/` — run `collectstatic` instead
 - Preserve the `dataLayer` initialization and GA4 events in `templates/base.html`
-- Do not remove anti-bot fields (`website` honeypot, `ts` timestamp) from the contact form or its validation
+- Do not remove anti-bot fields (`website` honeypot, `ts` timestamp) from the contact form or its validation, nor the honeypot and per-IP rate limit in `cielo/views.py`
 - If changing HTML layout, verify that element IDs/anchors referenced by `portfolio.js` still exist
 - Avoid duplicating `page_view` — either GTM handles it automatically or the custom event does, not both
 - Model changes require running `makemigrations` + `migrate`

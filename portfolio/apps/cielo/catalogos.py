@@ -1,26 +1,10 @@
 """
-Catálogos cerrados del pipeline colaborativo.
+Catálogo cerrado de lugares.
 
-Se prefieren listas finitas y verificables sobre texto libre: así el muro de
-deploys se mantiene limpio y los datos son agregables (por país, por tipo de
-commit) sin tener que normalizar variantes escritas a mano.
+Se prefiere una lista finita sobre texto libre: así el cielo se mantiene
+limpio y los datos son agregables por país sin normalizar variantes escritas
+a mano. Es el mismo catálogo que usaba el pipeline colaborativo.
 """
-
-# Tipos de commit según Conventional Commits, con el subconjunto que de
-# verdad usa la gente. El orden es el de frecuencia real de uso.
-TIPOS_COMMIT = [
-    ("feat", "feat", "Una funcionalidad nueva"),
-    ("fix", "fix", "Corrección de un error"),
-    ("docs", "docs", "Documentación"),
-    ("refactor", "refactor", "Reescritura sin cambiar comportamiento"),
-    ("test", "test", "Pruebas"),
-    ("chore", "chore", "Mantenimiento o tareas varias"),
-    ("perf", "perf", "Mejora de rendimiento"),
-    ("style", "style", "Formato y estilo"),
-]
-
-TIPOS_VALIDOS = {clave for clave, _, _ in TIPOS_COMMIT}
-TIPO_POR_DEFECTO = "feat"
 
 # Países con bandera. Lista amplia pero cerrada: cubre América, Europa y los
 # principales del resto del mundo, con una salida para el resto de casos.

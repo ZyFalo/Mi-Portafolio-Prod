@@ -1,8 +1,8 @@
 /* =========================================================================
    PORTAFOLIO — COMPORTAMIENTO BASE
    Navegación, accesibilidad y analítica (GTM/GA4).
-   Las animaciones y el scroll suave viven en motion.js; el minijuego en
-   pipeline.js. Aquí no se duplica nada de eso.
+   Las animaciones viven en motion.js y efectos.js; el cielo de visitantes,
+   en cielo.js. Aquí no se duplica nada de eso.
    ========================================================================= */
 document.addEventListener('DOMContentLoaded', function () {
     'use strict';

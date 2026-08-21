@@ -55,8 +55,8 @@
                 </div>
 
                 <div class="d-flex flex-wrap gap-3" data-hero-in>
-                    <a href="#pipeline" class="btn btn-primary">
-                        <i class="bi bi-rocket-takeoff me-2"></i>Lanza tu deploy
+                    <a href="#cielo" class="btn btn-primary">
+                        <i class="bi bi-stars me-2"></i>Enciende tu estrella
                     </a>
                     <a href="#construido" class="btn btn-outline-primary">
                         <i class="bi bi-braces me-2"></i>Ver lo que he construido
@@ -128,183 +128,95 @@
 </div>
 
 <!-- =====================================================================
-     2 · PIPELINE COLABORATIVO — lo interactivo, arriba del todo
+     2 · EL CIELO — la aportación de quien pasa por aquí
      ===================================================================== -->
-<section id="pipeline" class="py-5 bg-alt">
+<section id="cielo" class="py-5 bg-alt">
     <div class="container">
         <div class="text-center mb-5 reveal">
             <p class="section-label justify-content-center">Interactivo</p>
-            <h2 class="section-title" data-revelar-titulo>El pipeline también es tuyo</h2>
+            <h2 class="section-title" data-revelar-titulo>El cielo también es tuyo</h2>
             <p class="section-lead mx-auto">
-                Lanza un deploy y míralo recorrer las cuatro etapas reales.
-                Tu commit queda para siempre en el muro.
+                Quien pasa por aquí enciende una estrella y elige su sitio.
+                Las que quedan cerca se unen solas en constelaciones.
             </p>
         </div>
 
-        <div id="pipeline-app"
-             data-url-deploys="{% url 'pipeline:deploys' %}"
-             data-url-lanzar="{% url 'pipeline:lanzar' %}">
+        <div id="cielo-app"
+             class="reveal"
+             data-url-estrellas="{% url 'cielo:estrellas' %}"
+             data-url-encender="{% url 'cielo:encender' %}">
 
-            <div class="row g-4 align-items-start" data-reveal-group>
-                <div class="col-lg-7 reveal">
-                    <div class="pipeline-console">
-                        <div class="console-bar">
-                            <span class="console-dot"></span>
-                            <span class="console-dot"></span>
-                            <span class="console-dot"></span>
-                            <span class="console-title">portafolio-ci · visitantes</span>
-                        </div>
+            <!-- La carta celeste. Proporción fija para que el cielo se vea
+                 igual en cualquier pantalla: las coordenadas van normalizadas. -->
+            <div class="cielo-lienzo" id="cielo-lienzo">
+                <svg id="cielo-svg" viewBox="0 0 1000 560"
+                     role="img" aria-label="Cielo de visitantes">
+                    <defs>
+                        <radialGradient id="halo-estrella">
+                            <stop offset="0%" stop-color="var(--accent)" stop-opacity=".55" />
+                            <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
+                        </radialGradient>
+                    </defs>
+                    <g id="cielo-lineas" class="cielo-lineas"></g>
+                    <g id="cielo-estrellas"></g>
+                    <g id="cielo-fantasma"></g>
+                </svg>
 
-                        <div class="stage-track px-3">
-                            <div class="stage-progress" id="stage-progress"></div>
-                            <div class="stage">
-                                <div class="stage-node"></div>
-                                <span class="stage-name">checkout</span>
-                            </div>
-                            <div class="stage">
-                                <div class="stage-node"></div>
-                                <span class="stage-name">build</span>
-                            </div>
-                            <div class="stage">
-                                <div class="stage-node"></div>
-                                <span class="stage-name">test</span>
-                            </div>
-                            <div class="stage">
-                                <div class="stage-node"></div>
-                                <span class="stage-name">deploy</span>
-                            </div>
-                        </div>
+                <p class="cielo-aviso" id="cielo-aviso">Cargando el cielo…</p>
 
-                        <div class="console-output" id="console-output" aria-live="polite">
-                            <span class="console-line">
-                                <span class="c-dim">Esperando un nuevo deploy… completa tus datos y lanza el pipeline.</span>
-                            </span>
-                        </div>
-                    </div>
+                <!-- Invitación permanente: sin esto nadie adivina que el cielo
+                     se puede tocar. Se aparta en cuanto se abre el formulario. -->
+                <p class="cielo-llamada" id="cielo-llamada" hidden>
+                    <i class="bi bi-hand-index-thumb"></i>
+                    Toca el cielo para dejar tu estrella
+                </p>
 
-                    <form id="pipeline-form" class="pipeline-form card-custom p-4 mt-4" novalidate>
+                <div class="cielo-globo" id="cielo-globo" hidden aria-live="polite"></div>
+
+                <!-- El formulario nace donde se ha tocado -->
+                <div class="cielo-panel" id="cielo-panel" hidden
+                     role="dialog" aria-modal="false" aria-labelledby="cielo-panel-titulo">
+                    <button type="button" class="cielo-panel-cerrar" id="cielo-cerrar"
+                            aria-label="Cerrar">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+
+                    <form id="cielo-form" novalidate>
                         {% csrf_token %}
-                        <div class="row g-3">
-                            <div class="col-sm-6">
-                                <label for="deploy-name">Autor del commit</label>
-                                <input type="text" class="form-control font-mono" id="deploy-name" name="name"
-                                       maxlength="24" placeholder="cata-dev" required
-                                       autocomplete="off" spellcheck="false"
-                                       aria-describedby="ayuda-autor">
-                                <small id="ayuda-autor" class="campo-ayuda">
-                                    Sin espacios, como en git. Los espacios se convierten en guiones.
-                                </small>
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="deploy-location">País</label>
-                                <select class="form-select" id="deploy-location" name="location">
-                                    {% for valor, etiqueta in paises %}
-                                    <option value="{{ valor }}">{{ etiqueta }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="col-12">
-                                <label for="deploy-message">Mensaje del commit <span class="text-muted">(opcional)</span></label>
-                                <div class="commit-compositor">
-                                    <select class="form-select commit-tipo" id="deploy-type" name="type"
-                                            aria-label="Tipo de commit">
-                                        {% for clave, etiqueta, descripcion in tipos_commit %}
-                                        <option value="{{ clave }}" title="{{ descripcion }}">{{ etiqueta }}</option>
-                                        {% endfor %}
-                                    </select>
-                                    <span class="commit-dospuntos" aria-hidden="true">:</span>
-                                    <input type="text" class="form-control" id="deploy-message" name="message"
-                                           maxlength="80" placeholder="pasé por aquí y me gustó lo que vi">
-                                </div>
-                                <small class="campo-ayuda" id="ayuda-commit">
-                                    Formato <strong>Conventional Commits</strong> · <span id="preview-commit" class="font-mono"></span>
-                                </small>
-                            </div>
+                        <p class="cielo-panel-titulo" id="cielo-panel-titulo">
+                            <i class="bi bi-stars"></i>Tu estrella irá aquí
+                        </p>
 
-                            <div class="hp-field" aria-hidden="true">
-                                <label for="deploy-website">No completar</label>
-                                <input type="text" id="deploy-website" name="website" tabindex="-1" autocomplete="off">
-                            </div>
+                        <label class="form-label" for="cielo-nombre">Tu nombre</label>
+                        <input type="text" class="form-control form-control-sm" id="cielo-nombre"
+                               name="name" maxlength="32" autocomplete="name"
+                               placeholder="Como quieras que se lea" required>
 
-                            <div class="col-12 d-flex flex-wrap align-items-center gap-3">
-                                <button type="submit" class="btn btn-primary" id="btn-deploy">
-                                    Lanzar mi deploy
-                                </button>
-                                <span class="text-muted small">
-                                    <i class="bi bi-shield-check me-1"></i>Sin registro. No guardo tu IP, solo una huella anónima.
-                                </span>
-                            </div>
-                        </div>
+                        <label class="form-label mt-2" for="cielo-lugar">De dónde eres</label>
+                        <select class="form-select form-select-sm" id="cielo-lugar" name="location">
+                            {% for valor, etiqueta in paises %}
+                            <option value="{{ valor }}">{{ etiqueta }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <!-- Trampa para bots: invisible para las personas -->
+                        <input type="text" name="website" id="cielo-website" class="hp-field"
+                               tabindex="-1" autocomplete="off" aria-hidden="true">
+
+                        <button type="submit" class="btn btn-primary btn-sm w-100 mt-3" id="cielo-boton">
+                            <i class="bi bi-brightness-high me-1"></i>Encender mi estrella
+                        </button>
+
+                        <p class="cielo-nota mb-0" id="cielo-nota"></p>
+                        <p class="cielo-pista mb-0">Puedes mover tu estrella tocando otro punto.</p>
                     </form>
                 </div>
 
-                <div class="col-lg-5 reveal">
-                    <!-- Panel de estado en vivo: métricas reales de este sitio -->
-                    <div class="status-panel mb-4"
-                         id="status-panel"
-                         data-url="{% url 'estado' %}"
-                         data-arranque="{{ estado.arranque }}"
-                         data-despliegue="{{ estado.despliegue|default_if_none:0 }}">
-                        <div class="status-head">
-                            <span class="status-luz" aria-hidden="true"></span>
-                            <span class="status-titulo">Sistema operativo</span>
-                            <span class="ms-auto font-mono" style="font-size:.68rem;color:var(--ink-soft);">
-                                {{ estado.entorno }}
-                            </span>
-                        </div>
-
-                        <div class="status-grid">
-                            <div class="status-celda">
-                                <span class="status-etiqueta">En producción</span>
-                                <span class="status-valor"><span id="status-desplegado" class="v-ok">{{ estado.desplegado }}</span></span>
-                            </div>
-                            <div class="status-celda">
-                                <span class="status-etiqueta">Versión</span>
-                                <span class="status-valor"><span id="status-version" class="v-accent"
-                                      title="{{ estado.version.autor }}{% if estado.version.asunto %} · {{ estado.version.asunto }}{% endif %}"
-                                >{{ estado.version.commit|default:"—" }}</span></span>
-                            </div>
-                            <div class="status-celda">
-                                <span class="status-etiqueta">Runtime</span>
-                                <span class="status-valor">{{ estado.runtime }}</span>
-                            </div>
-                            <div class="status-celda">
-                                <span class="status-etiqueta">Framework</span>
-                                <span class="status-valor">{{ estado.framework }}</span>
-                            </div>
-                            <div class="status-celda">
-                                <span class="status-etiqueta">Servidor</span>
-                                <span class="status-valor">{{ estado.servidor }}</span>
-                            </div>
-                            <div class="status-celda">
-                                <span class="status-etiqueta">Base de datos</span>
-                                <span class="status-valor">{{ estado.base_datos }}</span>
-                            </div>
-                        </div>
-
-                        <div class="status-pie">
-                            <i class="bi bi-git me-1"></i>{{ estado.version.rama|default:"—" }}
-                            · proceso activo <span id="status-uptime">{{ estado.uptime }}</span>
-                            · <span id="status-deploys">{{ estado.deploys_visitantes }}</span> deploys de visitantes
-                        </div>
-                    </div>
-
-                    <div class="card-custom p-4">
-                        <div class="text-center mb-4 pb-3" style="border-bottom:1px dashed var(--paper-edge);">
-                            <span class="deploy-counter" id="deploy-counter">0</span>
-                            <p class="text-muted small mb-0 mt-1">deploys exitosos</p>
-                        </div>
-
-                        <h3 class="h6 fw-bold text-primary mb-3">
-                            <i class="bi bi-clock-history me-1"></i>Últimos deploys
-                        </h3>
-
-                        <div id="deploy-wall">
-                            <p class="text-muted small mb-0 py-3 text-center">Cargando historial…</p>
-                        </div>
-                    </div>
-                </div>
+                <span class="cielo-contador" id="cielo-contador" hidden>
+                    <strong id="cielo-total">0</strong> estrellas
+                </span>
             </div>
+
         </div>
     </div>
 </section>
@@ -412,8 +324,9 @@
                             </div>
                             <h3 class="proyecto-titulo mb-0">Este mismo portafolio</h3>
                             <p class="text-main small mb-0">
-                                No describe mi perfil DevOps: lo ejecuta. Contenerizado, con
-                                un pipeline donde cada visitante deja su deploy.
+                                No describe mi perfil DevOps: lo ejecuta. Contenerizado,
+                                desplegado en cada push y con un cielo que llenan
+                                quienes pasan por aquí.
                             </p>
                             <p class="proyecto-impacto mb-2">
                                 <i class="bi bi-activity"></i>
@@ -978,7 +891,7 @@
 
 {% block scripts %}
 {% load static %}
-<script src="{% static 'js/pipeline.js' %}"></script>
+<script src="{% static 'js/cielo.js' %}"></script>
 <script>
     // Estándar GA4: select_promotion + evento heredado en banners de desarrolladores
     document.querySelectorAll('.data-banner').forEach(el => {
