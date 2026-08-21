@@ -29,6 +29,17 @@
     --sage: #6B7D5A;
     --sand: #E8DCC8;
 
+    /* Texto de la terminal. Deliberadamente fuera del juego claro/oscuro:
+       la ventana es oscura en ambos temas, así que su texto no puede
+       depender de tokens que cambian de rol entre uno y otro. --sand lo hace
+       (aquí es claro, en oscuro es una superficie), y usarlo como color de
+       texto dejaba la salida en 1.36:1 de contraste: ilegible.
+       Medidos sobre los dos fondos: 8.3:1 y 14.3:1 el principal,
+       6.0:1 y 10.4:1 la salida, 4.7:1 y 8.0:1 el prompt. */
+    --term-texto: #E8DCC8;
+    --term-salida: #C9BCA8;
+    --term-prompt: #D89A5C;
+
     /* Sombras cálidas */
     --shadow-light: rgba(139, 69, 19, 0.08);
     --shadow-medium: rgba(139, 69, 19, 0.15);
@@ -913,7 +924,7 @@ button:focus-visible,
 }
 
 @media print {
-    .navbar, .back-to-top, footer nav, .cielo-lienzo { display: none !important; }
+    .navbar, .back-to-top, footer nav, .hero-cielo { display: none !important; }
     body::before { display: none; }
     .card-custom { box-shadow: none; border: 1px solid #ddd; }
 }
@@ -938,7 +949,7 @@ button:focus-visible,
     border-bottom-color: color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
-.hero-terminal .console-title { color: var(--sand); }
+.hero-terminal .console-title { color: var(--term-texto); }
 
 .term-body {
     font-family: var(--font-mono);
@@ -946,12 +957,12 @@ button:focus-visible,
     line-height: 1.85;
     padding: 1rem 1.15rem;
     min-height: 11.5rem;
-    color: var(--sand);
+    color: var(--term-texto);
 }
 
 .term-line { word-break: break-word; }
-.term-cmd { color: var(--accent); }
-.term-out { color: color-mix(in srgb, var(--sand) 78%, transparent); padding-left: 0.9rem; }
+.term-cmd { color: var(--term-prompt); }
+.term-out { color: var(--term-salida); padding-left: 0.9rem; }
 
 .term-cursor {
     display: inline-block;
@@ -973,45 +984,279 @@ button:focus-visible,
     100% { box-shadow: 0 0 0 0 transparent; }
 }
 
-/* =========================================================================
-   EL CIELO DE LOS VISITANTES
-   Carta celeste sobre pergamino, no cielo nocturno: el azul de medianoche
-   pelearía con la paleta cálida del resto del sitio. Las estrellas son
-   tinta dorada sobre papel.
-   ========================================================================= */
-.cielo-lienzo {
-    position: relative;
-    aspect-ratio: 1000 / 560;
-    width: 100%;
-    border: 1px solid var(--paper-edge);
-    border-radius: 1.1rem;
-    overflow: hidden;
-    background:
-        radial-gradient(ellipse at 28% 22%, color-mix(in srgb, var(--accent) 8%, transparent), transparent 58%),
-        radial-gradient(ellipse at 78% 74%, color-mix(in srgb, var(--sage) 7%, transparent), transparent 52%),
-        var(--bg-main);
+/* -------------------------------------------------------------------------
+   CONSTELACIÓN DEL CV
+   Doce estrellas —una por certificación— repartidas en los cuatro bloques de
+   la columna de al lado. Ocupa el hueco que dejaba la columna corta, pero no
+   es relleno: es el mismo dato dicho en la tinta del cielo del hero.
+   ------------------------------------------------------------------------- */
+.constelacion-cv {
+    margin-top: 2.25rem;
+    padding-top: 1.75rem;
+    border-top: 1px dashed var(--paper-edge);
 }
 
+.constelacion-cv svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.constelacion-cv .cv-grupo circle {
+    fill: var(--accent);
+    animation: cielo-parpadeo 5s ease-in-out infinite;
+}
+
+/* Cada grupo late a su ritmo; a la vez parecería un cartel de neón */
+.constelacion-cv .cv-grupo:nth-child(2) circle { animation-delay: 0s; }
+.constelacion-cv .cv-grupo:nth-child(3) circle { animation-delay: 1.3s; }
+.constelacion-cv .cv-grupo:nth-child(4) circle { animation-delay: 2.6s; }
+.constelacion-cv .cv-grupo:nth-child(5) circle { animation-delay: 3.9s; }
+
+.constelacion-cv .cv-grupo path {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 0.8;
+    opacity: 0.3;
+}
+
+.constelacion-cv .cv-polvo circle {
+    fill: var(--ink-soft);
+    opacity: 0.35;
+}
+
+.constelacion-cv figcaption {
+    margin-top: 0.9rem;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .constelacion-cv .cv-grupo circle { animation: none; }
+}
+
+
+/* -------------------------------------------------------------------------
+   CERTIFICACIONES VERIFICABLES
+   Cada entrada enlaza a su credencial en Credly. Las que no tienen insignia
+   —cursos de Platzi— usan la misma pieza sin enlace, para que la lista se
+   lea pareja en vez de mezclar dos formatos.
+   ------------------------------------------------------------------------- */
+.cert-perfil {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s;
+}
+
+a.cert-perfil:hover { color: var(--accent); }
+
+.cert-grupo {
+    margin: 1.1rem 0 0.45rem;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+}
+
+.cert-grupo:first-of-type { margin-top: 0; }
+
+/* El hover no tiñe el fondo ni saca una barra de acento: eso es el hover por
+   defecto de cualquier plantilla. Aquí se dibuja una línea de puntos entre el
+   nombre y el emisor, como el sumario de un libro impreso. Encaja con la
+   Fraunces y no se parece a un menú lateral. */
+.cert-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.55rem;
+    padding: 0.42rem 0;
+    text-decoration: none;
+}
+
+.cert-nombre {
+    position: relative;
+    flex-shrink: 0;
+    padding-left: 1.05rem;
+    font-size: 0.83rem;
+    font-weight: 500;
+    color: var(--ink-strong);
+    line-height: 1.35;
+    transition: color 0.2s;
+}
+
+/* El tramo que se rellena de puntos al pasar por encima */
+.cert-puntos {
+    flex: 1 1 auto;
+    min-width: 1.5rem;
+    align-self: flex-end;
+    margin-bottom: 0.22rem;
+    border-bottom: 1px dotted color-mix(in srgb, var(--accent) 55%, transparent);
+    opacity: 0;
+    transition: opacity 0.25s;
+}
+
+.cert-meta {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    transition: color 0.2s;
+}
+
+a.cert-item:hover .cert-puntos,
+a.cert-item:focus-visible .cert-puntos { opacity: 1; }
+
+a.cert-item:hover .cert-nombre,
+a.cert-item:focus-visible .cert-nombre { color: var(--primary); }
+
+a.cert-item:hover .cert-meta,
+a.cert-item:focus-visible .cert-meta { color: var(--accent); }
+
+/* La flecha abre la línea en lugar de colgar del final. Va en posición
+   absoluta sobre el hueco que ya reserva el padding: al aparecer no empuja
+   el nombre ni un píxel. */
+a.cert-item .cert-nombre::before {
+    content: '\2197';
+    position: absolute;
+    left: 0.1rem;
+    top: 0.12em;
+    font-size: 0.72em;
+    color: var(--accent);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+a.cert-item:hover .cert-nombre::before,
+a.cert-item:focus-visible .cert-nombre::before { opacity: 1; }
+
+@media (max-width: 575.98px) {
+    /* En estrecho el nombre y la fecha no caben en una línea, así que se
+       apilan y el tramo de puntos deja de tener sentido. */
+    .cert-item { flex-direction: column; gap: 0.1rem; align-items: flex-start; }
+    .cert-nombre { flex-shrink: 1; }
+    .cert-meta { white-space: normal; }
+    .cert-puntos { display: none; }
+}
+
+
+/* =========================================================================
+   EL CIELO DE LOS VISITANTES
+   Vive dentro del hero y sale al frente en «modo cielo». Carta celeste sobre
+   pergamino, no cielo nocturno: el azul de medianoche pelearía con la paleta
+   cálida del resto del sitio. Las estrellas son tinta dorada sobre papel.
+   ========================================================================= */
+.hero-cielo {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    /* En reposo el cielo adorna el hero desde detrás del contenido. Los
+       clics lo atraviesan: en este estado los botones mandan. */
+    opacity: .34;
+    pointer-events: none;
+    transition: opacity .55s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.hero.es-modo-cielo .hero-cielo {
+    z-index: 3;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* El telón solo entra en modo cielo: tapa el hero atenuado lo justo para
+   que las estrellas se lean, sin dejar de intuirse lo que hay debajo. En
+   reposo es invisible, porque ahí el protagonista es el hero. */
+.hero-cielo::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity .55s cubic-bezier(0.33, 1, 0.68, 1);
+    background:
+        radial-gradient(ellipse at 28% 22%, color-mix(in srgb, var(--accent) 9%, transparent), transparent 58%),
+        radial-gradient(ellipse at 78% 74%, color-mix(in srgb, var(--sage) 8%, transparent), transparent 52%),
+        color-mix(in srgb, var(--bg-main) 94%, transparent);
+}
+
+.hero.es-modo-cielo .hero-cielo::before { opacity: 1; }
+
 /* Grano sutil: sin él el degradado se ve digital y plano */
-.cielo-lienzo::after {
+.hero-cielo::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: .5;
+    opacity: 0;
+    transition: opacity .55s cubic-bezier(0.33, 1, 0.68, 1);
     background-image: radial-gradient(circle at 50% 50%, var(--paper-edge) .5px, transparent .5px);
     background-size: 26px 26px;
 }
 
-.cielo-lienzo svg {
-    display: block;
-    width: 100%;
-    height: 100%;
+.hero.es-modo-cielo .hero-cielo::after { opacity: .5; }
+
+/* De adorno, las constelaciones se insinúan; al frente, se leen */
+.hero-cielo .cielo-lineas line { opacity: .16; transition: opacity .55s; }
+.hero.es-modo-cielo .cielo-lineas line { opacity: .28; }
+
+
+/* El contenido del hero se aparta, pero no del todo: sigue ahí de fondo
+   para que se entienda que es el mismo sitio y no otra página. */
+.hero-contenido {
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    transition: opacity .5s cubic-bezier(0.33, 1, 0.68, 1), filter .5s;
 }
 
-.cielo-lienzo.es-elegible { cursor: crosshair; }
+.hero.es-modo-cielo .hero-contenido {
+    opacity: .12;
+    filter: blur(2px);
+    pointer-events: none;
+}
+
+.hero-cielo svg {
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+}
+
+.hero.es-modo-cielo { cursor: crosshair; }
+
+/* Volver al hero: abajo a la izquierda, a la altura de la invitación. Los
+   tres avisos del cielo —salir, invitación y recuento— forman así una misma
+   línea al pie en vez de repartirse por las esquinas. */
+.cielo-salir {
+    position: absolute;
+    bottom: 1.6rem;
+    left: 1.15rem;
+    z-index: 5;
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .4rem .85rem;
+    border: 1px solid var(--paper-edge);
+    border-radius: 2rem;
+    background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+    color: var(--ink-soft);
+    font-size: .76rem;
+    cursor: pointer;
+    transition: color .2s, border-color .2s;
+}
+
+.cielo-salir:hover {
+    color: var(--primary);
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
 
 /* --- Constelaciones ---------------------------------------------------- */
 .cielo-lineas line {
@@ -1122,8 +1367,8 @@ button:focus-visible,
 
 .cielo-contador {
     position: absolute;
-    right: .9rem;
-    bottom: .8rem;
+    right: 1.15rem;
+    bottom: 2.2rem;
     z-index: 2;
     font-family: var(--font-mono);
     font-size: .7rem;
@@ -1136,7 +1381,7 @@ button:focus-visible,
 .cielo-llamada {
     position: absolute;
     left: 50%;
-    bottom: .9rem;
+    bottom: 1.6rem;
     transform: translateX(-50%);
     z-index: 2;
     display: flex;
@@ -1233,25 +1478,19 @@ button:focus-visible,
     opacity: .8;
 }
 
-/* Mientras se elige sitio, la mira acompaña al cursor por todo el lienzo */
-.cielo-lienzo.es-eligiendo { cursor: crosshair; }
-
 @media (max-width: 575.98px) {
-    /* En vertical un lienzo panorámico deja las estrellas del tamaño de un
-       píxel: se le da más alto para que sigan siendo tocables. */
-    .cielo-lienzo { aspect-ratio: 4 / 5; }
-
-    /* Flotando no cabe, y taparía justo el punto recién elegido: se ancla
-       al pie del cielo, que ahí sí hay sitio. */
+    /* El panel sigue al punto también aquí; solo se estrecha para caber con
+       aire a los lados. La colocación la calcula cielo.js. */
     .cielo-panel {
-        top: auto !important;
-        left: .5rem !important;
-        right: .5rem;
-        bottom: .5rem;
-        width: auto;
+        width: min(16.5rem, calc(100vw - 2.5rem));
+        padding: .9rem 1rem 1rem;
     }
 
-    .cielo-llamada { bottom: .6rem; font-size: .72rem; }
+    /* En estrecho los tres no caben en una línea: la invitación sube y
+       deja el pie para el botón y el recuento. */
+    .cielo-llamada { bottom: 3.6rem; font-size: .72rem; }
+    .cielo-salir { bottom: 1rem; left: .8rem; font-size: .7rem; }
+    .cielo-contador { bottom: 1.6rem; right: .8rem; font-size: .65rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

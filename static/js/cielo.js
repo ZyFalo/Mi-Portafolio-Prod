@@ -14,7 +14,9 @@
 (function () {
     'use strict';
 
-    const raiz = document.getElementById('cielo-app');
+    // El hero es la raíz: no puede llevar un id propio porque ya usa
+    // #inicio para la navegación, así que se localiza por sus datos.
+    const raiz = document.querySelector('[data-url-encender]');
     if (!raiz) return;
 
     const URL_ESTRELLAS = raiz.dataset.urlEstrellas;
@@ -26,7 +28,6 @@
     const capaFantasma = document.getElementById('cielo-fantasma');
     const lienzo = document.getElementById('cielo-lienzo');
     const globo = document.getElementById('cielo-globo');
-    const aviso = document.getElementById('cielo-aviso');
     const llamada = document.getElementById('cielo-llamada');
     const contador = document.getElementById('cielo-contador');
     const total = document.getElementById('cielo-total');
@@ -39,28 +40,31 @@
     const campoTrampa = document.getElementById('cielo-website');
     const boton = document.getElementById('cielo-boton');
     const nota = document.getElementById('cielo-nota');
+    const botonEntrar = document.getElementById('cielo-entrar');
+    const botonSalir = document.getElementById('cielo-salir');
 
     const NS = 'http://www.w3.org/2000/svg';
-    const ANCHO = 1000;
-    const ALTO = 560;
+
+    // Dimensiones reales del hero, en píxeles. El viewBox se ajusta a ellas
+    // en vez de fijar una proporción: así las estrellas nunca se deforman ni
+    // quedan recortadas, sea cual sea la pantalla.
+    let ANCHO = 1000;
+    let ALTO = 560;
 
     // Radio de cada estrella según su magnitud. Un cielo donde todas miden
     // igual se lee como una cuadrícula, no como un cielo.
     const RADIOS = { 1: 2.2, 2: 3.3, 3: 4.6 };
 
-    // Distancia máxima, en unidades del lienzo, para unir dos estrellas.
-    // Más allá las líneas dejan de sugerir una constelación y parecen ruido.
-    const ALCANCE = 165;
-
-    // Por debajo de este ancho el panel no cabe flotando: el CSS lo ancla al
-    // pie del lienzo y aquí se deja de posicionar a mano.
-    const ANCHO_ANCLADO = 576;
+    // Distancia máxima, en píxeles, para unir dos estrellas. Más allá las
+    // líneas dejan de sugerir una constelación y parecen ruido.
+    const ALCANCE = 190;
 
     const reducirMovimiento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let estrellas = [];
     let elegida = null;      // {x, y} normalizado, aún sin confirmar
     let enviando = false;
+    let enModoCielo = false;
 
     /* --------------------------------------------------------------------
        Utilidades
@@ -81,6 +85,17 @@
 
     function aLienzo(estrella) {
         return { x: estrella.x * ANCHO, y: estrella.y * ALTO };
+    }
+
+    function ajustarLienzo() {
+        const caja = lienzo.getBoundingClientRect();
+        if (!caja.width || !caja.height) return false;
+
+        const cambio = Math.round(caja.width) !== ANCHO || Math.round(caja.height) !== ALTO;
+        ANCHO = Math.round(caja.width);
+        ALTO = Math.round(caja.height);
+        svg.setAttribute('viewBox', '0 0 ' + ANCHO + ' ' + ALTO);
+        return cambio;
     }
 
     function tiempoRelativo(iso) {
@@ -196,7 +211,6 @@
 
         if (total) total.textContent = lista.length;
         if (contador) contador.hidden = false;
-        if (aviso) aviso.hidden = lista.length > 0;
     }
 
     /* --------------------------------------------------------------------
@@ -206,8 +220,6 @@
         if (!globo || !panel.hidden) return;   // con el formulario abierto, estorba
 
         const caja = lienzo.getBoundingClientRect();
-        const escalaX = caja.width / ANCHO;
-        const escalaY = caja.height / ALTO;
 
         globo.replaceChildren();
         const titulo = document.createElement('strong');
@@ -222,9 +234,9 @@
 
         // Se mantiene dentro del lienzo aunque la estrella esté en un borde
         const ancho = globo.offsetWidth;
-        const izquierda = Math.min(Math.max(punto.x * escalaX - ancho / 2, 6), caja.width - ancho - 6);
+        const izquierda = Math.min(Math.max(punto.x - ancho / 2, 6), caja.width - ancho - 6);
         globo.style.left = izquierda + 'px';
-        globo.style.top = (punto.y * escalaY + 18) + 'px';
+        globo.style.top = (punto.y + 18) + 'px';
     }
 
     function ocultarGlobo() {
@@ -286,38 +298,46 @@
        -------------------------------------------------------------------- */
     function colocarPanel(punto) {
         const caja = lienzo.getBoundingClientRect();
-
-        // En pantallas estrechas el panel va anclado abajo por CSS: cualquier
-        // posición que se calcule aquí lo sacaría de sitio.
-        if (caja.width < ANCHO_ANCLADO) {
-            panel.style.left = '';
-            panel.style.top = '';
-            return;
-        }
-
-        const px = punto.x * (caja.width / ANCHO);
-        const py = punto.y * (caja.height / ALTO);
         const ancho = panel.offsetWidth;
         const alto = panel.offsetHeight;
-        const aire = 18;
 
-        // Se abre hacia el lado con sitio, para no taparle al visitante el
-        // punto que acaba de elegir.
-        let izquierda = px + aire;
-        if (izquierda + ancho > caja.width - 10) izquierda = px - ancho - aire;
-        izquierda = Math.max(10, Math.min(izquierda, caja.width - ancho - 10));
+        const aire = 16;     // separación entre el punto y el panel
+        const margen = 10;   // aire mínimo contra el borde del cielo
 
-        const arriba = Math.max(10, Math.min(py - alto / 2, caja.height - alto - 10));
+        let izquierda;
+        let arriba;
 
-        panel.style.left = izquierda + 'px';
-        panel.style.top = arriba + 'px';
+        // Primero se intenta al lado, que es lo que menos tapa: el visitante
+        // sigue viendo su punto mientras escribe.
+        const cabeDerecha = punto.x + aire + ancho <= caja.width - margen;
+        const cabeIzquierda = punto.x - aire - ancho >= margen;
+
+        if (cabeDerecha || cabeIzquierda) {
+            izquierda = cabeDerecha ? punto.x + aire : punto.x - ancho - aire;
+            arriba = punto.y - alto / 2;
+        } else {
+            // Pantalla estrecha: no hay sitio a los lados, así que el panel
+            // cae justo debajo del punto y centrado en él. Anclarlo al pie
+            // del cielo lo alejaba tanto que costaba relacionar una cosa
+            // con la otra.
+            izquierda = punto.x - ancho / 2;
+            arriba = punto.y + aire;
+
+            // Si el punto está muy abajo, el panel se pasa por encima antes
+            // que salirse del cielo.
+            if (arriba + alto > caja.height - margen) {
+                arriba = punto.y - alto - aire;
+            }
+        }
+
+        panel.style.left = Math.max(margen, Math.min(izquierda, caja.width - ancho - margen)) + 'px';
+        panel.style.top = Math.max(margen, Math.min(arriba, caja.height - alto - margen)) + 'px';
     }
 
     function abrirPanel(punto) {
         ocultarGlobo();
         panel.hidden = false;
         if (llamada) llamada.hidden = true;
-        lienzo.classList.add('es-eligiendo');
 
         colocarPanel(punto);
 
@@ -328,15 +348,52 @@
 
     function cerrarPanel() {
         panel.hidden = true;
-        lienzo.classList.remove('es-eligiendo');
         capaFantasma.replaceChildren();
         elegida = null;
         mostrarNota('');
         if (llamada) llamada.hidden = false;
     }
 
+    /* --------------------------------------------------------------------
+       Modo cielo
+       El hero se aparta y el cielo pasa al frente. Se entra a propósito, con
+       el botón: si cualquier clic sobre el hero encendiera una estrella, el
+       primer arrastre para seleccionar texto dejaría una por accidente.
+       -------------------------------------------------------------------- */
+    function entrarEnModoCielo() {
+        if (enModoCielo) return;
+        enModoCielo = true;
+
+        raiz.classList.add('es-modo-cielo');
+        lienzo.setAttribute('aria-hidden', 'false');
+        if (llamada) llamada.hidden = false;
+        if (contador) contador.hidden = false;
+        if (botonSalir) botonSalir.hidden = false;
+
+        // Por si la ventana cambió de tamaño desde la última medida
+        if (ajustarLienzo()) pintarCielo(estrellas);
+
+        if (botonSalir) botonSalir.focus({ preventScroll: true });
+        empujarEvento('cielo_abierto', { estrellas: estrellas.length });
+    }
+
+    function salirDeModoCielo() {
+        if (!enModoCielo) return;
+        enModoCielo = false;
+
+        cerrarPanel();
+        raiz.classList.remove('es-modo-cielo');
+        lienzo.setAttribute('aria-hidden', 'true');
+        if (llamada) llamada.hidden = true;
+        if (contador) contador.hidden = true;
+        if (botonSalir) botonSalir.hidden = true;
+        ocultarGlobo();
+
+        if (botonEntrar) botonEntrar.focus({ preventScroll: true });
+    }
+
     function alTocarCielo(evento) {
-        if (enviando) return;
+        if (enviando || !enModoCielo) return;
         const punto = marcarSitio(coordenadasDelEvento(evento));
         if (panel.hidden) {
             abrirPanel(punto);
@@ -433,16 +490,16 @@
             const datos = await respuesta.json();
             const lista = datos.estrellas || [];
 
+            ajustarLienzo();
             pintarCielo(lista);
             if (total) total.textContent = datos.total || 0;
 
-            if (aviso && !lista.length) {
-                aviso.textContent = 'Este cielo está vacío. La primera estrella puede ser la tuya.';
-                aviso.hidden = false;
+            if (botonEntrar && !lista.length) {
+                botonEntrar.innerHTML =
+                    '<i class="bi bi-stars me-2"></i>Enciende la primera estrella';
             }
-            if (llamada) llamada.hidden = false;
         } catch (error) {
-            if (aviso) aviso.textContent = 'No se pudo cargar el cielo.';
+            if (botonEntrar) botonEntrar.disabled = true;
         }
     }
 
@@ -450,14 +507,29 @@
     form.addEventListener('submit', enviar);
     cerrarBoton.addEventListener('click', cerrarPanel);
 
+    if (botonEntrar) botonEntrar.addEventListener('click', entrarEnModoCielo);
+    if (botonSalir) botonSalir.addEventListener('click', salirDeModoCielo);
+
+    // Escape cierra primero el formulario y, si no lo hay, el modo entero:
+    // así una sola tecla nunca hace dos cosas a la vez.
     document.addEventListener('keydown', function (evento) {
-        if (evento.key === 'Escape' && !panel.hidden) cerrarPanel();
+        if (evento.key !== 'Escape') return;
+        if (!panel.hidden) {
+            cerrarPanel();
+        } else if (enModoCielo) {
+            salirDeModoCielo();
+        }
     });
 
-    // Al cambiar el tamaño de la ventana el punto sigue donde estaba, pero su
-    // sitio en pantalla no: el panel tiene que recalcularse.
+    // El viewBox depende del tamaño del hero, así que un cambio de ventana
+    // obliga a recolocarlo todo: estrellas, constelaciones y formulario.
+    let temporizador;
     window.addEventListener('resize', function () {
-        if (!panel.hidden && elegida) colocarPanel(aLienzo(elegida));
+        clearTimeout(temporizador);
+        temporizador = setTimeout(function () {
+            if (ajustarLienzo()) pintarCielo(estrellas);
+            if (enModoCielo && !panel.hidden && elegida) colocarPanel(aLienzo(elegida));
+        }, 150);
     });
 
     cargar();

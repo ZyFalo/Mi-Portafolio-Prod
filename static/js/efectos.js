@@ -20,7 +20,7 @@
         { orden: 'whoami', salida: ['William Andrés Peña Vargas', 'Ingeniero de Software · DevOps & Cloud AWS'] },
         { orden: 'cat stack.txt', salida: ['AWS · Docker · CI/CD · Linux · Python · PHP/Symfony'] },
         { orden: 'git log -1 --oneline', salida: ['feat: lideré la adopción de IA agéntica en el equipo'] },
-        { orden: 'terraform plan', salida: ['~ aprendiendo… (en formación, aún no en producción)'] }
+        { orden: 'terraform plan', salida: ['~ aprendiendo…'] }
     ];
 
     async function iniciarTerminal() {

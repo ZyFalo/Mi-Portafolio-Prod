@@ -7,8 +7,81 @@
 <!-- =====================================================================
      1 · HERO — identidad + terminal viva
      ===================================================================== -->
-<section id="inicio" class="hero">
-    <div class="container">
+<section id="inicio" class="hero"
+         data-url-estrellas="{% url 'cielo:estrellas' %}"
+         data-url-encender="{% url 'cielo:encender' %}">
+
+    <!-- El cielo vive detrás del hero y sale al frente en modo cielo.
+         El viewBox lo ajusta cielo.js al tamaño real: así las estrellas no
+         se deforman ni se recortan sea cual sea la proporción de pantalla. -->
+    <div class="hero-cielo" id="cielo-lienzo" aria-hidden="true">
+        <svg id="cielo-svg" role="img" aria-label="Cielo de visitantes">
+            <defs>
+                <radialGradient id="halo-estrella">
+                    <stop offset="0%" stop-color="var(--accent)" stop-opacity=".55" />
+                    <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
+                </radialGradient>
+            </defs>
+            <g id="cielo-lineas" class="cielo-lineas"></g>
+            <g id="cielo-estrellas"></g>
+            <g id="cielo-fantasma"></g>
+        </svg>
+
+        <p class="cielo-llamada" id="cielo-llamada" hidden>
+            <i class="bi bi-hand-index-thumb"></i>
+            Toca donde quieras tu estrella
+        </p>
+
+        <div class="cielo-globo" id="cielo-globo" hidden aria-live="polite"></div>
+
+        <!-- El formulario nace donde se ha tocado -->
+        <div class="cielo-panel" id="cielo-panel" hidden
+             role="dialog" aria-modal="false" aria-labelledby="cielo-panel-titulo">
+            <button type="button" class="cielo-panel-cerrar" id="cielo-cerrar" aria-label="Cerrar">
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+            <form id="cielo-form" novalidate>
+                {% csrf_token %}
+                <p class="cielo-panel-titulo" id="cielo-panel-titulo">
+                    <i class="bi bi-stars"></i>Tu estrella irá aquí
+                </p>
+
+                <label class="form-label" for="cielo-nombre">Tu nombre</label>
+                <input type="text" class="form-control form-control-sm" id="cielo-nombre"
+                       name="name" maxlength="32" autocomplete="name"
+                       placeholder="Como quieras que se lea" required>
+
+                <label class="form-label mt-2" for="cielo-lugar">De dónde eres</label>
+                <select class="form-select form-select-sm" id="cielo-lugar" name="location">
+                    {% for valor, etiqueta in paises %}
+                    <option value="{{ valor }}">{{ etiqueta }}</option>
+                    {% endfor %}
+                </select>
+
+                <!-- Trampa para bots: invisible para las personas -->
+                <input type="text" name="website" id="cielo-website" class="hp-field"
+                       tabindex="-1" autocomplete="off" aria-hidden="true">
+
+                <button type="submit" class="btn btn-primary btn-sm w-100 mt-3" id="cielo-boton">
+                    <i class="bi bi-brightness-high me-1"></i>Encender mi estrella
+                </button>
+
+                <p class="cielo-nota mb-0" id="cielo-nota"></p>
+                <p class="cielo-pista mb-0">Puedes moverla tocando otro punto.</p>
+            </form>
+        </div>
+
+        <span class="cielo-contador" id="cielo-contador" hidden>
+            <strong id="cielo-total">0</strong> estrellas encendidas
+        </span>
+
+        <button type="button" class="cielo-salir" id="cielo-salir" hidden>
+            <i class="bi bi-arrow-left"></i> Volver al inicio
+        </button>
+    </div>
+
+    <div class="container hero-contenido">
         <div class="row align-items-center g-5">
             <div class="col-12 col-lg-6">
                 <p class="hero-role mb-3" data-hero-in>Backend → DevOps · Cloud AWS</p>
@@ -48,16 +121,16 @@
                     </div>
                     <div class="col-4 col-sm-auto">
                         <div class="hero-stat">
-                            <span class="stat-value"><span data-contador="6">0</span></span>
+                            <span class="stat-value"><span data-contador="12">0</span></span>
                             <span class="stat-label">certificaciones</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="d-flex flex-wrap gap-3" data-hero-in>
-                    <a href="#cielo" class="btn btn-primary">
+                    <button type="button" class="btn btn-primary" id="cielo-entrar">
                         <i class="bi bi-stars me-2"></i>Enciende tu estrella
-                    </a>
+                    </button>
                     <a href="#construido" class="btn btn-outline-primary">
                         <i class="bi bi-braces me-2"></i>Ver lo que he construido
                     </a>
@@ -130,96 +203,6 @@
 <!-- =====================================================================
      2 · EL CIELO — la aportación de quien pasa por aquí
      ===================================================================== -->
-<section id="cielo" class="py-5 bg-alt">
-    <div class="container">
-        <div class="text-center mb-5 reveal">
-            <p class="section-label justify-content-center">Interactivo</p>
-            <h2 class="section-title" data-revelar-titulo>El cielo también es tuyo</h2>
-            <p class="section-lead mx-auto">
-                Quien pasa por aquí enciende una estrella y elige su sitio.
-                Las que quedan cerca se unen solas en constelaciones.
-            </p>
-        </div>
-
-        <div id="cielo-app"
-             class="reveal"
-             data-url-estrellas="{% url 'cielo:estrellas' %}"
-             data-url-encender="{% url 'cielo:encender' %}">
-
-            <!-- La carta celeste. Proporción fija para que el cielo se vea
-                 igual en cualquier pantalla: las coordenadas van normalizadas. -->
-            <div class="cielo-lienzo" id="cielo-lienzo">
-                <svg id="cielo-svg" viewBox="0 0 1000 560"
-                     role="img" aria-label="Cielo de visitantes">
-                    <defs>
-                        <radialGradient id="halo-estrella">
-                            <stop offset="0%" stop-color="var(--accent)" stop-opacity=".55" />
-                            <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
-                        </radialGradient>
-                    </defs>
-                    <g id="cielo-lineas" class="cielo-lineas"></g>
-                    <g id="cielo-estrellas"></g>
-                    <g id="cielo-fantasma"></g>
-                </svg>
-
-                <p class="cielo-aviso" id="cielo-aviso">Cargando el cielo…</p>
-
-                <!-- Invitación permanente: sin esto nadie adivina que el cielo
-                     se puede tocar. Se aparta en cuanto se abre el formulario. -->
-                <p class="cielo-llamada" id="cielo-llamada" hidden>
-                    <i class="bi bi-hand-index-thumb"></i>
-                    Toca el cielo para dejar tu estrella
-                </p>
-
-                <div class="cielo-globo" id="cielo-globo" hidden aria-live="polite"></div>
-
-                <!-- El formulario nace donde se ha tocado -->
-                <div class="cielo-panel" id="cielo-panel" hidden
-                     role="dialog" aria-modal="false" aria-labelledby="cielo-panel-titulo">
-                    <button type="button" class="cielo-panel-cerrar" id="cielo-cerrar"
-                            aria-label="Cerrar">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
-
-                    <form id="cielo-form" novalidate>
-                        {% csrf_token %}
-                        <p class="cielo-panel-titulo" id="cielo-panel-titulo">
-                            <i class="bi bi-stars"></i>Tu estrella irá aquí
-                        </p>
-
-                        <label class="form-label" for="cielo-nombre">Tu nombre</label>
-                        <input type="text" class="form-control form-control-sm" id="cielo-nombre"
-                               name="name" maxlength="32" autocomplete="name"
-                               placeholder="Como quieras que se lea" required>
-
-                        <label class="form-label mt-2" for="cielo-lugar">De dónde eres</label>
-                        <select class="form-select form-select-sm" id="cielo-lugar" name="location">
-                            {% for valor, etiqueta in paises %}
-                            <option value="{{ valor }}">{{ etiqueta }}</option>
-                            {% endfor %}
-                        </select>
-
-                        <!-- Trampa para bots: invisible para las personas -->
-                        <input type="text" name="website" id="cielo-website" class="hp-field"
-                               tabindex="-1" autocomplete="off" aria-hidden="true">
-
-                        <button type="submit" class="btn btn-primary btn-sm w-100 mt-3" id="cielo-boton">
-                            <i class="bi bi-brightness-high me-1"></i>Encender mi estrella
-                        </button>
-
-                        <p class="cielo-nota mb-0" id="cielo-nota"></p>
-                        <p class="cielo-pista mb-0">Puedes mover tu estrella tocando otro punto.</p>
-                    </form>
-                </div>
-
-                <span class="cielo-contador" id="cielo-contador" hidden>
-                    <strong id="cielo-total">0</strong> estrellas
-                </span>
-            </div>
-
-        </div>
-    </div>
-</section>
 
 <!-- =====================================================================
      3 · LO QUE HE CONSTRUIDO — el trabajo, no la descripción
@@ -731,44 +714,155 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="text-main small">Inglés</span>
-                        <span class="tech-badge-small">B1/B2 intermedio</span>
+                        <span class="tech-badge-small">B1 intermedio</span>
                     </div>
+
+                    <!-- Doce estrellas, una por certificación, agrupadas en los
+                         cuatro bloques de la derecha. No es un adorno de relleno:
+                         es el mismo dato contado en la tinta del cielo del hero. -->
+                    <figure class="constelacion-cv mb-0">
+                        <svg viewBox="0 0 280 210" role="img"
+                             aria-label="Doce estrellas agrupadas en cuatro constelaciones, una por cada certificación">
+                            <g class="cv-polvo" aria-hidden="true">
+                                <circle cx="25" cy="95" r="1"/><circle cx="140" cy="18" r="1"/>
+                                <circle cx="265" cy="110" r="1"/><circle cx="120" cy="200" r="1"/>
+                                <circle cx="35" cy="185" r="1"/><circle cx="255" cy="15" r="1"/>
+                                <circle cx="150" cy="120" r="1"/><circle cx="75" cy="105" r="1"/>
+                            </g>
+
+                            <!-- Cloud e infraestructura · 3 -->
+                            <g class="cv-grupo">
+                                <path d="M38 46 L84 28 L112 62"/>
+                                <circle cx="38" cy="46" r="3"/>
+                                <circle cx="84" cy="28" r="3"/>
+                                <circle cx="112" cy="62" r="3"/>
+                            </g>
+
+                            <!-- Seguridad · 4 -->
+                            <g class="cv-grupo">
+                                <path d="M176 36 L214 58 L248 38 M214 58 L202 96"/>
+                                <circle cx="176" cy="36" r="3"/>
+                                <circle cx="214" cy="58" r="3"/>
+                                <circle cx="248" cy="38" r="3"/>
+                                <circle cx="202" cy="96" r="3"/>
+                            </g>
+
+                            <!-- Redes · 2 -->
+                            <g class="cv-grupo">
+                                <path d="M52 142 L96 168"/>
+                                <circle cx="52" cy="142" r="3"/>
+                                <circle cx="96" cy="168" r="3"/>
+                            </g>
+
+                            <!-- IA y producto · 3 -->
+                            <g class="cv-grupo">
+                                <path d="M172 152 L212 132 L242 174"/>
+                                <circle cx="172" cy="152" r="3"/>
+                                <circle cx="212" cy="132" r="3"/>
+                                <circle cx="242" cy="174" r="3"/>
+                            </g>
+                        </svg>
+                        <figcaption>Una estrella por certificación</figcaption>
+                    </figure>
                 </div>
             </div>
 
             <div class="col-lg-7 reveal">
                 <div class="card-custom p-4 h-100">
-                    <h3 class="h6 fw-bold text-primary mb-3">
-                        <i class="bi bi-patch-check me-1"></i>Certificaciones
-                    </h3>
-
-                    <div class="timeline">
-                        <div class="timeline-item mb-3">
-                            <p class="timeline-date mb-1">PLATZI · 2026</p>
-                            <h4 class="timeline-role h6 mb-1">AWS Cloud Practitioner</h4>
-                            <p class="timeline-company mb-0">Servicios, seguridad, arquitectura y modelo de costos</p>
-                        </div>
-                        <div class="timeline-item mb-3">
-                            <p class="timeline-date mb-1">PLATZI · 2026</p>
-                            <h4 class="timeline-role h6 mb-1">Curso de Claude AI</h4>
-                            <p class="timeline-company mb-0">Prompting, agentes de código y flujos productivos</p>
-                        </div>
-                        <div class="timeline-item mb-3">
-                            <p class="timeline-date mb-1">GOOGLE · 2024</p>
-                            <h4 class="timeline-role h6 mb-1">Google Cloud Computing Foundations</h4>
-                            <p class="timeline-company mb-0">Fundamentos de cloud y servicios de GCP</p>
-                        </div>
-                        <div class="timeline-item mb-3">
-                            <p class="timeline-date mb-1">IBM SKILLSBUILD · 2024</p>
-                            <h4 class="timeline-role h6 mb-1">Enterprise Design Thinking Practitioner</h4>
-                            <p class="timeline-company mb-0">Resolución de problemas centrada en el usuario</p>
-                        </div>
-                        <div class="timeline-item">
-                            <p class="timeline-date mb-1">CISCO · 2023</p>
-                            <h4 class="timeline-role h6 mb-1">CCNA: Introduction to Networks · Learn-A-Thon</h4>
-                            <p class="timeline-company mb-0">Redes, dispositivos y Python Essentials</p>
-                        </div>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <h3 class="h6 fw-bold text-primary mb-0">
+                            <i class="bi bi-patch-check me-1"></i>Certificaciones
+                        </h3>
+                        <!-- Cada una enlaza a su emisor: Credly, Oracle, Platzi o
+                             Anthropic. Un botón a un solo perfil daría una foto
+                             parcial, y además las cuentas de Credly son dos. -->
+                        <span class="cert-perfil">Todas verificables</span>
                     </div>
+
+                    <!-- Agrupadas por materia: diez entradas en lista plana se
+                         leen como relleno; por bloques se ve el perfil de un
+                         vistazo. Todas enlazan a su credencial verificable. -->
+                    <p class="cert-grupo">Cloud e infraestructura</p>
+                    <a class="cert-item" target="_blank" rel="noreferrer"
+                       href="https://www.credly.com/badges/91cbea8a-c6d6-42fc-8e07-fa03e2efcb4b">
+                        <span class="cert-nombre">Google Cloud Computing Foundations</span>
+                        <span class="cert-puntos" aria-hidden="true"></span>
+                        <span class="cert-meta">Google Cloud · 2024</span>
+                    </a>
+                    <a class="cert-item" target="_blank" rel="noreferrer"
+                       href="https://platzi.com/p/williamandres1603164/curso/10464-course/diploma/detalle/">
+                        <span class="cert-nombre">Curso AWS Cloud Practitioner</span>
+                        <span class="cert-puntos" aria-hidden="true"></span>
+                        <span class="cert-meta">Platzi · 2026</span>
+                    </a>
+                    <!-- Verificación en el propio catálogo de Oracle, no en
+                         Credly: allí la insignia figura como no verificada. -->
+                    <a class="cert-item" target="_blank" rel="noreferrer"
+                       href="https://catalog-education.oracle.com/ords/certview/sharebadge?id=37656084952C78854D0C1B132E80D8039A95D4A0CA75A63E686C076EE98B407F">
+                        <span class="cert-nombre">Oracle Cloud Data Management Foundations Associate</span>
+                        <span class="cert-puntos" aria-hidden="true"></span>
+                        <span class="cert-meta">Oracle · 2024</span>
+                    </a>
+
+                    <p class="cert-grupo">Seguridad</p>
+                    <a class="cert-item" target="_blank" rel="noreferrer"
+                       href="https://www.credly.com/badges/0377b4dc-426e-406e-9c02-66d35914ed5c">
+                        <span class="cert-nombre">LFD121: Developing Secure Software</span>
+                        <span class="cert-puntos" aria-hidden="true"></span>
+                        <span class="cert-meta">The Linux Foundation · 2026</span>
+                    </a>
+                    <a class="cert-item" target="_blank" rel="noreferrer"
+                       href="https://www.credly.com/badges/41356a70-f968-4a76-9e13-d05e07d08ae4">
+                        <span class="cert-nombre">Google Cloud Cybersecurity</span>
+                        <span class="cert-puntos" aria-hidden="true"></span>
+                        <span class="cert-meta">Google Cloud · 2026</span>
+                    </a>
+                    <a class="cert-item" target="_blank" rel="noreferrer"
+                       href="https://www.credly.com/badges/fccfb17f-cf00-4da6-9420-ca8d69900231">
+                        <span class="cert-nombre">Cyber Threat Management</span>
+                        <span class="cert-puntos" aria-hidden="true"></span>
+                        <span class="cert-meta">Cisco · 2026</span>
+                    </a>
+                    <a class="cert-item" target="_blank" rel="noreferrer"
+                       href="https://www.credly.com/badges/b8a5d159-61b3-4b97-88ec-d077131c2a08">
+                        <span class="cert-nombre">Ethical Hacker</span>
+                        <span class="cert-puntos" aria-hidden="true"></span>
+                        <span class="cert-meta">Cisco · 2026</span>
+                    </a>
+
+                    <p class="cert-grupo">Redes</p>
+                    <a class="cert-item" target="_blank" rel="noreferrer"
+                       href="https://www.credly.com/badges/f9f8956f-c985-4429-b54c-4d751cef52db">
+                        <span class="cert-nombre">CCNA: Switching, Routing &amp; Wireless Essentials</span>
+                        <span class="cert-puntos" aria-hidden="true"></span>
+                        <span class="cert-meta">Cisco · 2024</span>
+                    </a>
+                    <a class="cert-item" target="_blank" rel="noreferrer"
+                       href="https://www.credly.com/badges/138aefa2-e7ca-4603-904f-deb62949db91">
+                        <span class="cert-nombre">CCNA: Introduction to Networks</span>
+                        <span class="cert-puntos" aria-hidden="true"></span>
+                        <span class="cert-meta">Cisco · 2023</span>
+                    </a>
+
+                    <p class="cert-grupo">IA y producto</p>
+                    <a class="cert-item" target="_blank" rel="noreferrer"
+                       href="https://verify.skilljar.com/c/qeofxawuhj5i">
+                        <span class="cert-nombre">Claude Code in Action</span>
+                        <span class="cert-puntos" aria-hidden="true"></span>
+                        <span class="cert-meta">Anthropic · 2026</span>
+                    </a>
+                    <a class="cert-item" target="_blank" rel="noreferrer"
+                       href="https://platzi.com/p/williamandres1603164/curso/12651-course/diploma/detalle/">
+                        <span class="cert-nombre">Curso de Claude AI</span>
+                        <span class="cert-puntos" aria-hidden="true"></span>
+                        <span class="cert-meta">Platzi · 2026</span>
+                    </a>
+                    <a class="cert-item" target="_blank" rel="noreferrer"
+                       href="https://www.credly.com/badges/c40f62f3-1474-4a34-a03c-d4aa50b97353">
+                        <span class="cert-nombre">Enterprise Design Thinking Practitioner</span>
+                        <span class="cert-puntos" aria-hidden="true"></span>
+                        <span class="cert-meta">IBM SkillsBuild · 2026</span>
+                    </a>
 
                     <!-- Blandas: una línea, no una sección entera -->
                     <hr style="border-color:var(--paper-edge);">
