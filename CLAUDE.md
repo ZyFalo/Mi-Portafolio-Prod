@@ -58,7 +58,7 @@ docker run -e DEBUG=0 -e SECRET_KEY=your-key -p 8000:8000 mi-portafolio
 3. SQLite fallback (`db.sqlite3`)
 
 ### Apps (`portfolio/apps/`)
-- **core** — Home page with `Developer` model. Auto-generates UTM tracking URLs per developer (`tracked_url` property). Views: `home`.
+- **core** — Home page with `Developer` model. Auto-generates UTM tracking URLs per developer (`tracked_url` property). Views: `home`. `middleware.py` holds `DominioCanonicoMiddleware`, first in `MIDDLEWARE`: permanent redirect (301, or 308 for non-GET) from `REDIRECT_HOSTS` to `CANONICAL_HOST`, keeping path and query. It removes itself (`MiddlewareNotUsed`) unless both are set, so it ships switched off.
 - **contact** — `ContactMessage` model. Form has honeypot field (`website`), timestamp validation (>1500ms), and optional reCAPTCHA v2. Anti-bot logic lives in `forms.py` + `views.py`.
 - **faq** — `Question` model with auto-slug, ordering, `is_active` flag. View: `fyq`.
 - **openapp** — `OpenEntity` + `Tag` (M2M). Gadgets grid and slug-based detail. Views: `open_list`, `open_detail`.
@@ -102,7 +102,7 @@ To reset a lost password, use `railway run python manage.py changepassword <user
 
 ## Environment Variables
 
-See `.env.example` for the full list. Key variables: `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `DATABASE_URL` (or `MYSQL_*`), `GTM_CONTAINER_ID`, `GA_MEASUREMENT_ID`, `RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`, `RECAPTCHA_ENABLED`, `PORT`, `DJANGO_SUPERUSER_USERNAME/EMAIL/PASSWORD`.
+See `.env.example` for the full list. Key variables: `SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`, `DATABASE_URL` (or `MYSQL_*`), `GTM_CONTAINER_ID`, `GA_MEASUREMENT_ID`, `RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`, `RECAPTCHA_ENABLED`, `PORT`, `DJANGO_SUPERUSER_USERNAME/EMAIL/PASSWORD`, `CANONICAL_HOST` + `REDIRECT_HOSTS` (set only once the canonical domain serves HTTPS, or old links will land on a domain without a certificate).
 
 ## Language & Conventions
 

@@ -31,6 +31,12 @@ if not ALLOWED_HOSTS:
 
 CSRF_TRUSTED_ORIGINS = _split_csv(os.getenv("CSRF_TRUSTED_ORIGINS", ""))
 
+# Dominio canónico: los hosts de REDIRECT_HOSTS reciben una redirección
+# permanente a CANONICAL_HOST. Con cualquiera de los dos vacío no se redirige
+# nada. Encender solo cuando el dominio canónico ya sirva HTTPS.
+CANONICAL_HOST = os.getenv("CANONICAL_HOST", "").strip().lower()
+REDIRECT_HOSTS = _split_csv(os.getenv("REDIRECT_HOSTS", ""))
+
 
 # Applications
 INSTALLED_APPS = [
@@ -51,6 +57,9 @@ INSTALLED_APPS = [
 
 
 MIDDLEWARE = [
+    # El primero de todos: el dominio antiguo se despacha antes de que la
+    # redirección a HTTPS o la validación de hosts añadan un salto más.
+    "portfolio.apps.core.middleware.DominioCanonicoMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
