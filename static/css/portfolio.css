@@ -1025,16 +1025,6 @@ button:focus-visible,
     opacity: 0.35;
 }
 
-.constelacion-cv figcaption {
-    margin-top: 0.9rem;
-    text-align: center;
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-}
-
 @media (prefers-reduced-motion: reduce) {
     .constelacion-cv .cv-grupo circle { animation: none; }
 }
