@@ -31,6 +31,11 @@ Este documento resume cómo se instrumentó el sitio con Google Tag Manager (GTM
 - FAQ
   - Click en pregunta: `faq_click` (custom) + `select_content` (GA4 estándar, content_type=faq_question).
 
+- Cielo de visitantes (hero)
+  - Abrir el modo cielo: `cielo_abierto` (custom). Params: `estrellas` (cuántas había al entrar).
+  - Encender una estrella: `cielo_estrella_encendida` (custom). Params: `total` (estrellas tras encender la suya).
+  - Fallo al encender: `cielo_error` (custom). Params: `motivo` (`nombre_invalido`, `pais_invalido`, `posicion_invalida`, `limite_alcanzado`, `rechazado`, `payload_invalido`, o `red` si la petición no llegó).
+
 ## Configuración en GTM
 
 1) Tag GA4 Configuration
@@ -48,16 +53,21 @@ Este documento resume cómo se instrumentó el sitio con Google Tag Manager (GTM
    - `view_item_list`: Trigger `view_item_list`. Params: `item_list_id`, `item_list_name`, `items[]`, `page_location`.
    - `select_content`: Trigger `select_content`. Params: `content_type`, `item_id`, `item_name`, `item_list_name` (cuando aplica), `page_location`.
    - `view_item`: Trigger `view_item`. Params: `item_id`, `item_name`, `page_location`.
+   - `cielo_estrella_encendida`: Trigger `cielo_estrella_encendida`. Params: `total`, `page_location`. Márcalo como evento clave en GA4: es la participación que busca el portafolio.
+   - `cielo_abierto`: Trigger `cielo_abierto`. Params: `estrellas`, `page_location`.
+   - `cielo_error`: Trigger `cielo_error`. Params: `motivo`, `page_location`.
 
 4) Variables recomendadas en GTM
    - URL Query: `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`.
    - Data Layer: variables homónimas si prefieres leerlas directo del `dataLayer`.
+   - Data Layer (cielo): `estrellas`, `total`, `motivo`.
 
 ## Definiciones personalizadas en GA4 (opcional)
 
 - Admin → Custom definitions → Create custom dimension (Scope: Event):
   - `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `utm_content`.
   - Otras que te interese analizar (`promotion_name`, `content_type`, etc.).
+  - `motivo`, para ver por qué falla encender una estrella (`limite_alcanzado` frente a `red`, por ejemplo).
 
 ## Verificación (con capturas)
 
@@ -65,6 +75,7 @@ Este documento resume cómo se instrumentó el sitio con Google Tag Manager (GTM
    - Abre el contenedor → Preview → ingresa la URL local/producción.
    - Navega: Home (`/`), Gadgets (`/open/`), Detalle (`/open/<slug>/`), Contacto (`/contactame/`), FAQ (`/fyq/`).
    - Haz clic en un banner de desarrollador y un gadget.
+   - En el hero, pulsa «Enciende tu estrella», toca el cielo y enciende una: deben caer `cielo_abierto` y `cielo_estrella_encendida`.
    - Captura: `docs/analytics/preview.png` (lista de eventos y tags disparados con 1–2 ejemplos).
 
 2) GA4 DebugView
