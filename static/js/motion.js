@@ -18,21 +18,28 @@
         if (!boton) return;
 
         const icono = boton.querySelector('i');
+        const colorBarra = document.querySelector('meta[name="theme-color"]');
 
-        function pintarIcono() {
+        // Icono, estado accesible y color de la barra del navegador móvil,
+        // que copia el fondo del tema recién aplicado.
+        function reflejarTema() {
             const oscuro = document.documentElement.getAttribute('data-theme') === 'dark';
             if (icono) icono.className = oscuro ? 'bi bi-sun' : 'bi bi-moon-stars';
             boton.setAttribute('aria-pressed', String(oscuro));
+            if (colorBarra) {
+                const fondo = getComputedStyle(document.documentElement).getPropertyValue('--bg-main').trim();
+                if (fondo) colorBarra.setAttribute('content', fondo);
+            }
         }
 
-        pintarIcono();
+        reflejarTema();
 
         boton.addEventListener('click', function () {
             const actual = document.documentElement.getAttribute('data-theme');
             const nuevo = actual === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', nuevo);
             try { localStorage.setItem('tema', nuevo); } catch (e) {}
-            pintarIcono();
+            reflejarTema();
 
             window.dataLayer = window.dataLayer || [];
             window.dataLayer.push({ event: 'theme_toggle', theme: nuevo });
