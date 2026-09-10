@@ -444,8 +444,16 @@ section { position: relative; }
     letter-spacing: -0.02em;
 }
 
-.navbar-brand .brand-dot {
+/* El punto de acento que cerraba el nombre pasa a ser el del dominio */
+.navbar-brand .brand-tld {
     color: var(--accent);
+}
+
+/* En los móviles más estrechos (320px), «William Peña.dev» no cabe junto al
+   botón de tema y al menú: le faltan 10px. Con un cuerpo algo menor vuelve a
+   una sola línea. */
+@media (max-width: 359.98px) {
+    .navbar-brand { font-size: 1.2rem !important; }
 }
 
 .navbar-light .navbar-nav .nav-link {
