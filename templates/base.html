@@ -13,6 +13,23 @@
     <link rel="icon" href="{% static 'img/favicon.svg' %}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{% static 'img/favicon.svg' %}">
 
+    <!-- Vista previa al compartir el enlace (LinkedIn, WhatsApp, Slack…).
+         Las URL deben ser absolutas; tras el proxy de Railway,
+         SECURE_PROXY_SSL_HEADER hace que request.scheme sea https. -->
+    {% static 'img/og-wpena.png' as og_imagen %}
+    <link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="William Peña">
+    <meta property="og:locale" content="es_CO">
+    <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
+    <meta property="og:title" content="{% block og_title %}William Peña — De Backend a DevOps · Cloud AWS{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Consultor de desarrollo de software con enfoque DevOps y cloud en AWS: despliegues entre ambientes, contenedores Docker y CI/CD.{% endblock %}">
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ og_imagen }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="William Andrés Peña Vargas · Backend → DevOps · Cloud AWS · wpena.dev">
+    <meta name="twitter:card" content="summary_large_image">
+
     <!-- Tema: oscuro por defecto, incluso sin JavaScript (lo fija el <html>).
          Solo pasa a claro si el visitante lo eligió con el interruptor; la
          preferencia del sistema no cuenta. Va antes de pintar para evitar
